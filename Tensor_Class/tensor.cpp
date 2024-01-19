@@ -2,5 +2,5 @@
 
 void tensor::test()
 {
-	std::cout << "It`s okey." << std::endl;
+	std::cout << "It`s okay." << std::endl;
 }
