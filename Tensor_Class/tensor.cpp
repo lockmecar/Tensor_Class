@@ -13,7 +13,7 @@ void tensor::print()
 
 }
 
-tensor::tensor()
+tensor::tensor(int size)
 {
-	
+    tensor::size = size;
 }

@@ -7,11 +7,11 @@ private:
 	
 
 public:
-	tensor();
+	tensor(int size); // Конструктор с указанием размера
 	void print();
 
-	short size = 10;
-	float array[10][10] = { 0 };
+	short size;
+	float array[100][100] = { 0 };
 
 	
 };
