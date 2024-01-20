@@ -4,7 +4,14 @@
 class tensor
 {
 private:
+	
 
 public:
-	void test();
+	tensor();
+	void print();
+
+	short size = 10;
+	float array[10][10] = { 0 };
+
+	
 };
