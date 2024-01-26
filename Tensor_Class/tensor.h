@@ -4,14 +4,15 @@
 class tensor
 {
 private:
-	
+	int size;        // Размер массива
+	float** matrix;  // Двумерный динамический массив
+	size_t& count(); // Счетчик обьектов
 
 public:
 	tensor(int size); // Конструктор с указанием размера
-	void print();
+	~tensor();        // Деструктор
+	void print();     // Вывод на консоль
 
-	short size;
-	float array[100][100] = { 0 };
 
 	
 };
