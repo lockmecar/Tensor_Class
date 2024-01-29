@@ -10,6 +10,26 @@ void tensor::print()
     }
 }
 
+float tensor::get_object_of_matrix(int x, int y)
+{
+    return tensor::matrix[x][y];
+}
+
+void tensor::set_object_of_matrix(int x, int y, float value)
+{
+    tensor::matrix[x][y] = value;
+}
+
+tensor tensor::operator+(const tensor& a)
+{
+    tensor t1(*this);//условия
+    for (int i = 0; i < tensor::size; i++)
+        for (int j = 0; j < tensor::size; j++)
+            t1.matrix[i][j] += a.matrix[i][j];
+
+    return t1;
+}
+
 size_t& tensor::count()
 {
     static size_t c = 0;
