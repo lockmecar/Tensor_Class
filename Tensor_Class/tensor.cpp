@@ -22,9 +22,10 @@ void tensor::set_object_of_matrix(int x, int y, float value)
 
 tensor tensor::operator+(const tensor& a)
 {
-    tensor t1(*this);//условия
-    for (int i = 0; i < tensor::size; i++)
-        for (int j = 0; j < tensor::size; j++)
+    if (a.size != size) throw "TensorErrorOp+: Попытка сложить тензоры различной размерности";
+    tensor t1(*this);
+    for (int i = 0; i < size; i++)
+        for (int j = 0; j < size; j++)
             t1.matrix[i][j] += a.matrix[i][j];
 
     return t1;
