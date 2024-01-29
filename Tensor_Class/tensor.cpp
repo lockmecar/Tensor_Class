@@ -20,6 +20,49 @@ void tensor::set_object_of_matrix(int x, int y, float value)
     tensor::matrix[x][y] = value;
 }
 
+tensor tensor::transp(tensor a)
+{
+    tensor t1(*this);
+    for (int i = 0; i < size; i++)
+        for (int j = 0; j < size; j++) 
+            t1.matrix[i][j] = a.matrix[j][i];
+    return t1;
+}
+
+tensor tensor::operator-(const tensor& a)
+{
+    if (a.size != size) throw "TensorErrorOp+: Попытка сложить тензоры различной размерности";
+    tensor t1(*this);
+    for (int i = 0; i < size; i++)
+        for (int j = 0; j < size; j++)
+            t1.matrix[i][j] -= a.matrix[i][j];
+
+    return t1;
+}
+
+tensor tensor::operator-=(const tensor& a)
+{
+    if (a.size != size) throw "TensorErrorOp+: Попытка сложить тензоры различной размерности";
+    tensor t1(*this);
+    for (int i = 0; i < size; i++)
+        for (int j = 0; j < size; j++)
+            t1.matrix[i][j] -= a.matrix[i][j];
+
+    return *this;
+}
+
+
+tensor& tensor::operator=(const tensor& a)
+{
+    for (int i = 0; i < size; i++)
+        for (int j = 0; j < size; j++)
+            if (&a != this)
+                this->matrix[i][j] = a.matrix[i][j];
+    this->size = a.size;
+    return *this;
+}
+
+
 tensor tensor::operator+(const tensor& a)
 {
     if (a.size != size) throw "TensorErrorOp+: Попытка сложить тензоры различной размерности";
@@ -31,31 +74,73 @@ tensor tensor::operator+(const tensor& a)
     return t1;
 }
 
-size_t& tensor::count()
+tensor& tensor::operator+=(const tensor& a)
 {
-    static size_t c = 0;
-    return c;
+    if (a.size != size) throw "TensorErrorOp+: Попытка сложить тензоры различной размерности";
+    //tensor t1(*this);
+    for (int i = 0; i < size; i++)
+        for (int j = 0; j < size; j++)
+            this->matrix[i][j] += a.matrix[i][j];
+
+    return *this;
 }
+
+tensor& tensor::operator*(const int& a)
+{
+    for (int i = 0; i < size; i++)
+        for (int j = 0; j < size; j++)
+            this->matrix[i][j] *= a;
+    return *this;
+}
+
+tensor& tensor::operator*(const float& a)
+{
+    for (int i = 0; i < size; i++)
+        for (int j = 0; j < size; j++)
+            this->matrix[i][j] *= a;
+    return *this;
+}
+
+tensor& tensor::operator*=(const int& a)
+{
+    for (int i = 0; i < size; i++)
+        for (int j = 0; j < size; j++)
+            this->matrix[i][j] *= a;
+    return *this;
+}
+
+tensor& tensor::operator*=(const float& a)
+{
+    for (int i = 0; i < size; i++)
+        for (int j = 0; j < size; j++)
+            this->matrix[i][j] *= a;
+    return *this;
+}
+
+
+
+
+//size_t& tensor::count()
+//{
+//    static size_t c = 0;
+//    return c;
+//}
 
 tensor::tensor(int size_of_matrix)
 {
-    tensor::count()++;
+    //tensor::count()++;
     tensor::size = size_of_matrix;
     tensor::matrix = new float* [size_of_matrix];
     for (int i = 0; i < size_of_matrix; i++)
-    {
         matrix[i] = new float[size_of_matrix];
-    }
-    std::cout << "Object created. " << "Count: " << tensor::count() << std::endl;
+    //std::cout << "Object created. " << "Count: " << tensor::count() << std::endl;
 }
 
 tensor::~tensor()
 {
-    tensor::count()--;
+    //tensor::count()--;
     for (int i = 0; i < size; i++)
-    {
         delete[](matrix[i]);
-    }
     delete[](matrix);
-    std::cout << "Object destroyed. " << "Count: " << tensor::count() << std::endl;
+    //std::cout << "Object destroyed. " << "Count: " << tensor::count() << std::endl;
 }
