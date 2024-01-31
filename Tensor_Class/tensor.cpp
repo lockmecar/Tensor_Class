@@ -22,7 +22,7 @@ void tensor::set_object_of_matrix(int x, int y, float value)
 
 tensor tensor::operator+(const tensor& a)
 {
-    if (a.size != size) throw "TensorErrorOp+: Попытка сложить тензоры различной размерности";
+    if (a.size != size) throw(std::length_error("TensorErrorOp+: Попытка сложить тензоры различной размерности"));
     tensor t1(*this);
     for (int i = 0; i < size; i++)
         for (int j = 0; j < size; j++)
