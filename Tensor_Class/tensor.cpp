@@ -2,6 +2,7 @@
 
 void tensor::print()
 {
+    std::cout << std::endl;
     for (int i = 0; i < tensor::size; i++) 
     {
         for (int j = 0; j < tensor::size; j++)
@@ -35,8 +36,8 @@ tensor tensor::operator+(const tensor& a)
 {
     if (a.size != size) throw(std::length_error("TensorErrorOp+: Попытка сложить тензоры различной размерности"));
     tensor t1(*this);
-    for (int i = 0; i < size; i++)
-        for (int j = 0; j < size; j++)
+    for (int i = 0; i < t1.size; i++)
+        for (int j = 0; j < t1.size; j++)
             t1.matrix[i][j] += a.matrix[i][j];
 
     return t1;
@@ -59,11 +60,20 @@ tensor::tensor(int size_of_matrix, std::string name)
     std::cout << "Object " << tensor::name << " created. " << "Count: " << tensor::count() << std::endl;
 }
 
+tensor::tensor(const tensor& t1)
+{
+    tensor::count()++;
+    tensor::name = "TMP_BUF";
+    tensor::size = t1.size;
+    tensor::matrix = t1.matrix;
+    std::cout << "Object " << tensor::name << " created. " << "Count: " << tensor::count() << std::endl;
+}
+
 tensor::~tensor()
 {
     tensor::count()--;
     for (int i = 0; i < size; i++)
-        delete[](matrix[i]);
-    delete[](matrix);
+        delete[](tensor::matrix[i]);
+    delete[](tensor::matrix);
     std::cout << "Object " << tensor::name << " destroyed. " << "Count: " << tensor::count() << std::endl;
 }
