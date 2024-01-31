@@ -1,17 +1,19 @@
 #pragma once
 #include <iostream>
+#include <string>
 
 class tensor
 {
 private:
+	std::string name;// Имя объекта класса
 	int size;        // Размер массива
 	float** matrix;  // Двумерный динамический массив
-	//size_t& count(); // Счетчик обьектов
+	size_t& count(); // Счетчик обьектов
 
 public:
-	tensor(int size); // Конструктор с указанием размера
-	~tensor();        // Деструктор
-	void print();     // Вывод на консоль
+	tensor(int size, std::string name); // Конструктор с указанием размера
+	~tensor();                          // Деструктор
+	void print();                       // Вывод на консоль
 	float get_object_of_matrix(int x, int y);             // Геттер для конкретного значения в матрице
 	void set_object_of_matrix(int x, int y, float value); // Сеттер для конкретного значения в матрице
 
