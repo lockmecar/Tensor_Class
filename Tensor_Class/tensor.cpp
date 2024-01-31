@@ -20,38 +20,6 @@ void tensor::set_object_of_matrix(int x, int y, float value)
     tensor::matrix[x][y] = value;
 }
 
-tensor tensor::transp(tensor a)
-{
-    tensor t1(*this);
-    for (int i = 0; i < size; i++)
-        for (int j = 0; j < size; j++) 
-            t1.matrix[i][j] = a.matrix[j][i];
-    return t1;
-}
-
-tensor tensor::operator-(const tensor& a)
-{
-    if (a.size != size) throw "TensorErrorOp+: Попытка сложить тензоры различной размерности";
-    tensor t1(*this);
-    for (int i = 0; i < size; i++)
-        for (int j = 0; j < size; j++)
-            t1.matrix[i][j] -= a.matrix[i][j];
-
-    return t1;
-}
-
-tensor tensor::operator-=(const tensor& a)
-{
-    if (a.size != size) throw "TensorErrorOp+: Попытка сложить тензоры различной размерности";
-    tensor t1(*this);
-    for (int i = 0; i < size; i++)
-        for (int j = 0; j < size; j++)
-            t1.matrix[i][j] -= a.matrix[i][j];
-
-    return *this;
-}
-
-
 tensor& tensor::operator=(const tensor& a)
 {
     for (int i = 0; i < size; i++)
@@ -61,7 +29,6 @@ tensor& tensor::operator=(const tensor& a)
     this->size = a.size;
     return *this;
 }
-
 
 tensor tensor::operator+(const tensor& a)
 {
@@ -73,52 +40,6 @@ tensor tensor::operator+(const tensor& a)
 
     return t1;
 }
-
-tensor& tensor::operator+=(const tensor& a)
-{
-    if (a.size != size) throw "TensorErrorOp+: Попытка сложить тензоры различной размерности";
-    //tensor t1(*this);
-    for (int i = 0; i < size; i++)
-        for (int j = 0; j < size; j++)
-            this->matrix[i][j] += a.matrix[i][j];
-
-    return *this;
-}
-
-tensor& tensor::operator*(const int& a)
-{
-    for (int i = 0; i < size; i++)
-        for (int j = 0; j < size; j++)
-            this->matrix[i][j] *= a;
-    return *this;
-}
-
-tensor& tensor::operator*(const float& a)
-{
-    for (int i = 0; i < size; i++)
-        for (int j = 0; j < size; j++)
-            this->matrix[i][j] *= a;
-    return *this;
-}
-
-tensor& tensor::operator*=(const int& a)
-{
-    for (int i = 0; i < size; i++)
-        for (int j = 0; j < size; j++)
-            this->matrix[i][j] *= a;
-    return *this;
-}
-
-tensor& tensor::operator*=(const float& a)
-{
-    for (int i = 0; i < size; i++)
-        for (int j = 0; j < size; j++)
-            this->matrix[i][j] *= a;
-    return *this;
-}
-
-
-
 
 //size_t& tensor::count()
 //{

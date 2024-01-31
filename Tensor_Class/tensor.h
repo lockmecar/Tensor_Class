@@ -15,21 +15,6 @@ public:
 	float get_object_of_matrix(int x, int y);             // Геттер для конкретного значения в матрице
 	void set_object_of_matrix(int x, int y, float value); // Сеттер для конкретного значения в матрице
 
-	tensor transp(tensor a);
-
-	tensor operator- (const tensor& a);
-	tensor operator-= (const tensor& a);
-
 	tensor operator+ (const tensor& a);
-	tensor& operator+= (const tensor& a);
-
 	tensor& operator = (const tensor& a);
-
-	//tensor& operator *= (const tensor& a);
-	//tensor& operator * (const tensor& a);
-	tensor& operator * (const int& a);
-	tensor& operator * (const float& a);
-	tensor& operator*=(const int& a);
-	tensor& operator*=(const float& a);
-
 };
