@@ -56,7 +56,7 @@ tensor::tensor(int size_of_matrix, std::string name)
     tensor::matrix = new float* [size_of_matrix];
     for (int i = 0; i < size_of_matrix; i++)
         matrix[i] = new float[size_of_matrix];
-    std::cout << "Object created. " << "Count: " << tensor::count() << std::endl;
+    std::cout << "Object " << tensor::name << " created. " << "Count: " << tensor::count() << std::endl;
 }
 
 tensor::~tensor()
@@ -65,5 +65,5 @@ tensor::~tensor()
     for (int i = 0; i < size; i++)
         delete[](matrix[i]);
     delete[](matrix);
-    std::cout << "Object destroyed. " << "Count: " << tensor::count() << std::endl;
+    std::cout << "Object " << tensor::name << " destroyed. " << "Count: " << tensor::count() << std::endl;
 }
