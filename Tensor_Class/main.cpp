@@ -15,6 +15,8 @@ int main()
 		a.set_object_of_matrix(0, 0, 50);
 		b.set_object_of_matrix(0, 0, 70);
 		c = b - a;
+		c -= a;
+		a += b;
 
 		a.print();
 		b.print();
