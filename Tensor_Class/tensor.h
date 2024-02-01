@@ -12,17 +12,17 @@ private:
 
 public:
 	tensor(int size, std::string name); // Конструктор с указанием размера
-	tensor(const tensor& copied_obj);
+	tensor(const tensor& copied_obj);   // Конструктор копирования
 	~tensor();                          // Деструктор
 	void print();                       // Вывод на консоль
 	float get_object_of_matrix(int x, int y);             // Геттер для конкретного значения в матрице
 	void set_object_of_matrix(int x, int y, float value); // Сеттер для конкретного значения в матрице
 
-	tensor operator+ (const tensor& a)const;
-	tensor& operator = (const tensor& a);
+	tensor operator+ (const tensor& b)const;
+	tensor& operator = (const tensor& b);
 
-	tensor operator- (const tensor& a)const;
-	tensor& operator-= (const tensor& a) ;
+	tensor operator- (const tensor& b)const;
+	tensor& operator-= (const tensor& b) ;
 
-	tensor& operator+= (const tensor& a);
+	tensor& operator+= (const tensor& b);
 };
