@@ -12,7 +12,7 @@ private:
 
 public:
 	tensor(int size, std::string name); // Конструктор с указанием размера
-	tensor::tensor(const tensor& copied_obj);
+	tensor(const tensor& copied_obj);
 	~tensor();                          // Деструктор
 	void print();                       // Вывод на консоль
 	float get_object_of_matrix(int x, int y);             // Геттер для конкретного значения в матрице
