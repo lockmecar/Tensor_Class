@@ -32,10 +32,11 @@ tensor& tensor::operator=(const tensor& a)
     return *this;
 }
 
-tensor tensor::operator+(const tensor& a)
+tensor tensor::operator+(const tensor& a) const
 {
     if (a.size != size) throw(std::length_error("TensorErrorOp+: Попытка сложить тензоры различной размерности"));
-    tensor t1(*this);
+    tensor t1(this->size,"BUF");
+    t1 = *this;
     for (int i = 0; i < t1.size; i++)
         for (int j = 0; j < t1.size; j++)
             t1.matrix[i][j] += a.matrix[i][j];
