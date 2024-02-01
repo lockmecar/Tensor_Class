@@ -43,6 +43,38 @@ tensor tensor::operator+(const tensor& b) const
     return buf;
 }
 
+tensor& tensor::operator+=(const tensor& a)
+{
+    if (a.size != size) throw(std::length_error("TensorErrorOp+: Попытка отнять тензоры различной размерности"));
+    for (int i = 0; i < this->size; i++)
+        for (int j = 0; j < this->size; j++)
+            this->matrix[i][j] += a.matrix[i][j];
+
+    return *this;
+}
+
+
+tensor tensor::operator-(const tensor& a) const
+{
+    if (a.size != size) throw(std::length_error("TensorErrorOp+: Попытка отнять тензоры различной размерности"));
+    tensor t1(*this);
+    for (int i = 0; i < size; i++)
+        for (int j = 0; j < size; j++)
+            t1.matrix[i][j] -= a.matrix[i][j];
+
+    return t1;
+}
+
+tensor& tensor::operator-=(const tensor& a)
+{
+    if (a.size != size) throw(std::length_error("TensorErrorOp+: Попытка отнять тензоры различной размерности"));
+    for (int i = 0; i < this->size; i++)
+        for (int j = 0; j < this->size; j++)
+            this->matrix[i][j] -= a.matrix[i][j];
+            
+    return *this;
+}
+
 size_t& tensor::count()
 {
     static size_t c = 0;
