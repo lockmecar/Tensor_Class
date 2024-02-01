@@ -19,4 +19,19 @@ public:
 
 	tensor operator+ (const tensor& a);
 	tensor& operator = (const tensor& a);
+
+	//tensor operator- (const tensor& a);
+	//tensor operator-= (const tensor& a);
+
+	//tensor operator+ (const tensor& a);
+	//tensor& operator+= (const tensor& a);
+
+	//tensor& operator = (const tensor& a);
+
+	////tensor& operator *= (const tensor& a);
+	////tensor& operator * (const tensor& a);
+	//tensor& operator * (const int& a);
+	//tensor& operator * (const float& a);
+	//tensor& operator*=(const int& a);
+	//tensor& operator*=(const float& a);
 };
