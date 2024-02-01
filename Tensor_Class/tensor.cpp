@@ -22,26 +22,25 @@ void tensor::set_object_of_matrix(int x, int y, float value)
     tensor::matrix[x][y] = value;
 }
 
-tensor& tensor::operator=(const tensor& a)
+tensor& tensor::operator=(const tensor& b)
 {
     for (int i = 0; i < size; i++)
         for (int j = 0; j < size; j++)
-            if (&a != this)
-                this->matrix[i][j] = a.matrix[i][j];
-    this->size = a.size;
+            if (&b != this)
+                this->matrix[i][j] = b.matrix[i][j];
+    this->size = b.size;
     return *this;
 }
 
-tensor tensor::operator+(const tensor& a) const
+tensor tensor::operator+(const tensor& b) const
 {
-    if (a.size != size) throw(std::length_error("TensorErrorOp+: Попытка сложить тензоры различной размерности"));
-    tensor t1(this->size,"BUF");
-    t1 = *this;
-    for (int i = 0; i < t1.size; i++)
-        for (int j = 0; j < t1.size; j++)
-            t1.matrix[i][j] += a.matrix[i][j];
+    if (b.size != size) throw(std::length_error("TensorErrorOp+: Попытка сложить тензоры различной размерности"));
+    tensor buf(*this);
+    for (int i = 0; i < buf.size; i++)
+        for (int j = 0; j < buf.size; j++)
+            buf.matrix[i][j] += b.matrix[i][j];
 
-    return t1;
+    return buf;
 }
 
 size_t& tensor::count()
@@ -61,12 +60,21 @@ tensor::tensor(int size_of_matrix, std::string name)
     std::cout << "Object " << tensor::name << " created. " << "Count: " << tensor::count() << std::endl;
 }
 
-tensor::tensor(const tensor& t1)
+tensor::tensor(const tensor& copied_obj)
 {
     tensor::count()++;
-    tensor::name = "TMP_BUF";
-    tensor::size = t1.size;
-    tensor::matrix = t1.matrix;
+    tensor::name = copied_obj.name + "_copy";
+    tensor::size = copied_obj.size;
+    tensor::matrix = new float* [copied_obj.size];
+
+    for (int i = 0; i < copied_obj.size; i++)
+        matrix[i] = new float[copied_obj.size];
+
+    for (int i = 0; i < size; i++)
+        for (int j = 0; j < size; j++)
+            if (&copied_obj != this)
+                this->matrix[i][j] = copied_obj.matrix[i][j];
+
     std::cout << "Object " << tensor::name << " created. " << "Count: " << tensor::count() << std::endl;
 }
 
