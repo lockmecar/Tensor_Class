@@ -49,16 +49,18 @@ size_t& tensor::count()
 }
 
 
-//tensor tensor::operator-(const tensor& a)
-//{
-//    if (a.size != size) throw "TensorErrorOp+: Попытка сложить тензоры различной размерности";
-//    tensor t1(*this);
-//    for (int i = 0; i < size; i++)
-//        for (int j = 0; j < size; j++)
-//            t1.matrix[i][j] -= a.matrix[i][j];
-//
-//    return t1;
-//}
+tensor tensor::operator-(const tensor& a)
+{
+    if (a.size != size) throw(std::length_error("TensorErrorOp+: Попытка отнять тензоры различной размерности"));
+    tensor t1(*this);
+    for (int i = 0; i < size; i++)
+        for (int j = 0; j < size; j++)
+            t1.matrix[i][j] -= a.matrix[i][j];
+
+    return t1;
+}
+
+
 //
 //tensor tensor::operator-=(const tensor& a)
 //{
@@ -145,6 +147,24 @@ tensor::tensor(int size_of_matrix, std::string name)
     tensor::matrix = new float* [size_of_matrix];
     for (int i = 0; i < size_of_matrix; i++)
         matrix[i] = new float[size_of_matrix];
+    std::cout << "Object " << tensor::name << " created. " << "Count: " << tensor::count() << std::endl;
+}
+
+tensor::tensor(const tensor& copied_obj)
+{
+    tensor::count()++;
+    tensor::name = copied_obj.name + "_copy";
+    tensor::size = copied_obj.size;
+    tensor::matrix = new float* [copied_obj.size];
+
+    for (int i = 0; i < copied_obj.size; i++)
+        matrix[i] = new float[copied_obj.size];
+
+    for (int i = 0; i < size; i++)
+        for (int j = 0; j < size; j++)
+            if (&copied_obj != this)
+                this->matrix[i][j] = copied_obj.matrix[i][j];
+
     std::cout << "Object " << tensor::name << " created. " << "Count: " << tensor::count() << std::endl;
 }
 
