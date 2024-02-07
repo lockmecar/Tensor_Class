@@ -53,7 +53,7 @@ tensor& tensor::operator+=(const tensor& b)
     return *this;
 }
 
-tensor& tensor::operator*(const tensor& b)
+tensor tensor::operator*(const tensor& b)
 {
     if (b.size != size) throw(std::length_error("TensorErrorOp+: Попытка сложить тензоры различной размерности"));
     tensor buf(*this);
