@@ -84,6 +84,14 @@ tensor& tensor::operator*= (const tensor& b)
     return *this;
 }
 
+tensor tensor::operator^(const int& b) const
+{
+    tensor buf(*this);
+    for (int i = 1; i < b; i++)
+        buf *= *this;
+    return buf;
+}
+
 
 tensor tensor::operator-(const tensor& b) const
 {

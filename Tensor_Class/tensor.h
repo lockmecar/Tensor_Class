@@ -28,4 +28,6 @@ public:
 
 	tensor operator* (const tensor& b) const;
 	tensor& operator*= (const tensor& b);
+
+	tensor operator^ (const int& b) const;
 };
