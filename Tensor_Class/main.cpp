@@ -10,7 +10,7 @@ int main()
 	{
 		
 	}
-	catch(length_error& ex)
+	catch(length_error& ex) 
 	{
 		cout << "Length error: " << ex.what() << endl;
 	}
