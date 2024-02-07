@@ -45,7 +45,7 @@ tensor tensor::operator+(const tensor& b) const
 
 tensor& tensor::operator+=(const tensor& b)
 {
-    if (b.size != size) throw(std::length_error("TensorErrorOp+: Попытка отнять тензоры различной размерности"));
+    if (b.size != size) throw(std::length_error("TensorErrorOp+=: Попытка сложить тензоры различной размерности"));
     for (int i = 0; i < this->size; i++)
         for (int j = 0; j < this->size; j++)
             this->matrix[i][j] += b.matrix[i][j];
@@ -55,7 +55,7 @@ tensor& tensor::operator+=(const tensor& b)
 
 tensor tensor::operator*(const tensor& b) const
 {
-    if (b.size != size) throw(std::length_error("TensorErrorOp+: Попытка сложить тензоры различной размерности"));
+    if (b.size != size) throw(std::length_error("TensorErrorOp*: Попытка умножить тензоры различной размерности"));
     tensor buf(*this);
     for (int i = 0; i < buf.size; i++) 
         for (int j = 0; j < b.size; j++)
@@ -70,7 +70,7 @@ tensor tensor::operator*(const tensor& b) const
 
 tensor& tensor::operator*= (const tensor& b)
 {
-    if (b.size != size) throw(std::length_error("TensorErrorOp+: Попытка сложить тензоры различной размерности"));
+    if (b.size != size) throw(std::length_error("TensorErrorOp*=: Попытка умножить тензоры различной размерности"));
     tensor buf(*this);
     for (int i = 0; i < buf.size; i++)
         for (int j = 0; j < b.size; j++)
@@ -86,6 +86,7 @@ tensor& tensor::operator*= (const tensor& b)
 
 tensor tensor::operator^(const int& b) const
 {
+    if (b < 2) throw(std::length_error("TensorErrorOp^: Попытка возведения в ненатуральную степень"));
     tensor buf(*this);
     for (int i = 1; i < b; i++)
         buf *= *this;
@@ -95,7 +96,7 @@ tensor tensor::operator^(const int& b) const
 
 tensor tensor::operator-(const tensor& b) const
 {
-    if (b.size != size) throw(std::length_error("TensorErrorOp+: Попытка отнять тензоры различной размерности"));
+    if (b.size != size) throw(std::length_error("TensorErrorOp-: Попытка отнять тензоры различной размерности"));
     tensor t1(*this);
     for (int i = 0; i < size; i++)
         for (int j = 0; j < size; j++)
@@ -106,7 +107,7 @@ tensor tensor::operator-(const tensor& b) const
 
 tensor& tensor::operator-=(const tensor& b)
 {
-    if (b.size != size) throw(std::length_error("TensorErrorOp+: Попытка отнять тензоры различной размерности"));
+    if (b.size != size) throw(std::length_error("TensorErrorOp-=: Попытка отнять тензоры различной размерности"));
     for (int i = 0; i < this->size; i++)
         for (int j = 0; j < this->size; j++)
             this->matrix[i][j] -= b.matrix[i][j];
