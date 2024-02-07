@@ -22,15 +22,6 @@ void tensor::set_object_of_matrix(int x, int y, float value)
     tensor::matrix[x][y] = value;
 }
 
-tensor& tensor::operator=(const tensor& b)
-{
-    for (int i = 0; i < size; i++)
-        for (int j = 0; j < size; j++)
-            if (&b != this)
-                this->matrix[i][j] = b.matrix[i][j];
-    this->size = b.size;
-    return *this;
-}
 
 tensor tensor::operator+(const tensor& b) const
 {
@@ -42,6 +33,17 @@ tensor tensor::operator+(const tensor& b) const
 
     return buf;
 }
+
+tensor& tensor::operator=(const tensor& b)
+{
+    for (int i = 0; i < size; i++)
+        for (int j = 0; j < size; j++)
+            if (&b != this)
+                this->matrix[i][j] = b.matrix[i][j];
+    this->size = b.size;
+    return *this;
+}
+
 
 tensor& tensor::operator+=(const tensor& b)
 {
@@ -84,6 +86,28 @@ tensor& tensor::operator*= (const tensor& b)
     return *this;
 }
 
+tensor tensor::transp()
+{
+    tensor buf(*this);
+    for (int i = 0; i < buf.size; i++)
+        for (int j = 0; j < buf.size; j++)
+            buf.matrix[i][j] = this->matrix[j][i];
+
+    return buf;
+}
+
+tensor tensor::abs()
+{
+    tensor buf(*this);
+
+    for (int i = 0; i < buf.size; i++)
+        for (int j = 0; j < buf.size; j++)
+            if(this->matrix[j][i]<0)
+                buf.matrix[i][j] =(-1 * this->matrix[j][i]);
+
+    return buf;
+}
+
 
 tensor tensor::operator-(const tensor& b) const
 {
@@ -105,6 +129,7 @@ tensor& tensor::operator-=(const tensor& b)
             
     return *this;
 }
+
 
 size_t& tensor::count()
 {
