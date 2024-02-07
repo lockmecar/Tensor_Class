@@ -53,7 +53,7 @@ tensor& tensor::operator+=(const tensor& b)
     return *this;
 }
 
-tensor tensor::operator*(const tensor& b)
+tensor tensor::operator*(const tensor& b) const
 {
     if (b.size != size) throw(std::length_error("TensorErrorOp+: Попытка сложить тензоры различной размерности"));
     tensor buf(*this);
@@ -66,6 +66,22 @@ tensor tensor::operator*(const tensor& b)
             buf.matrix[i][j] = sum;
         }
     return buf;
+}
+
+tensor& tensor::operator*= (const tensor& b)
+{
+    if (b.size != size) throw(std::length_error("TensorErrorOp+: Попытка сложить тензоры различной размерности"));
+    tensor buf(*this);
+    for (int i = 0; i < buf.size; i++)
+        for (int j = 0; j < b.size; j++)
+        {
+            float sum = 0;
+            for (int k = 0; k < buf.size; k++)
+                sum += this->matrix[i][k] * b.matrix[k][j];
+            buf.matrix[i][j] = sum;
+        }
+    *this = buf;
+    return *this;
 }
 
 

@@ -25,5 +25,7 @@ public:
 	tensor& operator-= (const tensor& b) ;
 
 	tensor& operator+= (const tensor& b);
-	tensor operator* (const tensor& b);
+	tensor operator* (const tensor& b) const;
+
+	tensor& operator*= (const tensor& b);
 };
