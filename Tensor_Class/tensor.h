@@ -2,6 +2,9 @@
 #include <iostream>
 #include <string>
 #include <cmath>
+#include <cstdlib>
+#include <ctime>
+
 class tensor
 {
 private:
@@ -10,8 +13,10 @@ private:
 	int size_y;      // Размер массива
 	float** matrix;  // Двумерный динамический массив
 	size_t& count(); // Счетчик обьектов
+	int rand_seed = 1;
 
 public:
+	tensor(int size_x, int size_y, std::string name, char mode);
 	tensor(int size_x, int size_y, std::string name); // Конструктор с указанием размера
 	tensor(const tensor& copied_obj);   // Конструктор копирования
 	~tensor();                          // Деструктор

@@ -154,6 +154,37 @@ size_t& tensor::count()
     return c;
 }
 
+tensor::tensor(int size_x, int size_y, std::string name, char mode)
+{
+    tensor::count()++;
+    tensor::name = name;
+    tensor::size_x = size_x;
+    tensor::size_y = size_y;
+    tensor::matrix = new float* [size_x];
+    for (int i = 0; i < size_x; i++)
+        matrix[i] = new float[size_y];
+
+    if (mode == '0')
+    {
+        for(int i = 0; i < size_x; i++)
+            for (int j = 0; j < size_y; j++)
+            {
+                matrix[i][j] = 0;
+            }
+        std::cout << "Object " << tensor::name << " created. " << "Mode: 0. " << "Count: " << tensor::count() << std::endl;
+    }
+    else if (mode == 'r')
+    {
+        srand(tensor::rand_seed);
+        for (int i = 0; i < size_x; i++)
+            for (int j = 0; j < size_y; j++)
+            {
+                matrix[i][j] = (static_cast <float> (rand()) / static_cast <float> (rand()));
+            }
+        std::cout << "Object " << tensor::name << " created. " << "Mode: r. " << "Count: " << tensor::count() << std::endl;
+    }
+}
+
 tensor::tensor(int size_x, int size_y, std::string name)
 {
     tensor::count()++;
