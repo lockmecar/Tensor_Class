@@ -21,9 +21,10 @@ public:
 	tensor(const tensor& copied_obj);   // Конструктор копирования
 	~tensor();                          // Деструктор
 	void print();                       // Вывод на консоль
-	float get_object_of_matrix(int x, int y);             // Геттер для конкретного значения в матрице
 	void set_object_of_matrix(int x, int y, float value); // Сеттер для конкретного значения в матрице
 	void clear();
+
+	float operator() (unsigned x, unsigned y); // Геттер для конкретного значения в матрице
 
 	tensor operator+ (const tensor& b) const;
 	tensor& operator+= (const tensor& b);

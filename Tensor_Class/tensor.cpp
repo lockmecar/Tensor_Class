@@ -12,11 +12,6 @@ void tensor::print()
     std::cout << std::endl;
 }
 
-float tensor::get_object_of_matrix(int x, int y)
-{
-    return tensor::matrix[x][y];
-}
-
 void tensor::set_object_of_matrix(int x, int y, float value)
 {
     tensor::matrix[x][y] = value;
@@ -29,6 +24,11 @@ void tensor::clear()
         {
             matrix[i][j] = 0;
         }
+}
+
+float tensor::operator()(unsigned x, unsigned y)
+{
+    return tensor::matrix[x][y];
 }
 
 tensor& tensor::operator=(const tensor& b)
