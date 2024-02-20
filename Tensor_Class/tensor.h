@@ -1,17 +1,19 @@
 #pragma once
 #include <iostream>
 #include <string>
+#include <array>
 
 class tensor
 {
 private:
 	std::string name;// Имя объекта класса
-	int size;        // Размер массива
+	int size_x;
+	int size_y;      // Размер массива
 	float** matrix;  // Двумерный динамический массив
 	size_t& count(); // Счетчик обьектов
 
 public:
-	tensor(int size, std::string name); // Конструктор с указанием размера
+	tensor(int size_x, int size_y, std::string name); // Конструктор с указанием размера
 	tensor(const tensor& copied_obj);   // Конструктор копирования
 	~tensor();                          // Деструктор
 	void print();                       // Вывод на консоль
