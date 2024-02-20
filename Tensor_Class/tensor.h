@@ -1,7 +1,7 @@
 #pragma once
 #include <iostream>
 #include <string>
-
+#include <cmath>
 class tensor
 {
 private:
@@ -29,8 +29,9 @@ public:
 	tensor operator* (const tensor& b) const;
 	tensor& operator*= (const tensor& b);
 
-	tensor operator^ (const int& b) const; // Возведение в степень
+	tensor operator^ (const float& b) const;
 
 	tensor transp(); // Транспонирование
 	tensor abs();    // Модуль (возможно не нужен)
+	tensor sqrt();//
 };

@@ -85,12 +85,12 @@ tensor& tensor::operator*= (const tensor& b)
     return *this;
 }
 
-tensor tensor::operator^(const int& b) const
+tensor tensor::operator^(const float& b) const
 {
-    if (b < 2) throw(std::length_error("TensorErrorOp^: ѕопытка возведени€ в ненатуральную степень"));
     tensor buf(*this);
-    for (int i = 1; i < b; i++)
-        buf *= *this;
+    for (int i = 0; i < this->size; i++) 
+        for (int j = 0; j < this->size; j++) 
+            buf.set_object_of_matrix(i, j, pow(buf.get_object_of_matrix(i, j),b));
     return buf;
 }
 
@@ -114,6 +114,14 @@ tensor tensor::abs()
                 buf.matrix[i][j] =(-1 * this->matrix[j][i]);
 
     return buf;
+}
+
+tensor tensor::sqrt()
+{
+    for (int i = 0; i < this->size; i++)
+        for (int j = 0; j < this->size; j++)
+            this->matrix[i][j]=pow(this->matrix[i][j],0.5);
+    return *this;
 }
 
 
