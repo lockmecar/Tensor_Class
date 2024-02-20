@@ -126,6 +126,36 @@ tensor tensor::sqrt()
 }
 
 
+void tensor::fileout10(std::string b)
+{
+    std::ofstream out;
+    b += ".txt";
+    out.open(b);
+    for (int i = 0; i < tensor::size_x; i++)
+    {
+        for (int j = 0; j < tensor::size_y; j++)
+            out << tensor::matrix[i][j] << "\t";
+        out << std::endl;
+    }
+    out.close();
+}
+
+
+void tensor::fileout16(std::string b)
+{
+    std::ofstream out;
+    b += ".txt";
+    out.open(b);
+    for (int i = 0; i < tensor::size_x; i++)
+    {
+        for (int j = 0; j < tensor::size_y; j++)
+            out <<std::hex<< tensor::matrix[i][j] << "\t";
+        out << std::endl;
+    }
+    out.close();
+}
+
+
 tensor tensor::operator-(const tensor& b) const
 {
     if (b.size_x != size_x) throw(std::length_error("TensorErrorOp-: Попытка отнять тензоры различной размерности"));

@@ -2,6 +2,8 @@
 #include <iostream>
 #include <string>
 #include <cmath>
+#include <fstream>
+
 class tensor
 {
 private:
@@ -32,7 +34,9 @@ public:
 
 	tensor operator^ (const float& b) const;
 
-	tensor transp(); // Транспонирование
-	tensor abs();    // Модуль (возможно не нужен)
-	tensor sqrt();//
+	tensor transp();            // Транспонирование
+	tensor abs();               // Модуль (возможно не нужен)
+	tensor sqrt();              // Корень
+	void fileout10(std::string b);           //
+	void fileout16(std::string b);        //
 };
