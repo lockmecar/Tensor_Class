@@ -22,6 +22,15 @@ void tensor::set_object_of_matrix(int x, int y, float value)
     tensor::matrix[x][y] = value;
 }
 
+void tensor::clear()
+{
+    for (int i = 0; i < size_x; i++)
+        for (int j = 0; j < size_y; j++)
+        {
+            matrix[i][j] = 0;
+        }
+}
+
 tensor& tensor::operator=(const tensor& b)
 {
     if (b.size_x != size_x) throw(std::length_error("TensorErrorOp=: Попытка присвоить тензоры различной размерности"));

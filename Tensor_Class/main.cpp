@@ -8,9 +8,7 @@ int main()
 	setlocale(LC_ALL, "RUS");
 	try
 	{
-		tensor a(3, 3, "a", '0');
-		a.print();
-
+		
 	}
 	catch(length_error& ex) 
 	{
