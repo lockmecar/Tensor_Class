@@ -8,7 +8,7 @@ int main()
 	setlocale(LC_ALL, "RUS");
 	try
 	{
-
+		
 	}
 	catch(length_error& ex) 
 	{

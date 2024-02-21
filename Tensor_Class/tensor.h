@@ -4,6 +4,7 @@
 #include <cmath>
 #include <cstdlib>
 #include <ctime>
+#include <fstream>
 
 class tensor
 {
@@ -26,6 +27,12 @@ public:
 
 	float operator() (unsigned x, unsigned y); // Геттер для конкретного значения в матрице
 
+	union ftoul
+	{
+		float input;
+		unsigned output;
+	};
+
 	tensor operator+ (const tensor& b) const;
 	tensor& operator+= (const tensor& b);
 
@@ -39,7 +46,9 @@ public:
 
 	tensor operator^ (const float& b) const;
 
-	tensor transp(); // Транспонирование
-	tensor abs();    // Модуль (возможно не нужен)
-	tensor sqrt();//
+	tensor transp();            // Транспонирование
+	tensor abs();               // Модуль (возможно не нужен)
+	tensor sqrt();              // Корень
+	void fileout10(std::string b);           //
+	void fileout16(std::string b);        //
 };
