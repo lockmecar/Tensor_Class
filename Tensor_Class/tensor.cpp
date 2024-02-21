@@ -100,7 +100,7 @@ tensor tensor::operator^(const float& b) const
     tensor buf(*this);
     for (int i = 0; i < this->size_x; i++) 
         for (int j = 0; j < this->size_y; j++) 
-            buf.set_object_of_matrix(i, j, pow(buf.get_object_of_matrix(i, j),b));
+            buf.set_object_of_matrix(i, j, pow(buf(i,j), b));
     return buf;
 }
 
