@@ -3,8 +3,8 @@
 #include <string>
 #include <cmath>
 #include <cstdlib>
-#include <ctime>
 #include <fstream>
+#include <vector>
 
 class tensor
 {
@@ -32,6 +32,8 @@ public:
 		float input;
 		unsigned output;
 	};
+
+	std::vector<float> matrix_to_vector();
 
 	tensor operator+ (const tensor& b) const;
 	tensor& operator+= (const tensor& b);

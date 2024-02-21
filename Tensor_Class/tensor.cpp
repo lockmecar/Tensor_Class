@@ -43,6 +43,16 @@ tensor& tensor::operator=(const tensor& b)
     return *this;
 }
 
+std::vector<float> tensor::matrix_to_vector()
+{
+    std::vector<float> result;
+    for (int i = 0; i < size_x; i++)
+        for (int j = 0; j < size_y; j++)
+            result.push_back(tensor::matrix[i][j]);
+
+    return result;
+}
+
 tensor tensor::operator+(const tensor& b) const
 {
     if (b.size_x != size_x) throw(std::length_error("TensorErrorOp+: Попытка сложить тензоры различной размерности"));
