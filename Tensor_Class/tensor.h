@@ -21,6 +21,12 @@ public:
 	float get_object_of_matrix(int x, int y);             // Геттер для конкретного значения в матрице
 	void set_object_of_matrix(int x, int y, float value); // Сеттер для конкретного значения в матрице
 
+	union ftoul
+	{
+		float input;
+		unsigned output;
+	};
+
 	tensor operator+ (const tensor& b) const;
 	tensor& operator+= (const tensor& b);
 

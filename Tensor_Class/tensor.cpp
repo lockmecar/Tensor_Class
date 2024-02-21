@@ -144,12 +144,16 @@ void tensor::fileout10(std::string b)
 void tensor::fileout16(std::string b)
 {
     std::ofstream out;
+    tensor::ftoul fu;
     b += ".txt";
     out.open(b);
     for (int i = 0; i < tensor::size_x; i++)
     {
         for (int j = 0; j < tensor::size_y; j++)
-            out <<std::hex<< tensor::matrix[i][j] << "\t";
+        {
+            fu.input = tensor::matrix[i][j];
+            out << std::hex << fu.output << "\t";
+        }
         out << std::endl;
     }
     out.close();
