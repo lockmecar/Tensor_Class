@@ -25,6 +25,12 @@ void tensor::clear()
             matrix[i][j] = 0;
         }
 }
+//void tensor::ElemFun(float func) 
+//{
+//    for (int i = 0; i < this->size_x; i++)
+//        for (int j = 0; j < this->size_y; j++)
+//                *this->set_object_of_matrix(i,j,func(this(i,j)))
+//}
 
 float tensor::operator()(unsigned x, unsigned y)
 {
@@ -43,6 +49,7 @@ tensor& tensor::operator=(const tensor& b)
     this->size_y = b.size_y;
     return *this;
 }
+
 
 tensor tensor::operator+(const tensor& b) const
 {
@@ -64,6 +71,7 @@ tensor& tensor::operator+=(const tensor& b)
 
     return *this;
 }
+
 
 tensor tensor::operator*(const tensor& b) const
 {
@@ -96,6 +104,7 @@ tensor& tensor::operator*= (const tensor& b)
     return *this;
 }
 
+
 tensor tensor::operator^(const float& b) const
 {
     tensor buf(*this);
@@ -104,7 +113,6 @@ tensor tensor::operator^(const float& b) const
             buf.set_object_of_matrix(i, j, pow(buf(i, j),b));
     return buf;
 }
-
 
 tensor& tensor::operator^=(const float& b)
 {

@@ -24,6 +24,8 @@ public:
 	void set_object_of_matrix(int x, int y, float value); // Сеттер для конкретного значения в матрице
 	void clear();
 
+	//void ElemFun(float func);//хз попытки
+
 	float operator() (unsigned x, unsigned y); // Геттер для конкретного значения в матрице
 
 	tensor operator+ (const tensor& b) const;
