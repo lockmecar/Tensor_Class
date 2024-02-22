@@ -31,6 +31,7 @@ float tensor::operator()(unsigned x, unsigned y)
     return tensor::matrix[x][y];
 }
 
+
 tensor& tensor::operator=(const tensor& b)
 {
     if (b.size_x != size_x) throw(std::length_error("TensorErrorOp=: Попытка присвоить тензоры различной размерности"));
@@ -100,9 +101,21 @@ tensor tensor::operator^(const float& b) const
     tensor buf(*this);
     for (int i = 0; i < this->size_x; i++) 
         for (int j = 0; j < this->size_y; j++) 
-            buf.set_object_of_matrix(i, j, pow(buf.get_object_of_matrix(i, j),b));
+            buf.set_object_of_matrix(i, j, pow(buf(i, j),b));
     return buf;
 }
+
+
+tensor& tensor::operator^=(const float& b)
+{
+    tensor buf(*this);
+    for (int i = 0; i < this->size_x; i++)
+        for (int j = 0; j < this->size_y; j++)
+            buf.set_object_of_matrix(i, j, pow(buf(i, j), b));
+    *this = buf;
+    return *this;
+}
+
 
 tensor tensor::transp()
 {

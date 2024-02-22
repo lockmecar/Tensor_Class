@@ -38,6 +38,7 @@ public:
 	tensor& operator*= (const tensor& b);
 
 	tensor operator^ (const float& b) const;
+	tensor& operator^= (const float& b);// проверить ????
 
 	tensor transp(); // Транспонирование
 	tensor abs();    // Модуль (возможно не нужен)
