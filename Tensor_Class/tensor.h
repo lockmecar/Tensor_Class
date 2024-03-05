@@ -18,13 +18,13 @@ private:
 public:
 	tensor(int size_x, int size_y, std::string name, char mode);
 	tensor(int size_x, int size_y, std::string name); // Конструктор с указанием размера
-	tensor(const tensor& copied_obj);   // Конструктор копирования
-	~tensor();                          // Деструктор
-	void print();                       // Вывод на консоль
+	tensor(const tensor& copied_obj);                 // Конструктор копирования
+	~tensor();                                        // Деструктор
+	void print();                                     // Вывод на консоль
 	void set_object_of_matrix(int x, int y, float value); // Сеттер для конкретного значения в матрице
 	void clear();
 
-	//void ElemFun(float func);//хз попытки
+	void ElemFunc(float (*func)(float));       // Элементарная функция над каждым элементом
 
 	float operator() (unsigned x, unsigned y); // Геттер для конкретного значения в матрице
 
@@ -40,9 +40,9 @@ public:
 	tensor& operator*= (const tensor& b);
 
 	tensor operator^ (const float& b) const;
-	tensor& operator^= (const float& b);// проверить ????
+	tensor& operator^= (const float& b);
 
 	tensor transp(); // Транспонирование
 	tensor abs();    // Модуль (возможно не нужен)
-	tensor sqrt();//
+	tensor sqrt();   // Квадратный корень
 };

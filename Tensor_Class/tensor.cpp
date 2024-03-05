@@ -25,12 +25,12 @@ void tensor::clear()
             matrix[i][j] = 0;
         }
 }
-//void tensor::ElemFun(float func) 
-//{
-//    for (int i = 0; i < this->size_x; i++)
-//        for (int j = 0; j < this->size_y; j++)
-//                *this->set_object_of_matrix(i,j,func(this(i,j)))
-//}
+void tensor::ElemFunc(float (*func)(float))
+{
+    for (int i = 0; i < tensor::size_x; i++)
+        for (int j = 0; j < tensor::size_y; j++)
+            this->matrix[i][j] = func(matrix[i][j]);
+}
 
 float tensor::operator()(unsigned x, unsigned y)
 {
