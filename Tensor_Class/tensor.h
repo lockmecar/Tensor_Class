@@ -6,7 +6,7 @@
 #include <fstream>
 #include <vector>
 
-class tensor
+class Ten2D
 {
 private:
 	std::string name;// Имя объекта класса
@@ -17,10 +17,10 @@ private:
 	int rand_seed = 1;
 
 public:
-	tensor(int size_x, int size_y, std::string name, char mode);
-	tensor(int size_x, int size_y, std::string name); // Конструктор с указанием размера
-	tensor(const tensor& copied_obj);                 // Конструктор копирования
-	~tensor();                                        // Деструктор
+	Ten2D(int size_x, int size_y, std::string name, char mode);
+	Ten2D(int size_x, int size_y, std::string name); // Конструктор с указанием размера
+	Ten2D(const Ten2D& copied_obj);                 // Конструктор копирования
+	~Ten2D();                                        // Деструктор
 	void print();                                     // Вывод на консоль
 	void set_object_of_matrix(int x, int y, float value); // Сеттер для конкретного значения в матрице
 	void clear();
@@ -37,28 +37,28 @@ public:
 
 	std::vector<float> matrix_to_vector();
 
-	tensor operator+ (const tensor& b) const;
-	tensor& operator+= (const tensor& b);
+	Ten2D operator+ (const Ten2D& b) const;
+	Ten2D& operator+= (const Ten2D& b);
 
-	tensor& operator = (const tensor& b);
+	Ten2D& operator = (const Ten2D& b);
 
-	tensor operator- (const tensor& b)const;
-	tensor& operator-= (const tensor& b) ;
+	Ten2D operator- (const Ten2D& b)const;
+	Ten2D& operator-= (const Ten2D& b) ;
 
-	tensor operator* (const tensor& b) const;
-	tensor& operator*= (const tensor& b);
+	Ten2D operator* (const Ten2D& b) const;
+	Ten2D& operator*= (const Ten2D& b);
 
-	tensor operator^ (const float& b) const;
-	tensor& operator^= (const float& b);
+	Ten2D operator^ (const float& b) const;
+	Ten2D& operator^= (const float& b);
 
-	tensor transp();            // Транспонирование
-	tensor abs();               // Модуль (возможно не нужен)
-	tensor sqrt();              // Квадратный корень
+	Ten2D transp();            // Транспонирование
+	Ten2D abs();               // Модуль (возможно не нужен)
+	Ten2D sqrt();              // Квадратный корень
 	void fileout10(std::string b);           
 	void fileout16(std::string b);        
 };
 
-class tensor3
+class Ten3D
 {
 private:
 	std::string name;// Имя объекта класса
@@ -70,10 +70,10 @@ private:
 	int rand_seed = 1;
 
 public:
-	tensor3(int size_x, int size_y, std::string name, char mode);
-	tensor3(int size_x, int size_y, std::string name); // Конструктор с указанием размера
-	tensor3(const tensor& copied_obj);                 // Конструктор копирования
-	~tensor3();                                        // Деструктор
+	Ten3D(int size_x, int size_y, std::string name, char mode);
+	Ten3D(int size_x, int size_y, std::string name); // Конструктор с указанием размера
+	Ten3D(const Ten3D& copied_obj);                 // Конструктор копирования
+	~Ten3D();                                        // Деструктор
 	void print();                                     // Вывод на консоль
 	void set_object_of_matrix(int x, int y, float value); // Сеттер для конкретного значения в матрице
 	void clear();
@@ -90,23 +90,23 @@ public:
 
 	std::vector<float> matrix_to_vector();
 
-	tensor operator+ (const tensor& b) const;
-	tensor& operator+= (const tensor& b);
+	Ten3D operator+ (const Ten3D& b) const;
+	Ten3D& operator+= (const Ten3D& b);
 
-	tensor& operator = (const tensor& b);
+	Ten3D& operator = (const Ten3D& b);
 
-	tensor operator- (const tensor& b)const;
-	tensor& operator-= (const tensor& b);
+	Ten3D operator- (const Ten3D& b)const;
+	Ten3D& operator-= (const Ten3D& b);
 
-	tensor operator* (const tensor& b) const;
-	tensor& operator*= (const tensor& b);
+	Ten3D operator* (const Ten3D& b) const;
+	Ten3D& operator*= (const Ten3D& b);
 
-	tensor operator^ (const float& b) const;
-	tensor& operator^= (const float& b);
+	Ten3D operator^ (const float& b) const;
+	Ten3D& operator^= (const float& b);
 
-	tensor transp();            // Транспонирование
-	tensor abs();               // Модуль (возможно не нужен)
-	tensor sqrt();              // Квадратный корень
+	Ten3D transp();            // Транспонирование
+	Ten3D abs();               // Модуль (возможно не нужен)
+	Ten3D sqrt();              // Квадратный корень
 	void fileout10(std::string b);
 	void fileout16(std::string b);
 };
