@@ -73,6 +73,11 @@ public:
 	Ten3D(int size_x, int size_y, int size_z, std::string name); // Конструктор с указанием размера
 	Ten3D(const Ten3D& copied_obj);                              // Конструктор копирования
 	Ten3D(int size_x, int size_y, int size_z, std::string name, char mode);
-	void print();                                                // Вывод на консоль
 	~Ten3D();
+
+	void print();                                                // Вывод на консоль
+	void set_object_of_matrix(int x, int y, int z, float value);
+	void clear();
+
+	float operator() (unsigned x, unsigned y, unsigned z);
 };

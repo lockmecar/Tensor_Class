@@ -25,6 +25,7 @@ void Ten2D::clear()
             matrix[i][j] = 0;
         }
 }
+
 void Ten2D::ElemFunc(float (*func)(float))
 {
     for (int i = 0; i < Ten2D::size_x; i++)
@@ -384,6 +385,24 @@ void Ten3D::print()
         std::cout << std::endl;
     }
     std::cout << std::endl;
+}
+
+void Ten3D::set_object_of_matrix(int x, int y, int z, float value)
+{
+    Ten3D::matrix[x][y][z] = value;
+}
+
+void Ten3D::clear()
+{
+    for (int x = 0; x < size_x; x++)
+        for (int y = 0; y < size_y; y++)
+            for (int z = 0; z < size_z; z++)
+                matrix[x][y][z] = 0;
+}
+
+float Ten3D::operator()(unsigned x, unsigned y, unsigned z)
+{
+    return Ten3D::matrix[x][y][z];
 }
 
 Ten3D::~Ten3D()
