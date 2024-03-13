@@ -65,48 +65,12 @@ private:
 	int size_x;
 	int size_y;      // Размер массива
 	int size_z;
-	float** matrix;  // Двумерный динамический массив
+	float*** matrix;  // Трехмерный динамический массив
 	size_t& count(); // Счетчик обьектов
 	int rand_seed = 1;
 
 public:
-	Ten3D(int size_x, int size_y, std::string name, char mode);
-	Ten3D(int size_x, int size_y, std::string name); // Конструктор с указанием размера
-	Ten3D(const Ten3D& copied_obj);                 // Конструктор копирования
-	~Ten3D();                                        // Деструктор
-	void print();                                     // Вывод на консоль
-	void set_object_of_matrix(int x, int y, float value); // Сеттер для конкретного значения в матрице
-	void clear();
-
-	void ElemFunc(float (*func)(float));       // Элементарная функция над каждым элементом
-
-	float operator() (unsigned x, unsigned y); // Геттер для конкретного значения в матрице
-
-	union ftoul
-	{
-		float input;
-		unsigned output;
-	};
-
-	std::vector<float> matrix_to_vector();
-
-	Ten3D operator+ (const Ten3D& b) const;
-	Ten3D& operator+= (const Ten3D& b);
-
-	Ten3D& operator = (const Ten3D& b);
-
-	Ten3D operator- (const Ten3D& b)const;
-	Ten3D& operator-= (const Ten3D& b);
-
-	Ten3D operator* (const Ten3D& b) const;
-	Ten3D& operator*= (const Ten3D& b);
-
-	Ten3D operator^ (const float& b) const;
-	Ten3D& operator^= (const float& b);
-
-	Ten3D transp();            // Транспонирование
-	Ten3D abs();               // Модуль (возможно не нужен)
-	Ten3D sqrt();              // Квадратный корень
-	void fileout10(std::string b);
-	void fileout16(std::string b);
+	Ten3D(int size_x, int size_y, int size_z, std::string name); // Конструктор с указанием размера
+	void print();                                // Вывод на консоль
+	~Ten3D();
 };

@@ -297,3 +297,54 @@ Ten2D::~Ten2D()
     delete[](Ten2D::matrix);
     std::cout << "Object " << Ten2D::name << " destroyed. " << "Count: " << Ten2D::count() << std::endl;
 }
+
+Ten3D::Ten3D(int size_x, int size_y, int size_z, std::string name)
+{
+    Ten3D::count()++;
+    Ten3D::name = name;
+    Ten3D::size_x = size_x;
+    Ten3D::size_y = size_y;
+    Ten3D::size_z = size_z;
+    Ten3D::matrix = new float** [size_x];
+    for (int i = 0; i < size_x; i++)
+    {
+        matrix[i] = new float* [size_y];
+        for (int j = 0; j < size_z; j++)
+            matrix[i][j] = new float[size_z];
+    }
+
+    std::cout << "Object " << Ten3D::name << " created. " << "Count: " << Ten3D::count() << std::endl;
+}
+
+void Ten3D::print()
+{
+    std::cout << std::endl;
+    for (int i = 0; i < Ten3D::size_x; i++)
+    {
+        for (int j = 0; j < Ten3D::size_y; j++)
+            for(int k = 0; k < Ten3D::size_z; k++)
+                std::cout << "\t" << Ten3D::matrix[i][j][k];
+        std::cout << std::endl;
+    }
+    std::cout << std::endl;
+}
+
+Ten3D::~Ten3D()
+{
+    Ten3D::count()--;
+    for (int i = 0; i < size_x; i++)
+    {
+        for (int j = 0; j < size_y; j++)
+            delete[](Ten3D::matrix[i][j]);
+        delete[](Ten3D::matrix[i]);
+
+    }
+    delete[](Ten3D::matrix);
+    std::cout << "Object " << Ten3D::name << " destroyed. " << "Count: " << Ten3D::count() << std::endl;
+}
+
+size_t& Ten3D::count()
+{
+    static size_t c = 0;
+    return c;
+}

@@ -8,6 +8,8 @@ int main()
 	setlocale(LC_ALL, "RUS");
 	try
 	{
+		Ten3D a(3, 3, 3, "a");
+
 
 	}
 	catch(length_error& ex) 
