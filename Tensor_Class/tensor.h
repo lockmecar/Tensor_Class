@@ -80,4 +80,18 @@ public:
 	void clear();
 
 	float operator() (unsigned x, unsigned y, unsigned z);
+
+	Ten3D operator+ (const Ten3D& b) const;
+	Ten3D& operator+= (const Ten3D& b);
+
+	Ten3D& operator = (const Ten3D& b);
+
+	Ten3D operator- (const Ten3D& b)const;
+	Ten3D& operator-= (const Ten3D& b);
+
+	Ten3D operator* (const Ten3D& b) const;
+	Ten3D& operator*= (const Ten3D& b);
+
+	Ten3D operator^ (const float& b) const;
+	Ten3D& operator^= (const float& b);
 };

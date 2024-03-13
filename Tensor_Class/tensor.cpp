@@ -298,6 +298,7 @@ Ten2D::~Ten2D()
     delete[](Ten2D::matrix);
     std::cout << "Object " << Ten2D::name << " destroyed. " << "Count: " << Ten2D::count() << std::endl;
 }
+//------------------------------------------------------------------------------------------------------
 
 Ten3D::Ten3D(int size_x, int size_y, int size_z, std::string name)
 {
@@ -419,8 +420,129 @@ Ten3D::~Ten3D()
     std::cout << "Object " << Ten3D::name << " destroyed. " << "Count: " << Ten3D::count() << std::endl;
 }
 
+Ten3D Ten3D::operator+(const Ten3D& b) const
+{
+    if (b.size_x != size_x or b.size_y != size_y or b.size_z != size_z) throw(std::length_error("TensorErrorOp+: Попытка сложить тензоры различной размерности"));
+    
+    Ten3D buf(*this);
+    for (int i = 0; i < buf.size_x; i++)
+        for (int j = 0; j < buf.size_y; j++)
+            for(int k = 0;k< buf.size_z; k++)
+                buf.matrix[i][j][k] += b.matrix[i][j][k];
+    return buf;
+}
+
+Ten3D& Ten3D::operator+=(const Ten3D& b)
+{
+    if (b.size_x != size_x or b.size_y != size_y or b.size_z != size_z) throw(std::length_error("TensorErrorOp+: Попытка сложить тензоры различной размерности"));
+    for (int i = 0; i < this->size_x; i++)
+        for (int j = 0; j < this->size_y; j++)
+            for (int k = 0; k < this->size_z; k++)
+                this->matrix[i][j][k] += b.matrix[i][j][k];
+    return *this;
+}
+
+Ten3D& Ten3D::operator=(const Ten3D& b)
+{
+    if (b.size_x != size_x or b.size_y != size_y or b.size_z != size_z) throw(std::length_error("TensorErrorOp+: Попытка сложить тензоры различной размерности"));
+    for (int i = 0; i < size_x; i++)
+        for (int j = 0; j < size_y; j++)
+            for (int k = 0; k < size_z; k++)
+                if (&b != this)
+                    this->matrix[i][j][k] = b.matrix[i][j][k];
+    this->size_x = b.size_x;
+    this->size_y = b.size_y;
+    this->size_z = b.size_z;
+    return *this;
+}
+
+Ten3D Ten3D::operator-(const Ten3D& b) const
+{
+    if (b.size_x != size_x or b.size_y != size_y or b.size_z != size_z) throw(std::length_error("TensorErrorOp+: Попытка сложить тензоры различной размерности"));
+    Ten3D t1(*this);
+    for (int i = 0; i < size_x; i++)
+        for (int j = 0; j < size_y; j++)
+            for(int k = 0; k < size_z; k++)
+                t1.matrix[i][j][k] -= b.matrix[i][j][k];
+    return t1;
+}
+
+Ten3D& Ten3D::operator-=(const Ten3D& b)
+{
+    if (b.size_x != size_x or b.size_y != size_y or b.size_z != size_z) throw(std::length_error("TensorErrorOp+: Попытка сложить тензоры различной размерности"));
+    for (int i = 0; i < this->size_x; i++)
+        for (int j = 0; j < this->size_y; j++)
+            for (int k = 0; k < this->size_z; k++)
+                this->matrix[i][j][k] -= b.matrix[i][j][k];
+    return *this;
+}
+
+Ten3D Ten3D::operator^(const float& b) const
+{
+    Ten3D buf(*this);
+    for (int i = 0; i < this->size_x; i++)
+        for (int j = 0; j < this->size_y; j++)
+            for (int k = 0; k < this->size_z; k++)
+                buf.set_object_of_matrix(i, j, pow(buf(i, j, k), b));
+    return buf;
+}
+
 size_t& Ten3D::count()
 {
     static size_t c = 0;
     return c;
 }
+
+/*
+
+Ten2D Ten2D::operator*(const Ten2D& b) const
+{
+    if (b.size_x != size_x) throw(std::length_error("TensorErrorOp*: Попытка умножить тензоры различной размерности"));
+    Ten2D buf(*this);
+    for (int i = 0; i < buf.size_x; i++)
+        for (int j = 0; j < b.size_y; j++)
+        {
+            float sum = 0;
+            for (int k = 0; k < buf.size_x; k++)
+                sum += this->matrix[i][k] * b.matrix[k][j];
+            buf.matrix[i][j] = sum;
+        }
+    return buf;
+}
+
+Ten2D& Ten2D::operator*= (const Ten2D& b)
+{
+    if (b.size_x != size_x) throw(std::length_error("TensorErrorOp*=: Попытка умножить тензоры различной размерности"));
+    Ten2D buf(*this);
+    for (int i = 0; i < buf.size_x; i++)
+        for (int j = 0; j < b.size_y; j++)
+        {
+            float sum = 0;
+            for (int k = 0; k < buf.size_y; k++)
+                sum += this->matrix[i][k] * b.matrix[k][j];
+            buf.matrix[i][j] = sum;
+        }
+    *this = buf;
+    return *this;
+}
+
+
+Ten2D Ten2D::operator^(const float& b) const
+{
+    Ten2D buf(*this);
+    for (int i = 0; i < this->size_x; i++) 
+        for (int j = 0; j < this->size_y; j++) 
+            buf.set_object_of_matrix(i, j, pow(buf(i,j), b));
+    return buf;
+}
+
+Ten2D& Ten2D::operator^=(const float& b)
+{
+    Ten2D buf(*this);
+    for (int i = 0; i < this->size_x; i++)
+        for (int j = 0; j < this->size_y; j++)
+            buf.set_object_of_matrix(i, j, pow(buf(i, j), b));
+    *this = buf;
+    return *this;
+}
+*/
