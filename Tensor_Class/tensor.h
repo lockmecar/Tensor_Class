@@ -18,10 +18,10 @@ private:
 
 public:
 	Ten2D(int size_x, int size_y, std::string name, char mode);
-	Ten2D(int size_x, int size_y, std::string name); // Конструктор с указанием размера
-	Ten2D(const Ten2D& copied_obj);                 // Конструктор копирования
-	~Ten2D();                                        // Деструктор
-	void print();                                     // Вывод на консоль
+	Ten2D(int size_x, int size_y, std::string name);      // Конструктор с указанием размера
+	Ten2D(const Ten2D& copied_obj);                       // Конструктор копирования
+	~Ten2D();                                             // Деструктор
+	void print();                                         // Вывод на консоль
 	void set_object_of_matrix(int x, int y, float value); // Сеттер для конкретного значения в матрице
 	void clear();
 
@@ -61,16 +61,18 @@ public:
 class Ten3D
 {
 private:
-	std::string name;// Имя объекта класса
+	std::string name; // Имя объекта класса
 	int size_x;
-	int size_y;      // Размер массива
+	int size_y;       // Размер массива
 	int size_z;
 	float*** matrix;  // Трехмерный динамический массив
-	size_t& count(); // Счетчик обьектов
+	size_t& count();  // Счетчик обьектов
 	int rand_seed = 1;
 
 public:
 	Ten3D(int size_x, int size_y, int size_z, std::string name); // Конструктор с указанием размера
-	void print();                                // Вывод на консоль
+	Ten3D(const Ten3D& copied_obj);                              // Конструктор копирования
+	Ten3D(int size_x, int size_y, int size_z, std::string name, char mode);
+	void print();                                                // Вывод на консоль
 	~Ten3D();
 };

@@ -62,7 +62,7 @@ std::vector<float> Ten2D::matrix_to_vector()
 
 Ten2D Ten2D::operator+(const Ten2D& b) const
 {
-    if (b.size_x != size_x) throw(std::length_error("TensorErrorOp+: Попытка сложить тензоры различной размерности"));
+    if ((b.size_x != size_x) || (b.size_y != size_y)) throw(std::length_error("TensorErrorOp+: Попытка сложить тензоры различной размерности"));
     Ten2D buf(*this);
     for (int i = 0; i < buf.size_x; i++)
         for (int j = 0; j < buf.size_y; j++)
@@ -73,7 +73,7 @@ Ten2D Ten2D::operator+(const Ten2D& b) const
 
 Ten2D& Ten2D::operator+=(const Ten2D& b)
 {
-    if (b.size_x != size_x) throw(std::length_error("TensorErrorOp+=: Попытка сложить тензоры различной размерности"));
+    if ((b.size_x != size_x) || (b.size_y != size_y)) throw(std::length_error("TensorErrorOp+=: Попытка сложить тензоры различной размерности"));
     for (int i = 0; i < this->size_x; i++)
         for (int j = 0; j < this->size_y; j++)
             this->matrix[i][j] += b.matrix[i][j];
@@ -314,6 +314,63 @@ Ten3D::Ten3D(int size_x, int size_y, int size_z, std::string name)
     }
 
     std::cout << "Object " << Ten3D::name << " created. " << "Count: " << Ten3D::count() << std::endl;
+}
+
+Ten3D::Ten3D(const Ten3D& copied_obj)
+{
+    Ten3D::count()++;
+    Ten3D::name = copied_obj.name + "_copy";
+    Ten3D::size_x = size_x;
+    Ten3D::size_y = size_y;
+    Ten3D::size_z = size_z;
+    Ten3D::matrix = new float** [size_x];
+    for (int i = 0; i < size_x; i++)
+    {
+        matrix[i] = new float* [size_y];
+        for (int j = 0; j < size_z; j++)
+            matrix[i][j] = new float[size_z];
+    }
+    for (int x = 0; x < size_x; x++)
+        for (int y = 0; y < size_y; y++)
+            for(int z = 0; z < size_z ; z++)
+                if (&copied_obj != this)
+                    this->matrix[x][y] = copied_obj.matrix[x][y];
+
+    std::cout << "Object " << Ten3D::name << " created. " << "Count: " << Ten3D::count() << std::endl;
+}
+
+Ten3D::Ten3D(int size_x, int size_y, int size_z, std::string name, char mode)
+{
+    Ten3D::count()++;
+    Ten3D::name = name;
+    Ten3D::size_x = size_x;
+    Ten3D::size_y = size_y;
+    Ten3D::size_z = size_z;
+    Ten3D::matrix = new float** [size_x];
+    for (int i = 0; i < size_x; i++)
+    {
+        matrix[i] = new float* [size_y];
+        for (int j = 0; j < size_z; j++)
+            matrix[i][j] = new float[size_z];
+    }
+
+    if (mode == '0')
+    {
+        for (int x = 0; x < size_x; x++)
+            for (int y = 0; y < size_y; y++)
+                for (int z = 0; z < size_z; z++)
+                    matrix[x][y][z] = 0;
+        std::cout << "Object " << Ten3D::name << " created. " << "Mode: 0. " << "Count: " << Ten3D::count() << std::endl;
+    }
+    else if (mode == 'r')
+    {
+        srand(Ten3D::rand_seed);
+        for (int x = 0; x < size_x; x++)
+            for (int y = 0; y < size_y; y++)
+                for (int z = 0; z < size_z; z++)
+                    matrix[x][y][z] = (static_cast <float> (rand()) / static_cast <float> (rand()));
+        std::cout << "Object " << Ten3D::name << " created. " << "Mode: r. " << "Count: " << Ten3D::count() << std::endl;
+    }
 }
 
 void Ten3D::print()
