@@ -3,20 +3,13 @@
 
 using namespace std;
 
-float sum(float v)
-{
-	return v + 5;
-}
-
 int main()
 {
 	setlocale(LC_ALL, "RUS");
 	try
 	{
-		Ten2D a(3, 3, "a", '0');
-		a.ElemFunc(sum);
-		a.print();
-
+		Ten3D a(3, 3, 3, "a",'r');
+		Ten3D b(a);
 	}
 	catch(length_error& ex) 
 	{
