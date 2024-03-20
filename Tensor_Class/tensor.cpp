@@ -166,11 +166,11 @@ Ten2D Ten2D::sqrt()
 }
 
 
-void Ten2D::fileout10(std::string b)
+void Ten2D::fileout10(std::string NameOfFile)
 {
     std::ofstream out;
-    b += ".txt";
-    out.open(b);
+    NameOfFile += ".txt";
+    out.open(NameOfFile);
     for (int i = 0; i < Ten2D::size_x; i++)
     {
         for (int j = 0; j < Ten2D::size_y; j++)
@@ -181,12 +181,12 @@ void Ten2D::fileout10(std::string b)
 }
 
 
-void Ten2D::fileout16(std::string b)
+void Ten2D::fileout16(std::string NameOfFile)
 {
     std::ofstream out;
-    Ten2D::ftoul fu;
-    b += ".txt";
-    out.open(b);
+    ftoul fu;
+    NameOfFile += ".txt";
+    out.open(NameOfFile);
     for (int i = 0; i < Ten2D::size_x; i++)
     {
         for (int j = 0; j < Ten2D::size_y; j++)
@@ -499,4 +499,35 @@ std::vector<float> Ten3D::matrix_to_vector()
             result.push_back(Ten3D::matrix[x][y][z]);
 
     return result;
+}
+
+void Ten3D::fileout10(std::string NameOfFile)
+{
+    std::ofstream out;
+    NameOfFile += ".txt";
+    out.open(NameOfFile);
+    for (int i = 0; i < Ten3D::size_x; i++)
+        for (int j = 0; j < Ten3D::size_y; j++)
+            for (int k = 0; k < Ten3D::size_z; k++)
+                out << "tensor_" << name << "[" << i << "][" << j << "][" << k << "] = " << Ten3D::matrix[i][j][k] << "\n";
+    out << std::endl;
+    out.close();
+}
+
+
+void Ten3D::fileout16(std::string NameOfFile)
+{
+    std::ofstream out;
+    ftoul fu;
+    NameOfFile += ".txt";
+    out.open(NameOfFile);
+    for (int i = 0; i < Ten3D::size_x; i++)
+        for (int j = 0; j < Ten3D::size_y; j++)
+            for (int k = 0; k < Ten3D::size_z; k++)
+            {
+                fu.input = Ten3D::matrix[i][j][k];
+                out << "tensor_" << name << "[" << i << "][" << j << "][" << k << "] = " << fu.output << "\n";
+            }
+    out << std::endl;
+    out.close();
 }

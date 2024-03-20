@@ -6,6 +6,12 @@
 #include <fstream>
 #include <vector>
 
+union ftoul
+{
+	float input;
+	unsigned output;
+};
+
 class Ten2D
 {
 private:
@@ -29,12 +35,6 @@ public:
 
 	float operator() (unsigned x, unsigned y); // Геттер для конкретного значения в матрице
 
-	union ftoul
-	{
-		float input;
-		unsigned output;
-	};
-
 	std::vector<float> matrix_to_vector();
 
 	Ten2D operator+ (const Ten2D& b) const;
@@ -54,8 +54,8 @@ public:
 	Ten2D transp();            // Транспонирование
 	Ten2D abs();               // Модуль (возможно не нужен)
 	Ten2D sqrt();              // Квадратный корень
-	void fileout10(std::string b);           
-	void fileout16(std::string b);        
+	void fileout10(std::string NameOfFile);           
+	void fileout16(std::string NameOfFile);
 };
 
 class Ten3D
@@ -96,4 +96,8 @@ public:
 
 	Ten3D operator^ (const float& b) const;
 	Ten3D& operator^= (const float& b);
+
+	void fileout10(std::string NameOfFile);
+	void fileout16(std::string NameOfFile);
+
 };
