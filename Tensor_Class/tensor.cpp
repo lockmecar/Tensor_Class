@@ -483,7 +483,7 @@ Ten3D Ten3D::operator^(const float& b) const
     for (int i = 0; i < this->size_x; i++)
         for (int j = 0; j < this->size_y; j++)
             for (int k = 0; k < this->size_z; k++)
-                buf.set_object_of_matrix(i, j, pow(buf(i, j, k), b));
+                buf.set_object_of_matrix(i, j, k, pow(buf(i, j, k), b));
     return buf;
 }
 
