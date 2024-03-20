@@ -379,12 +379,9 @@ void Ten3D::print()
 {
     std::cout << std::endl;
     for (int i = 0; i < Ten3D::size_x; i++)
-    {
         for (int j = 0; j < Ten3D::size_y; j++)
             for(int k = 0; k < Ten3D::size_z; k++)
-                std::cout << "\t" << Ten3D::matrix[i][j][k];
-        std::cout << std::endl;
-    }
+                std::cout << "tensor_"<<name<<"["<<i<<"]["<<j<<"]["<<k<<"] = " << Ten3D::matrix[i][j][k] << "\n";
     std::cout << std::endl;
 }
 

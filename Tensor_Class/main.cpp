@@ -9,6 +9,7 @@ int main()
 	try
 	{
 		Ten3D a(3, 3, 3, "a",'r');
+		a.print();
 	}
 	catch(length_error& ex) 
 	{
