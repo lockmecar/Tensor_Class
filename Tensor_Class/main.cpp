@@ -9,7 +9,6 @@ int main()
 	try
 	{
 		Ten3D a(3, 3, 3, "a",'r');
-		Ten3D b(a);
 	}
 	catch(length_error& ex) 
 	{

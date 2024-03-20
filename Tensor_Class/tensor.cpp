@@ -492,3 +492,14 @@ size_t& Ten3D::count()
     static size_t c = 0;
     return c;
 }
+
+std::vector<float> Ten3D::matrix_to_vector()
+{
+    std::vector<float> result;
+    for (int x = 0; x < size_x; x++)
+        for (int y = 0; y < size_y; y++)
+            for (int z = 0; z < size_z; z++)
+            result.push_back(Ten3D::matrix[x][y][z]);
+
+    return result;
+}

@@ -79,6 +79,8 @@ public:
 	void set_object_of_matrix(int x, int y, int z, float value);
 	void clear();
 
+	std::vector<float> matrix_to_vector();
+
 	float operator() (unsigned x, unsigned y, unsigned z);
 
 	Ten3D operator+ (const Ten3D& b) const;
