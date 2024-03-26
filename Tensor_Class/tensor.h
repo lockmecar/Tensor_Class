@@ -23,12 +23,12 @@ private:
 	int rand_seed = 1;
 
 public:
-	Ten2D(int size_x, int size_y, std::string name, char mode);
-	Ten2D(int size_x, int size_y, std::string name);      // Конструктор с указанием размера
-	Ten2D(const Ten2D& copied_obj);                       // Конструктор копирования
-	~Ten2D();                                             // Деструктор
-	void print();                                         // Вывод на консоль
-	void set_object_of_matrix(int x, int y, float value); // Сеттер для конкретного значения в матрице
+	Ten2D(int size_x, int size_y, std::string name, char mode); // Конструктор с двумя режимами ('0' - заполнит нулями, 'r' - заполнит рандомами)
+	Ten2D(int size_x, int size_y, std::string name);            // Конструктор с указанием размера
+	Ten2D(const Ten2D& copied_obj);                             // Конструктор копирования
+	~Ten2D();                                                   // Деструктор
+	void print();                                               // Вывод на консоль
+	void set_object_of_matrix(int x, int y, float value);       // Сеттер для конкретного значения в матрице
 	void clear();
 
 	void ElemFunc(float (*func)(float));       // Элементарная функция над каждым элементом
@@ -70,12 +70,12 @@ private:
 	int rand_seed = 1;
 
 public:
-	Ten3D(int size_x, int size_y, int size_z, std::string name); // Конструктор с указанием размера
-	Ten3D(const Ten3D& copied_obj);                              // Конструктор копирования
-	Ten3D(int size_x, int size_y, int size_z, std::string name, char mode);
+	Ten3D(int size_x, int size_y, int size_z, std::string name);            // Конструктор с указанием размера
+	Ten3D(const Ten3D& copied_obj);                                         // Конструктор копирования
+	Ten3D(int size_x, int size_y, int size_z, std::string name, char mode); // Конструктор с двумя режимами ('0' - заполнит нулями, 'r' - заполнит рандомами)
 	~Ten3D();
 
-	void print();                                                // Вывод на консоль
+	void print();
 	void set_object_of_matrix(int x, int y, int z, float value);
 	void clear();
 
