@@ -322,9 +322,9 @@ Ten3D::Ten3D(const Ten3D& copied_obj)
 {
     Ten3D::count()++;
     Ten3D::name = copied_obj.name + "_copy";
-    Ten3D::size_x = size_x;
-    Ten3D::size_y = size_y;
-    Ten3D::size_z = size_z;
+    Ten3D::size_x = copied_obj.size_x;
+    Ten3D::size_y = copied_obj.size_y;
+    Ten3D::size_z = copied_obj.size_z;
     Ten3D::matrix = new float** [size_x];
     for (int i = 0; i < size_x; i++)
     {
@@ -476,11 +476,19 @@ Ten3D& Ten3D::operator-=(const Ten3D& b)
 
 Ten3D Ten3D::operator*(const Ten3D& b) const
 {
-    if (b.size_x != size_x or b.size_y != size_y or b.size_z != size_z) throw(std::length_error("TensorErrorOp*: Попытка перемножить тензоры различной размерности"));
+    if (b.size_x != size_x) throw(std::length_error("TensorErrorOp*: Попытка умножить тензоры различной размерности"));// добавить что при z1!=y2 не раб
     Ten3D buf(*this);
-    
 
-    return ;
+    for (int x = 0; x < buf.size_x; x++)
+        for (int y = 0; y < buf.size_y; y++)
+            for (int z = 0; z < buf.size_z; z++)
+            {
+                float sum = 0;
+                for (int k = 0; k < buf.size_z; k++)
+                    sum += this->matrix[x][y][k] * b.matrix[x][k][z];
+                buf.matrix[x][y][z] = sum;
+            }
+    return buf;
 }
 
 Ten3D Ten3D::operator^(const float& b) const
