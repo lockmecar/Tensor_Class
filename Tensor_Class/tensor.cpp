@@ -481,19 +481,13 @@ Ten3D Ten3D::operator*(const Ten3D& b) const
 
     for (int x = 0; x < buf.size_x; x++)
         for (int y = 0; y < buf.size_y; y++)
-        {
-            std::cout << "-------------------" << std::endl;
             for (int z = 0; z < buf.size_z; z++)
             {
                 float sum = 0;
                 for (int k = 0; k < buf.size_z; k++)
-                {
                     sum += this->matrix[x][y][k] * b.matrix[x][k][z];
-                    std::cout << this->matrix[x][y][k] << "\t" << b.matrix[x][k][z] << "\t" << sum << std::endl;
-                }
                 buf.matrix[x][y][z] = sum;
             }
-        }
     return buf;
 }
 
