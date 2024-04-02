@@ -322,21 +322,21 @@ Ten3D::Ten3D(const Ten3D& copied_obj)
 {
     Ten3D::count()++;
     Ten3D::name = copied_obj.name + "_copy";
-    Ten3D::size_x = size_x;
-    Ten3D::size_y = size_y;
-    Ten3D::size_z = size_z;
-    Ten3D::matrix = new float** [size_x];
-    for (int i = 0; i < size_x; i++)
+    Ten3D::size_x = copied_obj.size_x;
+    Ten3D::size_y = copied_obj.size_y;
+    Ten3D::size_z = copied_obj.size_z;
+    Ten3D::matrix = new float** [copied_obj.size_x];
+    for (int i = 0; i < copied_obj.size_x; i++)
     {
-        matrix[i] = new float* [size_y];
-        for (int j = 0; j < size_z; j++)
-            matrix[i][j] = new float[size_z];
+        matrix[i] = new float* [copied_obj.size_y];
+        for (int j = 0; j < copied_obj.size_z; j++)
+            matrix[i][j] = new float[copied_obj.size_z];
     }
-    for (int x = 0; x < size_x; x++)
-        for (int y = 0; y < size_y; y++)
-            for(int z = 0; z < size_z ; z++)
+    for (int x = 0; x < copied_obj.size_x; x++)
+        for (int y = 0; y < copied_obj.size_y; y++)
+            for(int z = 0; z < copied_obj.size_z ; z++)
                 if (&copied_obj != this)
-                    this->matrix[x][y] = copied_obj.matrix[x][y];
+                    this->matrix[x][y][z] = copied_obj.matrix[x][y][z];
 
     std::cout << "Object " << Ten3D::name << " created. " << "Count: " << Ten3D::count() << std::endl;
 }
