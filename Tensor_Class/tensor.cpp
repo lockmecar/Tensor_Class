@@ -476,7 +476,7 @@ Ten3D& Ten3D::operator-=(const Ten3D& b)
 
 Ten3D Ten3D::operator*(const Ten3D& b) const
 {
-    if (b.size_x != size_x) throw(std::length_error("TensorErrorOp*: Попытка умножить тензоры различной размерности"));// добавить что при z1!=y2 не раб
+    if (b.size_x != size_x or b.size_z!=size_y) throw(std::length_error("TensorErrorOp*: Попытка умножить тензоры различной размерности"));
     Ten3D buf(*this);
 
     for (int x = 0; x < buf.size_x; x++)
@@ -489,6 +489,24 @@ Ten3D Ten3D::operator*(const Ten3D& b) const
                 buf.matrix[x][y][z] = sum;
             }
     return buf;
+}
+
+Ten3D& Ten3D::operator*=(const Ten3D& b)
+{
+    if (b.size_x != size_x or b.size_z != size_y) throw(std::length_error("TensorErrorOp*=: Попытка умножить тензоры различной размерности"));
+    Ten3D buf(*this);
+
+    for (int x = 0; x < buf.size_x; x++)
+        for (int y = 0; y < buf.size_y; y++)
+            for (int z = 0; z < buf.size_z; z++)
+            {
+                float sum = 0;
+                for (int k = 0; k < buf.size_z; k++)
+                    sum += this->matrix[x][y][k] * b.matrix[x][k][z];
+                buf.matrix[x][y][z] = sum;
+            }
+    *this = buf;
+    return *this;
 }
 
 Ten3D Ten3D::operator^(const float& b) const
