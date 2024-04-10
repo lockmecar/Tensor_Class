@@ -3,10 +3,10 @@
 void Ten2D::print()
 {
     std::cout << std::endl;
-    for (int i = 0; i < Ten2D::size_x; i++)
+    for (int y = 0; y < size_y; y++)
     {
-        for (int j = 0; j < Ten2D::size_y; j++)
-            std::cout << "\t" << Ten2D::matrix[i][j];
+        for (int x = 0; x < size_x; x++)
+            std::cout << "\t" << Ten2D::matrix[y][x];
         std::cout << std::endl;
     }
     std::cout << std::endl;
@@ -14,38 +14,37 @@ void Ten2D::print()
 
 void Ten2D::set_object_of_matrix(int x, int y, float value)
 {
-    Ten2D::matrix[x][y] = value;
+    Ten2D::matrix[y][x] = value;
 }
 
 void Ten2D::clear()
 {
-    for (int i = 0; i < size_x; i++)
-        for (int j = 0; j < size_y; j++)
+    for (int y = 0; y < size_y; y++)
+        for (int x = 0; x < size_x; x++)
         {
-            matrix[i][j] = 0;
+            matrix[y][x] = 0;
         }
 }
 
 void Ten2D::ElemFunc(float (*func)(float))
 {
-    for (int i = 0; i < Ten2D::size_x; i++)
-        for (int j = 0; j < Ten2D::size_y; j++)
-            this->matrix[i][j] = func(matrix[i][j]);
+    for (int y = 0; y < Ten2D::size_y; y++)
+        for (int x = 0; x < Ten2D::size_x; x++)
+            this->matrix[y][x] = func(matrix[y][x]);
 }
 
-float Ten2D::operator()(unsigned x, unsigned y)
+float Ten2D::operator()(unsigned y, unsigned x)
 {
-    return Ten2D::matrix[x][y];
+    return Ten2D::matrix[y][x];
 }
-
 
 Ten2D& Ten2D::operator=(const Ten2D& b)
 {
     if (b.size_x != size_x) throw(std::length_error("TensorErrorOp=: Попытка присвоить тензоры различной размерности"));
-    for (int i = 0; i < size_x; i++)
-        for (int j = 0; j < size_y; j++)
+    for (int y = 0; y < size_y; y++)
+        for (int x = 0; x < size_x; x++)
             if (&b != this)
-                this->matrix[i][j] = b.matrix[i][j];
+                this->matrix[y][x] = b.matrix[y][x];
     this->size_x = b.size_x;
     this->size_y = b.size_y;
     return *this;
@@ -54,9 +53,9 @@ Ten2D& Ten2D::operator=(const Ten2D& b)
 std::vector<float> Ten2D::matrix_to_vector()
 {
     std::vector<float> result;
-    for (int i = 0; i < size_x; i++)
-        for (int j = 0; j < size_y; j++)
-            result.push_back(Ten2D::matrix[i][j]);
+    for (int y = 0; y < size_y; y++)
+        for (int x = 0; x < size_x; x++)
+            result.push_back(Ten2D::matrix[y][x]);
 
     return result;
 }
@@ -65,9 +64,9 @@ Ten2D Ten2D::operator+(const Ten2D& b) const
 {
     if ((b.size_x != size_x) || (b.size_y != size_y)) throw(std::length_error("TensorErrorOp+: Попытка сложить тензоры различной размерности"));
     Ten2D buf(*this);
-    for (int i = 0; i < buf.size_x; i++)
-        for (int j = 0; j < buf.size_y; j++)
-            buf.matrix[i][j] += b.matrix[i][j];
+    for (int y = 0; y < buf.size_y; y++)
+        for (int x = 0; x < buf.size_x; x++)
+            buf.matrix[y][x] += b.matrix[y][x];
 
     return buf;
 }
@@ -75,25 +74,24 @@ Ten2D Ten2D::operator+(const Ten2D& b) const
 Ten2D& Ten2D::operator+=(const Ten2D& b)
 {
     if ((b.size_x != size_x) || (b.size_y != size_y)) throw(std::length_error("TensorErrorOp+=: Попытка сложить тензоры различной размерности"));
-    for (int i = 0; i < this->size_x; i++)
-        for (int j = 0; j < this->size_y; j++)
-            this->matrix[i][j] += b.matrix[i][j];
+    for (int y = 0; y < this->size_y; y++)
+        for (int x = 0; x < this->size_x; x++)
+            this->matrix[y][x] += b.matrix[y][x];
 
     return *this;
 }
-
 
 Ten2D Ten2D::operator*(const Ten2D& b) const
 {
     if (b.size_x != size_x) throw(std::length_error("TensorErrorOp*: Попытка умножить тензоры различной размерности"));
     Ten2D buf(*this);
-    for (int i = 0; i < buf.size_x; i++)
-        for (int j = 0; j < b.size_y; j++)
+    for (int y = 0; y < buf.size_y; y++)
+        for (int x = 0; x < b.size_x; x++)
         {
             float sum = 0;
-            for (int k = 0; k < buf.size_x; k++)
-                sum += this->matrix[i][k] * b.matrix[k][j];
-            buf.matrix[i][j] = sum;
+            for (int i = 0; i < buf.size_x; i++)
+                sum += this->matrix[y][i] * b.matrix[i][x];
+            buf.matrix[y][x] = sum;
         }
     return buf;
 }
@@ -102,45 +100,43 @@ Ten2D& Ten2D::operator*= (const Ten2D& b)
 {
     if (b.size_x != size_x) throw(std::length_error("TensorErrorOp*=: Попытка умножить тензоры различной размерности"));
     Ten2D buf(*this);
-    for (int i = 0; i < buf.size_x; i++)
-        for (int j = 0; j < b.size_y; j++)
+    for (int y = 0; y < buf.size_y; y++)
+        for (int x = 0; x < b.size_x; x++)
         {
             float sum = 0;
-            for (int k = 0; k < buf.size_y; k++)
-                sum += this->matrix[i][k] * b.matrix[k][j];
-            buf.matrix[i][j] = sum;
+            for (int i = 0; i < buf.size_y; i++)
+                sum += this->matrix[y][i] * b.matrix[i][x];
+            buf.matrix[y][x] = sum;
         }
     *this = buf;
     return *this;
 }
 
-
 Ten2D Ten2D::operator^(const float& b) const
 {
     Ten2D buf(*this);
-    for (int i = 0; i < this->size_x; i++) 
-        for (int j = 0; j < this->size_y; j++) 
-            buf.set_object_of_matrix(i, j, pow(buf(i,j), b));
+    for (int y = 0; y < this->size_y; y++) 
+        for (int x = 0; x < this->size_x; x++) 
+            buf.set_object_of_matrix(x, y, pow(buf(x,y), b));
     return buf;
 }
 
 Ten2D& Ten2D::operator^=(const float& b)
 {
     Ten2D buf(*this);
-    for (int i = 0; i < this->size_x; i++)
-        for (int j = 0; j < this->size_y; j++)
-            buf.set_object_of_matrix(i, j, pow(buf(i, j), b));
+    for (int y = 0; y < this->size_y; y++)
+        for (int x = 0; x < this->size_x; x++)
+            buf.set_object_of_matrix(x, y, pow(buf(x, y), b));
     *this = buf;
     return *this;
 }
 
-
 Ten2D Ten2D::transp()
 {
     Ten2D buf(*this);
-    for (int i = 0; i < buf.size_x; i++)
-        for (int j = 0; j < buf.size_y; j++)
-            buf.matrix[i][j] = this->matrix[j][i];
+    for (int y = 0; y < buf.size_x; y++)
+        for (int x = 0; x < buf.size_y; x++)
+            buf.matrix[y][x] = this->matrix[x][y];
 
     return buf;
 }
@@ -149,37 +145,35 @@ Ten2D Ten2D::abs()
 {
     Ten2D buf(*this);
 
-    for (int i = 0; i < buf.size_x; i++)
-        for (int j = 0; j < buf.size_y; j++)
-            if(this->matrix[j][i]<0)
-                buf.matrix[i][j] =(-1 * this->matrix[j][i]);
+    for (int y = 0; y < buf.size_y; y++)
+        for (int x = 0; x < buf.size_x; x++)
+            if(this->matrix[y][x]<0)
+                buf.matrix[y][x] =(-1 * this->matrix[y][x]);
 
     return buf;
 }
 
 Ten2D Ten2D::sqrt()
 {
-    for (int i = 0; i < this->size_x; i++)
-        for (int j = 0; j < this->size_y; j++)
-            this->matrix[i][j]=pow(this->matrix[i][j],0.5);
+    for (int y = 0; y < this->size_y; y++)
+        for (int x = 0; x < this->size_x; x++)
+            this->matrix[y][x]=pow(this->matrix[y][x],0.5);
     return *this;
 }
-
 
 void Ten2D::fileout10(std::string NameOfFile)
 {
     std::ofstream out;
     NameOfFile += ".txt";
     out.open(NameOfFile);
-    for (int i = 0; i < Ten2D::size_x; i++)
+    for (int y = 0; y < Ten2D::size_y; y++)
     {
-        for (int j = 0; j < Ten2D::size_y; j++)
-            out << Ten2D::matrix[i][j] << "\t";
+        for (int x = 0; x < Ten2D::size_x; x++)
+            out << Ten2D::matrix[y][x] << "\t";
         out << std::endl;
     }
     out.close();
 }
-
 
 void Ten2D::fileout16(std::string NameOfFile)
 {
@@ -187,11 +181,11 @@ void Ten2D::fileout16(std::string NameOfFile)
     ftoul fu;
     NameOfFile += ".txt";
     out.open(NameOfFile);
-    for (int i = 0; i < Ten2D::size_x; i++)
+    for (int y = 0; y < Ten2D::size_y; y++)
     {
-        for (int j = 0; j < Ten2D::size_y; j++)
+        for (int x = 0; x < Ten2D::size_x; x++)
         {
-            fu.input = Ten2D::matrix[i][j];
+            fu.input = Ten2D::matrix[y][x];
             out << std::hex << fu.output << "\t";
         }
         out << std::endl;
@@ -199,14 +193,13 @@ void Ten2D::fileout16(std::string NameOfFile)
     out.close();
 }
 
-
 Ten2D Ten2D::operator-(const Ten2D& b) const
 {
     if (b.size_x != size_x) throw(std::length_error("TensorErrorOp-: Попытка отнять тензоры различной размерности"));
     Ten2D t1(*this);
-    for (int i = 0; i < size_x; i++)
-        for (int j = 0; j < size_y; j++)
-            t1.matrix[i][j] -= b.matrix[i][j];
+    for (int x = 0; x < size_x; x++)
+        for (int y = 0; y < size_y; y++)
+            t1.matrix[y][x] -= b.matrix[y][x];
 
     return t1;
 }
@@ -214,13 +207,12 @@ Ten2D Ten2D::operator-(const Ten2D& b) const
 Ten2D& Ten2D::operator-=(const Ten2D& b)
 {
     if (b.size_x != size_x) throw(std::length_error("TensorErrorOp-=: Попытка отнять тензоры различной размерности"));
-    for (int i = 0; i < this->size_x; i++)
-        for (int j = 0; j < this->size_y; j++)
-            this->matrix[i][j] -= b.matrix[i][j];
+    for (int x = 0; x < this->size_x; x++)
+        for (int y = 0; y < this->size_y; y++)
+            this->matrix[y][x] -= b.matrix[y][x];
             
     return *this;
 }
-
 
 size_t& Ten2D::count()
 {
@@ -234,26 +226,26 @@ Ten2D::Ten2D(int size_x, int size_y, std::string name, char mode)
     Ten2D::name = name;
     Ten2D::size_x = size_x;
     Ten2D::size_y = size_y;
-    Ten2D::matrix = new float* [size_x];
-    for (int i = 0; i < size_x; i++)
-        matrix[i] = new float[size_y];
+    Ten2D::matrix = new float* [size_y];
+    for (int y = 0; y < size_y; y++)
+        matrix[y] = new float[size_x];
 
     if (mode == '0')
     {
-        for(int i = 0; i < size_x; i++)
-            for (int j = 0; j < size_y; j++)
+        for(int y = 0; y < size_y; y++)
+            for (int x = 0; x < size_x; x++)
             {
-                matrix[i][j] = 0;
+                matrix[y][x] = 0;
             }
         std::cout << "Object " << Ten2D::name << " created. " << "Mode: 0. " << "Count: " << Ten2D::count() << std::endl;
     }
     else if (mode == 'r')
     {
         srand(Ten2D::rand_seed);
-        for (int i = 0; i < size_x; i++)
-            for (int j = 0; j < size_y; j++)
+        for (int y = 0; y < size_y; y++)
+            for (int x = 0; x < size_x; x++)
             {
-                matrix[i][j] = (static_cast <float> (rand()) / static_cast <float> (rand()));
+                matrix[y][x] = (static_cast <float> (rand()) / static_cast <float> (rand()));
             }
         std::cout << "Object " << Ten2D::name << " created. " << "Mode: r. " << "Count: " << Ten2D::count() << std::endl;
     }
@@ -265,9 +257,9 @@ Ten2D::Ten2D(int size_x, int size_y, std::string name)
     Ten2D::name = name;
     Ten2D::size_x = size_x;
     Ten2D::size_y = size_y;
-    Ten2D::matrix = new float* [size_x];
-    for (int i = 0; i < size_x; i++)
-        matrix[i] = new float[size_y];
+    Ten2D::matrix = new float* [size_y];
+    for (int y = 0; y < size_y; y++)
+        matrix[y] = new float[size_x];
     std::cout << "Object " << Ten2D::name << " created. " << "Count: " << Ten2D::count() << std::endl;
 }
 
@@ -277,15 +269,15 @@ Ten2D::Ten2D(const Ten2D& copied_obj)
     Ten2D::name = copied_obj.name + "_copy";
     Ten2D::size_x = copied_obj.size_x;
     Ten2D::size_y = copied_obj.size_y;
-    Ten2D::matrix = new float* [copied_obj.size_x];
+    Ten2D::matrix = new float* [copied_obj.size_y];
 
-    for (int i = 0; i < copied_obj.size_x; i++)
-        matrix[i] = new float[copied_obj.size_y];
+    for (int y = 0; y < copied_obj.size_y; y++)
+        matrix[y] = new float[copied_obj.size_x];
 
-    for (int i = 0; i < size_x; i++)
-        for (int j = 0; j < size_y; j++)
+    for (int x = 0; x < size_x; x++)
+        for (int y = 0; y < size_y; y++)
             if (&copied_obj != this)
-                this->matrix[i][j] = copied_obj.matrix[i][j];
+                this->matrix[y][x] = copied_obj.matrix[y][x];
 
     std::cout << "Object " << Ten2D::name << " created. " << "Count: " << Ten2D::count() << std::endl;
 }
@@ -293,12 +285,15 @@ Ten2D::Ten2D(const Ten2D& copied_obj)
 Ten2D::~Ten2D()
 {
     Ten2D::count()--;
-    for (int i = 0; i < size_x; i++)
-        delete[](Ten2D::matrix[i]);
+    for (int y = 0; y < size_y; y++)
+        delete[](Ten2D::matrix[y]);
     delete[](Ten2D::matrix);
     std::cout << "Object " << Ten2D::name << " destroyed. " << "Count: " << Ten2D::count() << std::endl;
 }
-//------------------------------------------------------------------------------------------------------
+
+
+
+
 
 Ten3D::Ten3D(int size_x, int size_y, int size_z, std::string name)
 {
@@ -307,12 +302,12 @@ Ten3D::Ten3D(int size_x, int size_y, int size_z, std::string name)
     Ten3D::size_x = size_x;
     Ten3D::size_y = size_y;
     Ten3D::size_z = size_z;
-    Ten3D::matrix = new float** [size_x];
-    for (int i = 0; i < size_x; i++)
+    Ten3D::matrix = new float** [size_z];
+    for (int z = 0; z < size_z; z++)
     {
-        matrix[i] = new float* [size_y];
-        for (int j = 0; j < size_z; j++)
-            matrix[i][j] = new float[size_z];
+        matrix[z] = new float* [size_y];
+        for (int y = 0; y < size_y; y++)
+            matrix[z][y] = new float[size_x];
     }
 
     std::cout << "Object " << Ten3D::name << " created. " << "Count: " << Ten3D::count() << std::endl;
@@ -325,52 +320,54 @@ Ten3D::Ten3D(const Ten3D& copied_obj)
     Ten3D::size_x = copied_obj.size_x;
     Ten3D::size_y = copied_obj.size_y;
     Ten3D::size_z = copied_obj.size_z;
-    Ten3D::matrix = new float** [copied_obj.size_x];
-    for (int i = 0; i < copied_obj.size_x; i++)
+    Ten3D::matrix = new float** [copied_obj.size_z];
+    for (int z = 0; z < copied_obj.size_z; z++)
     {
-        matrix[i] = new float* [copied_obj.size_y];
-        for (int j = 0; j < copied_obj.size_z; j++)
-            matrix[i][j] = new float[copied_obj.size_z];
-    }
-    for (int x = 0; x < copied_obj.size_x; x++)
+        matrix[z] = new float* [copied_obj.size_y];
         for (int y = 0; y < copied_obj.size_y; y++)
-            for(int z = 0; z < copied_obj.size_z ; z++)
+            matrix[z][y] = new float[copied_obj.size_x];
+    }
+    for (int z = 0; z < copied_obj.size_z; z++)
+        for (int y = 0; y < copied_obj.size_y; y++)
+            for(int x = 0; x < copied_obj.size_x ; x++)
                 if (&copied_obj != this)
-                    this->matrix[x][y][z] = copied_obj.matrix[x][y][z];
+                    this->matrix[z][y][x] = copied_obj.matrix[z][y][x];
 
     std::cout << "Object " << Ten3D::name << " created. " << "Count: " << Ten3D::count() << std::endl;
 }
 
 Ten3D::Ten3D(int size_x, int size_y, int size_z, std::string name, char mode)
 {
+    int start = 0;
+    int end = 2;
     Ten3D::count()++;
     Ten3D::name = name;
     Ten3D::size_x = size_x;
     Ten3D::size_y = size_y;
     Ten3D::size_z = size_z;
-    Ten3D::matrix = new float** [size_x];
-    for (int i = 0; i < size_x; i++)
+    Ten3D::matrix = new float** [size_z];
+    for (int z = 0; z < size_z; z++)
     {
-        matrix[i] = new float* [size_y];
-        for (int j = 0; j < size_z; j++)
-            matrix[i][j] = new float[size_z];
+        matrix[z] = new float* [size_y];
+        for (int y = 0; y < size_y; y++)
+            matrix[z][y] = new float[size_x];
     }
 
     if (mode == '0')
     {
-        for (int x = 0; x < size_x; x++)
+        for (int z = 0; z < size_z; z++)
             for (int y = 0; y < size_y; y++)
-                for (int z = 0; z < size_z; z++)
-                    matrix[x][y][z] = 0;
+                for (int x = 0; x < size_x; x++)
+                    matrix[z][y][x] = 0;
         std::cout << "Object " << Ten3D::name << " created. " << "Mode: 0. " << "Count: " << Ten3D::count() << std::endl;
     }
     else if (mode == 'r')
     {
         srand(Ten3D::rand_seed);
-        for (int x = 0; x < size_x; x++)
+        for (int z = 0; z < size_z; z++)
             for (int y = 0; y < size_y; y++)
-                for (int z = 0; z < size_z; z++)
-                    matrix[x][y][z] = (static_cast <float> (rand()) / static_cast <float> (rand()));
+                for (int x = 0; x < size_x; x++)
+                    matrix[z][y][x] = (static_cast <float> (rand() % (end - start + 1) + start) / static_cast <float> (rand() % (end - start + 1) + start));
         std::cout << "Object " << Ten3D::name << " created. " << "Mode: r. " << "Count: " << Ten3D::count() << std::endl;
     }
 }
@@ -378,39 +375,48 @@ Ten3D::Ten3D(int size_x, int size_y, int size_z, std::string name, char mode)
 void Ten3D::print()
 {
     std::cout << std::endl;
-    for (int i = 0; i < Ten3D::size_x; i++)
-        for (int j = 0; j < Ten3D::size_y; j++)
-            for(int k = 0; k < Ten3D::size_z; k++)
-                std::cout << "tensor_"<<name<<"["<<i<<"]["<<j<<"]["<<k<<"] = " << Ten3D::matrix[i][j][k] << "\n";
+    
+    for (int z = 0; z < size_z; z++)
+    {
+        std::cout << "z: " << z << std::endl;
+        for (int y = 0; y < size_y; y++)
+        {
+            std::cout << "\t";
+            for (int x = 0; x < size_x; x++)
+                std::cout << " " << matrix[z][y][x];
+            std::cout << std::endl;
+        }
+    }
+
     std::cout << std::endl;
 }
 
 void Ten3D::set_object_of_matrix(int x, int y, int z, float value)
 {
-    Ten3D::matrix[x][y][z] = value;
+    Ten3D::matrix[z][y][x] = value;
 }
 
 void Ten3D::clear()
 {
-    for (int x = 0; x < size_x; x++)
+    for (int z = 0; z < size_z; z++)
         for (int y = 0; y < size_y; y++)
-            for (int z = 0; z < size_z; z++)
-                matrix[x][y][z] = 0;
+            for (int x = 0; x < size_x; x++)
+                matrix[z][y][x] = 0;
 }
 
 float Ten3D::operator()(unsigned x, unsigned y, unsigned z)
 {
-    return Ten3D::matrix[x][y][z];
+    return Ten3D::matrix[z][y][x];
 }
 
 Ten3D::~Ten3D()
 {
     Ten3D::count()--;
-    for (int i = 0; i < size_x; i++)
+    for (int z = 0; z < size_z; z++)
     {
-        for (int j = 0; j < size_y; j++)
-            delete[](Ten3D::matrix[i][j]);
-        delete[](Ten3D::matrix[i]);
+        for (int y = 0; y < size_y; y++)
+            delete[](Ten3D::matrix[z][y]);
+        delete[](Ten3D::matrix[z]);
 
     }
     delete[](Ten3D::matrix);
@@ -422,10 +428,10 @@ Ten3D Ten3D::operator+(const Ten3D& b) const
     if (b.size_x != size_x or b.size_y != size_y or b.size_z != size_z) throw(std::length_error("TensorErrorOp+: Попытка сложить тензоры различной размерности"));
     
     Ten3D buf(*this);
-    for (int i = 0; i < buf.size_x; i++)
-        for (int j = 0; j < buf.size_y; j++)
-            for(int k = 0;k< buf.size_z; k++)
-                buf.matrix[i][j][k] += b.matrix[i][j][k];
+    for (int z = 0; z < buf.size_z; z++)
+        for (int y = 0; y < buf.size_y; y++)
+            for(int x = 0; x < buf.size_x; x++)
+                buf.matrix[z][y][x] += b.matrix[z][y][x];
     return buf;
 }
 
@@ -442,14 +448,11 @@ Ten3D& Ten3D::operator+=(const Ten3D& b)
 Ten3D& Ten3D::operator=(const Ten3D& b)
 {
     if (b.size_x != size_x or b.size_y != size_y or b.size_z != size_z) throw(std::length_error("TensorErrorOp=: Попытка присвоить тензоры различной размерности"));
-    for (int i = 0; i < size_x; i++)
-        for (int j = 0; j < size_y; j++)
-            for (int k = 0; k < size_z; k++)
+    for (int z = 0; z < size_z; z++)
+        for (int y = 0; y < size_y; y++)
+            for (int x = 0; x < size_x; x++)
                 if (&b != this)
-                    this->matrix[i][j][k] = b.matrix[i][j][k];
-    this->size_x = b.size_x;
-    this->size_y = b.size_y;
-    this->size_z = b.size_z;
+                    this->matrix[z][y][x] = b.matrix[z][y][x];
     return *this;
 }
 
@@ -457,53 +460,53 @@ Ten3D Ten3D::operator-(const Ten3D& b) const
 {
     if (b.size_x != size_x or b.size_y != size_y or b.size_z != size_z) throw(std::length_error("TensorErrorOp-: Попытка отнять тензоры различной размерности"));
     Ten3D t1(*this);
-    for (int i = 0; i < size_x; i++)
-        for (int j = 0; j < size_y; j++)
-            for(int k = 0; k < size_z; k++)
-                t1.matrix[i][j][k] -= b.matrix[i][j][k];
+    for (int z = 0; z < size_z; z++)
+        for (int y = 0; y < size_y; y++)
+            for (int x = 0; x < size_x; x++)
+                t1.matrix[z][y][x] -= b.matrix[z][y][x];
     return t1;
 }
 
 Ten3D& Ten3D::operator-=(const Ten3D& b)
 {
     if (b.size_x != size_x or b.size_y != size_y or b.size_z != size_z) throw(std::length_error("TensorErrorOp-=: Попытка отнять тензоры различной размерности"));
-    for (int i = 0; i < this->size_x; i++)
-        for (int j = 0; j < this->size_y; j++)
-            for (int k = 0; k < this->size_z; k++)
-                this->matrix[i][j][k] -= b.matrix[i][j][k];
+    for (int z = 0; z < size_z; z++)
+        for (int y = 0; y < size_y; y++)
+            for (int x = 0; x < size_x; x++)
+                this->matrix[z][y][x] -= b.matrix[z][y][x];
     return *this;
 }
 
 Ten3D Ten3D::operator*(const Ten3D& b) const
 {
-    if (b.size_x != size_x or b.size_z!=size_y) throw(std::length_error("TensorErrorOp*: Попытка умножить тензоры различной размерности"));
+    if (b.size_x != size_x or b.size_y!=size_y) throw(std::length_error("TensorErrorOp*: Попытка умножить тензоры различной размерности"));
     Ten3D buf(*this);
 
-    for (int x = 0; x < buf.size_x; x++)
-        for (int y = 0; y < buf.size_y; y++)
-            for (int z = 0; z < buf.size_z; z++)
+    for (int z = 0; z < size_z; z++)
+        for (int y = 0; y < size_y; y++)
+            for (int x = 0; x < size_x; x++)
             {
                 float sum = 0;
-                for (int k = 0; k < buf.size_z; k++)
-                    sum += this->matrix[x][y][k] * b.matrix[x][k][z];
-                buf.matrix[x][y][z] = sum;
+                for (int i = 0; i < buf.size_x; i++)
+                    sum += this->matrix[z][y][i] * b.matrix[z][i][x];
+                buf.matrix[z][y][x] = sum;
             }
     return buf;
 }
 
 Ten3D& Ten3D::operator*=(const Ten3D& b)
 {
-    if (b.size_x != size_x or b.size_z != size_y) throw(std::length_error("TensorErrorOp*=: Попытка умножить тензоры различной размерности"));
+    if (b.size_x != size_x or b.size_y != size_y) throw(std::length_error("TensorErrorOp*=: Попытка умножить тензоры различной размерности"));
     Ten3D buf(*this);
 
-    for (int x = 0; x < buf.size_x; x++)
-        for (int y = 0; y < buf.size_y; y++)
-            for (int z = 0; z < buf.size_z; z++)
+    for (int z = 0; z < size_z; z++)
+        for (int y = 0; y < size_y; y++)
+            for (int x = 0; x < size_x; x++)
             {
                 float sum = 0;
-                for (int k = 0; k < buf.size_z; k++)
-                    sum += this->matrix[x][y][k] * b.matrix[x][k][z];
-                buf.matrix[x][y][z] = sum;
+                for (int i = 0; i < buf.size_x; i++)
+                    sum += this->matrix[z][y][i] * b.matrix[z][i][x];
+                buf.matrix[z][y][x] = sum;
             }
     *this = buf;
     return *this;
@@ -512,10 +515,10 @@ Ten3D& Ten3D::operator*=(const Ten3D& b)
 Ten3D Ten3D::operator^(const float& b) const
 {
     Ten3D buf(*this);
-    for (int i = 0; i < this->size_x; i++)
-        for (int j = 0; j < this->size_y; j++)
-            for (int k = 0; k < this->size_z; k++)
-                buf.set_object_of_matrix(i, j, k, pow(buf(i, j, k), b));
+    for (int z = 0; z < size_z; z++)
+        for (int y = 0; y < size_y; y++)
+            for (int x = 0; x < size_x; x++)
+                buf.set_object_of_matrix(x, y, z, pow(buf(x, y, z), b));
     return buf;
 }
 
@@ -528,10 +531,10 @@ size_t& Ten3D::count()
 std::vector<float> Ten3D::matrix_to_vector()
 {
     std::vector<float> result;
-    for (int x = 0; x < size_x; x++)
+    for (int z = 0; z < size_z; z++)
         for (int y = 0; y < size_y; y++)
-            for (int z = 0; z < size_z; z++)
-            result.push_back(Ten3D::matrix[x][y][z]);
+            for (int x = 0; x < size_x; x++)
+            result.push_back(Ten3D::matrix[z][y][x]);
 
     return result;
 }
@@ -541,14 +544,22 @@ void Ten3D::fileout10(std::string NameOfFile)
     std::ofstream out;
     NameOfFile += ".txt";
     out.open(NameOfFile);
-    for (int i = 0; i < Ten3D::size_x; i++)
-        for (int j = 0; j < Ten3D::size_y; j++)
-            for (int k = 0; k < Ten3D::size_z; k++)
-                out << "tensor_" << name << "[" << i << "][" << j << "][" << k << "] = " << Ten3D::matrix[i][j][k] << "\n";
+
+    for (int z = 0; z < size_z; z++)
+    {
+        out << "z: " << z << std::endl;
+        for (int y = 0; y < size_y; y++)
+        {
+            out << "\t";
+            for (int x = 0; x < size_x; x++)
+                out << " " << matrix[z][y][x];
+            out << std::endl;
+        }
+    }
+
     out << std::endl;
     out.close();
 }
-
 
 void Ten3D::fileout16(std::string NameOfFile)
 {
@@ -556,13 +567,20 @@ void Ten3D::fileout16(std::string NameOfFile)
     ftoul fu;
     NameOfFile += ".txt";
     out.open(NameOfFile);
-    for (int i = 0; i < Ten3D::size_x; i++)
-        for (int j = 0; j < Ten3D::size_y; j++)
-            for (int k = 0; k < Ten3D::size_z; k++)
+    for (int z = 0; z < size_z; z++)
+    {
+        out << "z: " << z << std::endl;
+        for (int y = 0; y < size_y; y++)
+        {
+            out << "\t";
+            for (int x = 0; x < size_x; x++)
             {
-                fu.input = Ten3D::matrix[i][j][k];
-                out << "tensor_" << name << "[" << i << "][" << j << "][" << k << "] = " << fu.output << "\n";
+                fu.input = matrix[z][y][x];
+                out << " " << std::hex << fu.output;
             }
+            out << std::endl;
+        }
+    }
     out << std::endl;
     out.close();
 }
