@@ -333,13 +333,13 @@ Ten3D::Ten3D(const Ten3D& copied_obj)
                 if (&copied_obj != this)
                     this->matrix[z][y][x] = copied_obj.matrix[z][y][x];
 
-    std::cout << "Object " << Ten3D::name << " created. " << "Count: " << Ten3D::count() << std::endl;
+    std::cout << "Object " << copied_obj.name << " copied. " << "New object neme: " << Ten3D::name << " Count: " << Ten3D::count() << std::endl;
 }
 
 Ten3D::Ten3D(int size_x, int size_y, int size_z, std::string name, char mode)
 {
     int start = 0;
-    int end = 2;
+    int end = 3;
     Ten3D::count()++;
     Ten3D::name = name;
     Ten3D::size_x = size_x;
@@ -367,7 +367,7 @@ Ten3D::Ten3D(int size_x, int size_y, int size_z, std::string name, char mode)
         for (int z = 0; z < size_z; z++)
             for (int y = 0; y < size_y; y++)
                 for (int x = 0; x < size_x; x++)
-                    matrix[z][y][x] = (static_cast <float> (rand() % (end - start + 1) + start) / static_cast <float> (rand() % (end - start + 1) + start));
+                    matrix[z][y][x] = (start + rand() % end);
         std::cout << "Object " << Ten3D::name << " created. " << "Mode: r. " << "Count: " << Ten3D::count() << std::endl;
     }
 }
@@ -537,6 +537,24 @@ std::vector<float> Ten3D::matrix_to_vector()
             result.push_back(Ten3D::matrix[z][y][x]);
 
     return result;
+}
+
+void Ten3D::padd()
+{
+    for (int z = 0; z < size_z; z++)
+    {
+        for (int y = 0; y < size_y; y++)
+        {
+            if (y == 0 or y == 6)
+            {
+                for (int x = 0; x < size_x; x++)
+                    matrix[z][y][x] = 0;
+            }
+            else
+                matrix[z][y][0] = 0; matrix[z][y][6] = 0;
+        }
+            
+    }
 }
 
 void Ten3D::fileout10(std::string NameOfFile)

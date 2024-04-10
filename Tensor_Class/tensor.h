@@ -97,6 +97,8 @@ public:
 	Ten3D operator^ (const float& b) const;
 	Ten3D& operator^= (const float& b);
 
+	void padd();
+
 	void fileout10(std::string NameOfFile);
 	void fileout16(std::string NameOfFile);
 
