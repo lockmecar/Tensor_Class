@@ -20,7 +20,7 @@ int main()
 		a.padd();
 		a.print();
 		filter.print();
-
+		result.print();
 			
 	}
 	catch(length_error& ex) 
