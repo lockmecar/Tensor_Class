@@ -16,10 +16,12 @@ int main()
 	{
 		Ten3D a(7, 7, 3, "a", 'r');
 		Ten3D filter(3, 3, 3, "filter", 'r');
+		Ten2D result(3, 3, "result", '0');
 		a.padd();
 		a.print();
 		filter.print();
 
+			
 	}
 	catch(length_error& ex) 
 	{
