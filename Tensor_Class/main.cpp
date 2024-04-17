@@ -6,7 +6,7 @@ using namespace std;
 void convolution(Ten3D a, Ten3D filter, Ten2D &result)
 {
 	int step = 2;
-	int testa, testb, testc, test, qwe = 0,qwe1=0;
+	float testa, testb, testc, test, qwe = 0,qwe1=0;
 	// Тут надо сделать алгоритм свертки по примеру с сайта https://russianblogs.com/article/291049586/
 	for (int y = 1; y < 7; y += step)
 	{
@@ -59,7 +59,7 @@ void convolution(Ten3D a, Ten3D filter, Ten2D &result)
 						break;
 					}
 					
-					result.set_object_of_matrix(i,j,result(i,j)+test);
+					result.set_object_of_matrix(i,j,(result(i,j)+test));
 					j++;
 					break;
 				}
@@ -76,7 +76,7 @@ int main()
 	setlocale(LC_ALL, "RUS");
 	try
 	{
-		Ten3D a(7, 7, 3, "a", 0);
+		Ten3D a(7, 7, 3, "a", '0');
 		a.set_object_of_matrix(0, 0, 0, 0); a.set_object_of_matrix(1, 0, 0, 0); a.set_object_of_matrix(2, 0, 0, 0); a.set_object_of_matrix(3, 0, 0, 0); a.set_object_of_matrix(4, 0, 0, 0); a.set_object_of_matrix(5, 0, 0, 0); a.set_object_of_matrix(6, 0, 0, 0);
 		a.set_object_of_matrix(0, 1, 0, 0); a.set_object_of_matrix(1, 1, 0, 0); a.set_object_of_matrix(2, 1, 0, 1); a.set_object_of_matrix(3, 1, 0, 1); a.set_object_of_matrix(4, 1, 0, 2); a.set_object_of_matrix(5, 1, 0, 2); a.set_object_of_matrix(6, 1, 0, 0);
 		a.set_object_of_matrix(0, 2, 0, 0); a.set_object_of_matrix(1, 2, 0, 0); a.set_object_of_matrix(2, 2, 0, 1); a.set_object_of_matrix(3, 2, 0, 1); a.set_object_of_matrix(4, 2, 0, 0); a.set_object_of_matrix(5, 2, 0, 0); a.set_object_of_matrix(6, 2, 0, 0);
