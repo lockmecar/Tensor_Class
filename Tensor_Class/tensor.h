@@ -58,7 +58,7 @@ public:
 
 	void ElemFunc(float (*func)(float));       // Элементарная функция над каждым элементом
 
-	float operator() (unsigned x, unsigned y); // Геттер для конкретного значения в матрице
+	float operator() (int x, int y); // Геттер для конкретного значения в матрице
 
 	std::vector<float> matrix_to_vector();
 

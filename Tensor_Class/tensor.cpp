@@ -42,7 +42,7 @@ void Ten2D::ElemFunc(float (*func)(float))
             this->matrix[y][x] = func(matrix[y][x]);
 }
 
-float Ten2D::operator()(unsigned y, unsigned x)
+float Ten2D::operator()(int x, int y)
 {
     return Ten2D::matrix[y][x];
 }
