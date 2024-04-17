@@ -1,12 +1,21 @@
-#include "tensor.h"
+п»ї#include "tensor.h"
 
 void Ten2D::print()
 {
+    std::cout << "\n\t--------";
+    for (int index = 0; index <= size(Ten2D::name) + 1; index++)
+        std::cout << "-";
+    std::cout << std::endl << "\t Ten2D " << "\"" << Ten2D::name << "\"" << std::endl;
+    std::cout << "\t--------";
+    for (int index = 0; index <= size(Ten2D::name) + 1; index++)
+        std::cout << "-";
     std::cout << std::endl;
+
     for (int y = 0; y < size_y; y++)
     {
+        std::cout << "\t";
         for (int x = 0; x < size_x; x++)
-            std::cout << "\t" << Ten2D::matrix[y][x];
+            std::cout << " " << Ten2D::matrix[y][x];
         std::cout << std::endl;
     }
     std::cout << std::endl;
@@ -40,7 +49,7 @@ float Ten2D::operator()(unsigned y, unsigned x)
 
 Ten2D& Ten2D::operator=(const Ten2D& b)
 {
-    if (b.size_x != size_x) throw(std::length_error("TensorErrorOp=: Попытка присвоить тензоры различной размерности"));
+    if (b.size_x != size_x) throw(std::length_error("TensorErrorOp=: РџРѕРїС‹С‚РєР° РїСЂРёСЃРІРѕРёС‚СЊ С‚РµРЅР·РѕСЂС‹ СЂР°Р·Р»РёС‡РЅРѕР№ СЂР°Р·РјРµСЂРЅРѕСЃС‚Рё"));
     for (int y = 0; y < size_y; y++)
         for (int x = 0; x < size_x; x++)
             if (&b != this)
@@ -62,7 +71,7 @@ std::vector<float> Ten2D::matrix_to_vector()
 
 Ten2D Ten2D::operator+(const Ten2D& b) const
 {
-    if ((b.size_x != size_x) || (b.size_y != size_y)) throw(std::length_error("TensorErrorOp+: Попытка сложить тензоры различной размерности"));
+    if ((b.size_x != size_x) || (b.size_y != size_y)) throw(std::length_error("TensorErrorOp+: РџРѕРїС‹С‚РєР° СЃР»РѕР¶РёС‚СЊ С‚РµРЅР·РѕСЂС‹ СЂР°Р·Р»РёС‡РЅРѕР№ СЂР°Р·РјРµСЂРЅРѕСЃС‚Рё"));
     Ten2D buf(*this);
     for (int y = 0; y < buf.size_y; y++)
         for (int x = 0; x < buf.size_x; x++)
@@ -73,7 +82,7 @@ Ten2D Ten2D::operator+(const Ten2D& b) const
 
 Ten2D& Ten2D::operator+=(const Ten2D& b)
 {
-    if ((b.size_x != size_x) || (b.size_y != size_y)) throw(std::length_error("TensorErrorOp+=: Попытка сложить тензоры различной размерности"));
+    if ((b.size_x != size_x) || (b.size_y != size_y)) throw(std::length_error("TensorErrorOp+=: РџРѕРїС‹С‚РєР° СЃР»РѕР¶РёС‚СЊ С‚РµРЅР·РѕСЂС‹ СЂР°Р·Р»РёС‡РЅРѕР№ СЂР°Р·РјРµСЂРЅРѕСЃС‚Рё"));
     for (int y = 0; y < this->size_y; y++)
         for (int x = 0; x < this->size_x; x++)
             this->matrix[y][x] += b.matrix[y][x];
@@ -83,7 +92,7 @@ Ten2D& Ten2D::operator+=(const Ten2D& b)
 
 Ten2D Ten2D::operator*(const Ten2D& b) const
 {
-    if (b.size_x != size_x) throw(std::length_error("TensorErrorOp*: Попытка умножить тензоры различной размерности"));
+    if (b.size_x != size_x) throw(std::length_error("TensorErrorOp*: РџРѕРїС‹С‚РєР° СѓРјРЅРѕР¶РёС‚СЊ С‚РµРЅР·РѕСЂС‹ СЂР°Р·Р»РёС‡РЅРѕР№ СЂР°Р·РјРµСЂРЅРѕСЃС‚Рё"));
     Ten2D buf(*this);
     for (int y = 0; y < buf.size_y; y++)
         for (int x = 0; x < b.size_x; x++)
@@ -98,7 +107,7 @@ Ten2D Ten2D::operator*(const Ten2D& b) const
 
 Ten2D& Ten2D::operator*= (const Ten2D& b)
 {
-    if (b.size_x != size_x) throw(std::length_error("TensorErrorOp*=: Попытка умножить тензоры различной размерности"));
+    if (b.size_x != size_x) throw(std::length_error("TensorErrorOp*=: РџРѕРїС‹С‚РєР° СѓРјРЅРѕР¶РёС‚СЊ С‚РµРЅР·РѕСЂС‹ СЂР°Р·Р»РёС‡РЅРѕР№ СЂР°Р·РјРµСЂРЅРѕСЃС‚Рё"));
     Ten2D buf(*this);
     for (int y = 0; y < buf.size_y; y++)
         for (int x = 0; x < b.size_x; x++)
@@ -195,7 +204,7 @@ void Ten2D::fileout16(std::string NameOfFile)
 
 Ten2D Ten2D::operator-(const Ten2D& b) const
 {
-    if (b.size_x != size_x) throw(std::length_error("TensorErrorOp-: Попытка отнять тензоры различной размерности"));
+    if (b.size_x != size_x) throw(std::length_error("TensorErrorOp-: РџРѕРїС‹С‚РєР° РѕС‚РЅСЏС‚СЊ С‚РµРЅР·РѕСЂС‹ СЂР°Р·Р»РёС‡РЅРѕР№ СЂР°Р·РјРµСЂРЅРѕСЃС‚Рё"));
     Ten2D t1(*this);
     for (int x = 0; x < size_x; x++)
         for (int y = 0; y < size_y; y++)
@@ -206,7 +215,7 @@ Ten2D Ten2D::operator-(const Ten2D& b) const
 
 Ten2D& Ten2D::operator-=(const Ten2D& b)
 {
-    if (b.size_x != size_x) throw(std::length_error("TensorErrorOp-=: Попытка отнять тензоры различной размерности"));
+    if (b.size_x != size_x) throw(std::length_error("TensorErrorOp-=: РџРѕРїС‹С‚РєР° РѕС‚РЅСЏС‚СЊ С‚РµРЅР·РѕСЂС‹ СЂР°Р·Р»РёС‡РЅРѕР№ СЂР°Р·РјРµСЂРЅРѕСЃС‚Рё"));
     for (int x = 0; x < this->size_x; x++)
         for (int y = 0; y < this->size_y; y++)
             this->matrix[y][x] -= b.matrix[y][x];
@@ -214,15 +223,8 @@ Ten2D& Ten2D::operator-=(const Ten2D& b)
     return *this;
 }
 
-size_t& Ten2D::count()
-{
-    static size_t c = 0;
-    return c;
-}
-
 Ten2D::Ten2D(int size_x, int size_y, std::string name, char mode)
 {
-    Ten2D::count()++;
     Ten2D::name = name;
     Ten2D::size_x = size_x;
     Ten2D::size_y = size_y;
@@ -237,7 +239,7 @@ Ten2D::Ten2D(int size_x, int size_y, std::string name, char mode)
             {
                 matrix[y][x] = 0;
             }
-        std::cout << "Object " << Ten2D::name << " created. " << "Mode: 0. " << "Count: " << Ten2D::count() << std::endl;
+        std::cout << "Ten2D \"" << Ten2D::name << "\" [NULL] created. Ten2D count: " << counter<Ten2D>::objects_alive << std::endl;
     }
     else if (mode == 'r')
     {
@@ -247,25 +249,23 @@ Ten2D::Ten2D(int size_x, int size_y, std::string name, char mode)
             {
                 matrix[y][x] = (static_cast <float> (rand()) / static_cast <float> (rand()));
             }
-        std::cout << "Object " << Ten2D::name << " created. " << "Mode: r. " << "Count: " << Ten2D::count() << std::endl;
+        std::cout << "Ten2D \"" << Ten2D::name << "\" [RANDOM] created. Ten2D count: " << counter<Ten2D>::objects_alive << std::endl;
     }
 }
 
 Ten2D::Ten2D(int size_x, int size_y, std::string name)
 {
-    Ten2D::count()++;
     Ten2D::name = name;
     Ten2D::size_x = size_x;
     Ten2D::size_y = size_y;
     Ten2D::matrix = new float* [size_y];
     for (int y = 0; y < size_y; y++)
         matrix[y] = new float[size_x];
-    std::cout << "Object " << Ten2D::name << " created. " << "Count: " << Ten2D::count() << std::endl;
+    std::cout << "Ten2D \"" << Ten2D::name << "\" [NO_MODE] created. Ten2D count: " << counter<Ten2D>::objects_alive << std::endl;
 }
 
 Ten2D::Ten2D(const Ten2D& copied_obj)
 {
-    Ten2D::count()++;
     Ten2D::name = copied_obj.name + "_copy";
     Ten2D::size_x = copied_obj.size_x;
     Ten2D::size_y = copied_obj.size_y;
@@ -279,16 +279,15 @@ Ten2D::Ten2D(const Ten2D& copied_obj)
             if (&copied_obj != this)
                 this->matrix[y][x] = copied_obj.matrix[y][x];
 
-    std::cout << "Object " << Ten2D::name << " created. " << "Count: " << Ten2D::count() << std::endl;
+    std::cout << "Ten2D \"" << Ten2D::name << "\" created. Ten2D count: " << counter<Ten2D>::objects_alive << std::endl;
 }
 
 Ten2D::~Ten2D()
 {
-    Ten2D::count()--;
     for (int y = 0; y < size_y; y++)
         delete[](Ten2D::matrix[y]);
     delete[](Ten2D::matrix);
-    std::cout << "Object " << Ten2D::name << " destroyed. " << "Count: " << Ten2D::count() << std::endl;
+    std::cout << "Ten2D \"" << Ten2D::name << "\" destroyed. Ten2D alive: " << counter<Ten2D>::objects_alive - 1 << std::endl;
 }
 
 
@@ -297,7 +296,6 @@ Ten2D::~Ten2D()
 
 Ten3D::Ten3D(int size_x, int size_y, int size_z, std::string name)
 {
-    Ten3D::count()++;
     Ten3D::name = name;
     Ten3D::size_x = size_x;
     Ten3D::size_y = size_y;
@@ -310,12 +308,11 @@ Ten3D::Ten3D(int size_x, int size_y, int size_z, std::string name)
             matrix[z][y] = new float[size_x];
     }
 
-    std::cout << "Object " << Ten3D::name << " created. " << "Count: " << Ten3D::count() << std::endl;
+    std::cout << "Ten3D \"" << Ten3D::name << "\" created. Ten3D count: " << counter<Ten3D>::objects_alive << std::endl;
 }
 
 Ten3D::Ten3D(const Ten3D& copied_obj)
 {
-    Ten3D::count()++;
     Ten3D::name = copied_obj.name + "_copy";
     Ten3D::size_x = copied_obj.size_x;
     Ten3D::size_y = copied_obj.size_y;
@@ -333,14 +330,13 @@ Ten3D::Ten3D(const Ten3D& copied_obj)
                 if (&copied_obj != this)
                     this->matrix[z][y][x] = copied_obj.matrix[z][y][x];
 
-    std::cout << "Object " << copied_obj.name << " copied. " << "New object neme: " << Ten3D::name << " Count: " << Ten3D::count() << std::endl;
+    std::cout << "Ten3D \"" << Ten3D::name << "\" created. Ten3D count: " << counter<Ten3D>::objects_alive << std::endl;
 }
 
 Ten3D::Ten3D(int size_x, int size_y, int size_z, std::string name, char mode)
 {
     int start = 0;
     int end = 3;
-    Ten3D::count()++;
     Ten3D::name = name;
     Ten3D::size_x = size_x;
     Ten3D::size_y = size_y;
@@ -359,7 +355,7 @@ Ten3D::Ten3D(int size_x, int size_y, int size_z, std::string name, char mode)
             for (int y = 0; y < size_y; y++)
                 for (int x = 0; x < size_x; x++)
                     matrix[z][y][x] = 0;
-        std::cout << "Object " << Ten3D::name << " created. " << "Mode: 0. " << "Count: " << Ten3D::count() << std::endl;
+        std::cout << "Ten3D \"" << Ten3D::name << "\" [NULL] created. Ten3D count: " << counter<Ten3D>::objects_alive << std::endl;
     }
     else if (mode == 'r')
     {
@@ -368,14 +364,21 @@ Ten3D::Ten3D(int size_x, int size_y, int size_z, std::string name, char mode)
             for (int y = 0; y < size_y; y++)
                 for (int x = 0; x < size_x; x++)
                     matrix[z][y][x] = (start + rand() % end);
-        std::cout << "Object " << Ten3D::name << " created. " << "Mode: r. " << "Count: " << Ten3D::count() << std::endl;
+        std::cout << "Ten3D \"" << Ten3D::name << "\" [RANDOM] created. Ten3D count: " << counter<Ten3D>::objects_alive << std::endl;
     }
 }
 
 void Ten3D::print()
 {
+    std::cout << "\n\t--------";
+    for (int index = 0; index <= size(Ten3D::name) + 1; index++)
+        std::cout << "-";
+    std::cout << std::endl << "\t Ten3D " << "\"" << Ten3D::name << "\"" << std::endl;
+    std::cout << "\t--------";
+    for (int index = 0; index <= size(Ten3D::name) + 1; index++)
+        std::cout << "-";
     std::cout << std::endl;
-    
+
     for (int z = 0; z < size_z; z++)
     {
         std::cout << "z: " << z << std::endl;
@@ -411,7 +414,6 @@ float Ten3D::operator()(unsigned x, unsigned y, unsigned z)
 
 Ten3D::~Ten3D()
 {
-    Ten3D::count()--;
     for (int z = 0; z < size_z; z++)
     {
         for (int y = 0; y < size_y; y++)
@@ -420,12 +422,12 @@ Ten3D::~Ten3D()
 
     }
     delete[](Ten3D::matrix);
-    std::cout << "Object " << Ten3D::name << " destroyed. " << "Count: " << Ten3D::count() << std::endl;
+    std::cout << "Ten3D \"" << Ten3D::name << "\" destroyed. Ten3D alive: " << counter<Ten3D>::objects_alive - 1 << std::endl;
 }
 
 Ten3D Ten3D::operator+(const Ten3D& b) const
 {
-    if (b.size_x != size_x or b.size_y != size_y or b.size_z != size_z) throw(std::length_error("TensorErrorOp+: Попытка сложить тензоры различной размерности"));
+    if (b.size_x != size_x or b.size_y != size_y or b.size_z != size_z) throw(std::length_error("TensorErrorOp+: РџРѕРїС‹С‚РєР° СЃР»РѕР¶РёС‚СЊ С‚РµРЅР·РѕСЂС‹ СЂР°Р·Р»РёС‡РЅРѕР№ СЂР°Р·РјРµСЂРЅРѕСЃС‚Рё"));
     
     Ten3D buf(*this);
     for (int z = 0; z < buf.size_z; z++)
@@ -437,7 +439,7 @@ Ten3D Ten3D::operator+(const Ten3D& b) const
 
 Ten3D& Ten3D::operator+=(const Ten3D& b)
 {
-    if (b.size_x != size_x or b.size_y != size_y or b.size_z != size_z) throw(std::length_error("TensorErrorOp+=: Попытка сложить тензоры различной размерности"));
+    if (b.size_x != size_x or b.size_y != size_y or b.size_z != size_z) throw(std::length_error("TensorErrorOp+=: РџРѕРїС‹С‚РєР° СЃР»РѕР¶РёС‚СЊ С‚РµРЅР·РѕСЂС‹ СЂР°Р·Р»РёС‡РЅРѕР№ СЂР°Р·РјРµСЂРЅРѕСЃС‚Рё"));
     for (int i = 0; i < this->size_x; i++)
         for (int j = 0; j < this->size_y; j++)
             for (int k = 0; k < this->size_z; k++)
@@ -447,7 +449,7 @@ Ten3D& Ten3D::operator+=(const Ten3D& b)
 
 Ten3D& Ten3D::operator=(const Ten3D& b)
 {
-    if (b.size_x != size_x or b.size_y != size_y or b.size_z != size_z) throw(std::length_error("TensorErrorOp=: Попытка присвоить тензоры различной размерности"));
+    if (b.size_x != size_x or b.size_y != size_y or b.size_z != size_z) throw(std::length_error("TensorErrorOp=: РџРѕРїС‹С‚РєР° РїСЂРёСЃРІРѕРёС‚СЊ С‚РµРЅР·РѕСЂС‹ СЂР°Р·Р»РёС‡РЅРѕР№ СЂР°Р·РјРµСЂРЅРѕСЃС‚Рё"));
     for (int z = 0; z < size_z; z++)
         for (int y = 0; y < size_y; y++)
             for (int x = 0; x < size_x; x++)
@@ -458,7 +460,7 @@ Ten3D& Ten3D::operator=(const Ten3D& b)
 
 Ten3D Ten3D::operator-(const Ten3D& b) const
 {
-    if (b.size_x != size_x or b.size_y != size_y or b.size_z != size_z) throw(std::length_error("TensorErrorOp-: Попытка отнять тензоры различной размерности"));
+    if (b.size_x != size_x or b.size_y != size_y or b.size_z != size_z) throw(std::length_error("TensorErrorOp-: РџРѕРїС‹С‚РєР° РѕС‚РЅСЏС‚СЊ С‚РµРЅР·РѕСЂС‹ СЂР°Р·Р»РёС‡РЅРѕР№ СЂР°Р·РјРµСЂРЅРѕСЃС‚Рё"));
     Ten3D t1(*this);
     for (int z = 0; z < size_z; z++)
         for (int y = 0; y < size_y; y++)
@@ -469,7 +471,7 @@ Ten3D Ten3D::operator-(const Ten3D& b) const
 
 Ten3D& Ten3D::operator-=(const Ten3D& b)
 {
-    if (b.size_x != size_x or b.size_y != size_y or b.size_z != size_z) throw(std::length_error("TensorErrorOp-=: Попытка отнять тензоры различной размерности"));
+    if (b.size_x != size_x or b.size_y != size_y or b.size_z != size_z) throw(std::length_error("TensorErrorOp-=: РџРѕРїС‹С‚РєР° РѕС‚РЅСЏС‚СЊ С‚РµРЅР·РѕСЂС‹ СЂР°Р·Р»РёС‡РЅРѕР№ СЂР°Р·РјРµСЂРЅРѕСЃС‚Рё"));
     for (int z = 0; z < size_z; z++)
         for (int y = 0; y < size_y; y++)
             for (int x = 0; x < size_x; x++)
@@ -479,7 +481,7 @@ Ten3D& Ten3D::operator-=(const Ten3D& b)
 
 Ten3D Ten3D::operator*(const Ten3D& b) const
 {
-    if (b.size_x != size_x or b.size_y!=size_y) throw(std::length_error("TensorErrorOp*: Попытка умножить тензоры различной размерности"));
+    if (b.size_x != size_x or b.size_y!=size_y) throw(std::length_error("TensorErrorOp*: РџРѕРїС‹С‚РєР° СѓРјРЅРѕР¶РёС‚СЊ С‚РµРЅР·РѕСЂС‹ СЂР°Р·Р»РёС‡РЅРѕР№ СЂР°Р·РјРµСЂРЅРѕСЃС‚Рё"));
     Ten3D buf(*this);
 
     for (int z = 0; z < size_z; z++)
@@ -496,7 +498,7 @@ Ten3D Ten3D::operator*(const Ten3D& b) const
 
 Ten3D& Ten3D::operator*=(const Ten3D& b)
 {
-    if (b.size_x != size_x or b.size_y != size_y) throw(std::length_error("TensorErrorOp*=: Попытка умножить тензоры различной размерности"));
+    if (b.size_x != size_x or b.size_y != size_y) throw(std::length_error("TensorErrorOp*=: РџРѕРїС‹С‚РєР° СѓРјРЅРѕР¶РёС‚СЊ С‚РµРЅР·РѕСЂС‹ СЂР°Р·Р»РёС‡РЅРѕР№ СЂР°Р·РјРµСЂРЅРѕСЃС‚Рё"));
     Ten3D buf(*this);
 
     for (int z = 0; z < size_z; z++)
@@ -520,12 +522,6 @@ Ten3D Ten3D::operator^(const float& b) const
             for (int x = 0; x < size_x; x++)
                 buf.set_object_of_matrix(x, y, z, pow(buf(x, y, z), b));
     return buf;
-}
-
-size_t& Ten3D::count()
-{
-    static size_t c = 0;
-    return c;
 }
 
 std::vector<float> Ten3D::matrix_to_vector()

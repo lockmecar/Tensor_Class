@@ -12,14 +12,39 @@ union ftoul
 	unsigned output;
 };
 
-class Ten2D
+template <typename T>
+struct counter
+{
+	counter()
+	{
+		objects_created++;
+		objects_alive++;
+	}
+
+	counter(const counter&)
+	{
+		objects_created++;
+		objects_alive++;
+	}
+
+protected:
+	virtual ~counter()
+	{
+		--objects_alive;
+	}
+	static int objects_created;
+	static int objects_alive;
+};
+template <typename T> int counter<T>::objects_created(0);
+template <typename T> int counter<T>::objects_alive(0);
+
+class Ten2D : counter<Ten2D>
 {
 private:
 	std::string name;// Имя объекта класса
 	int size_x;
 	int size_y;      // Размер массива
 	float** matrix;  // Двумерный динамический массив
-	size_t& count(); // Счетчик обьектов
 	int rand_seed = 1;
 
 public:
@@ -58,7 +83,7 @@ public:
 	void fileout16(std::string NameOfFile);
 };
 
-class Ten3D
+class Ten3D : counter<Ten3D>
 {
 private:
 	std::string name; // Имя объекта класса
@@ -66,7 +91,6 @@ private:
 	int size_y;       // Размер массива
 	int size_z;
 	float*** matrix;  // Трехмерный динамический массив
-	size_t& count();  // Счетчик обьектов
 	int rand_seed = 1;
 
 public:
