@@ -105,7 +105,7 @@ public:
 
 	std::vector<float> matrix_to_vector();
 
-	float operator() (unsigned x, unsigned y, unsigned z);
+	float operator() (int x, int y, int z);
 
 	Ten3D operator+ (const Ten3D& b) const;
 	Ten3D& operator+= (const Ten3D& b);
@@ -121,6 +121,7 @@ public:
 	Ten3D operator^ (const float& b) const;
 	Ten3D& operator^= (const float& b);
 
+	void convolution(Ten3D filter, Ten3D &result, int step);
 	void padd();
 
 	void fileout10(std::string NameOfFile);

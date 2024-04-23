@@ -407,7 +407,7 @@ void Ten3D::clear()
                 matrix[z][y][x] = 0;
 }
 
-float Ten3D::operator()(unsigned x, unsigned y, unsigned z)
+float Ten3D::operator()(int x, int y, int z)
 {
     return Ten3D::matrix[z][y][x];
 }
@@ -533,6 +533,42 @@ std::vector<float> Ten3D::matrix_to_vector()
             result.push_back(Ten3D::matrix[z][y][x]);
 
     return result;
+}
+
+void Ten3D::convolution(Ten3D filter, Ten3D &result, int step)
+{
+    int xr = 0, yr = 0;
+    float testa, testb, testc, test, qwe = 0, qwe1 = 0;
+    for (int y = 1; y < 7; y += step)
+    {
+        for (int x = 1; x < 7; x += step)
+        {
+
+            test = 0;
+            for (int z = 0; z < 3; z++)
+            {
+                testa = 0; testb = 0; testc = 0;
+
+                qwe1 = this->matrix[z][y - 1][x - 1]; qwe = filter(0, 0, z); testa += qwe1 * qwe;
+                qwe1 = this->matrix[z][y - 1][x];     qwe = filter(1, 0, z); testb += qwe1 * qwe;
+                qwe1 = this->matrix[z][y - 1][x + 1]; qwe = filter(2, 0, z); testc += qwe1 * qwe;
+
+                qwe1 = this->matrix[z][y][x - 1];     qwe = filter(0, 1, z); testa += qwe1 * qwe;
+                qwe1 = this->matrix[z][y][x];         qwe = filter(1, 1, z); testb += qwe1 * qwe;
+                qwe1 = this->matrix[z][y][x + 1];     qwe = filter(2, 1, z); testc += qwe1 * qwe;
+
+                qwe1 = this->matrix[z][y + 1][x - 1]; qwe = filter(0, 2, z); testa += qwe1 * qwe;
+                qwe1 = this->matrix[z][y + 1][x];     qwe = filter(1, 2, z); testb += qwe1 * qwe;
+                qwe1 = this->matrix[z][y + 1][x + 1]; qwe = filter(2, 2, z); testc += qwe1 * qwe;
+
+                test += testa + testb + testc;
+            }
+            result.set_object_of_matrix(xr, yr, 0, (result(xr, yr, 0) + test));
+            if (xr < 2)xr++;
+        }
+        xr = 0;
+        if (yr < 2)yr++;
+    }
 }
 
 void Ten3D::padd()
