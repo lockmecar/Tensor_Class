@@ -49,16 +49,15 @@ int main()
 	setlocale(LC_ALL, "RUS");
 	try
 	{
-		Ten3D a(7, 7, 3, "a", '0');
+		Ten3D data(7, 7, 3, "a", '0');
 		Ten3D filter(3, 3, 3, "filter", '0');
 		Ten3D result(3, 3, 1, "result", '0');
-		filldata(a, filter);
+		filldata(data, filter);
 
-		a.print();
+		data.print();
 		filter.print();
-		result.print();
 
-		a.convolution(filter, result, 2);
+		data.convolution(filter, result, 2);
 
 		result.print();
 	}

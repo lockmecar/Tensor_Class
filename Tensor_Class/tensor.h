@@ -121,7 +121,8 @@ public:
 	Ten3D operator^ (const float& b) const;
 	Ten3D& operator^= (const float& b);
 
-	void convolution(Ten3D filter, Ten3D &result, int step);
+	void convolutionHard(Ten3D &filter, Ten3D &result, int step);
+	void convolution(Ten3D& filter, Ten3D& result, int step);
 	void padd();
 
 	void fileout10(std::string NameOfFile);

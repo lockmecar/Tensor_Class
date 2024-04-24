@@ -535,7 +535,7 @@ std::vector<float> Ten3D::matrix_to_vector()
     return result;
 }
 
-void Ten3D::convolution(Ten3D filter, Ten3D &result, int step)
+void Ten3D::convolutionHard(Ten3D &filter, Ten3D &result, int step)
 {
     int xr = 0, yr = 0;
     float testa, testb, testc, test, qwe = 0, qwe1 = 0;
@@ -568,6 +568,49 @@ void Ten3D::convolution(Ten3D filter, Ten3D &result, int step)
         }
         xr = 0;
         if (yr < 2)yr++;
+    }
+}
+
+void Ten3D::convolution(Ten3D& filter, Ten3D& result, int step)
+{
+    if (this->size_z != filter.size_z)                                     throw(std::length_error("Ten3D_ConvErr_size_z: попытка свертки тензера с неравным количеством слоев"));
+    else if ((this->size_x - filter.size_x) % step != 0)                   throw(std::length_error("Ten3D_ConvErr_size_f: попытка свертки не подходящим по размеру фильтром"));
+    else if (((this->size_x - filter.size_x) / step) + 1 != result.size_x) throw(std::length_error("Ten3D_ConvErr_size_r: попытка свертки не подходящим по размеру результатом"));
+    int xr = 0, yr = 0, zr = 0;
+    int xd = 0, yd = 0, zd = 0;
+    int xf = 0, yf = 0, zf = 0;
+    float buf = 0;
+
+    while (yr < result.size_y)
+    {
+        while (xr < result.size_x)
+        {
+            while (zf < filter.size_z)
+            {
+                while (yf < filter.size_y)
+                {
+                    while (xf < filter.size_x)
+                    {
+                        buf += this->matrix[zf][yd + yf][xd + xf] * filter.matrix[zf][yf][xf];
+                        xf++;
+                    }
+                    xf = 0;
+                    yf++;
+                }
+                yf = 0;
+                zf++;
+            }
+            
+            result.matrix[zr][yr][xr] = buf;
+            buf = 0;
+            xr++;
+            xd += step;
+            xf = 0; yf = 0; zf = 0;
+        }
+        xr = 0;
+        xd = 0;
+        yr++;
+        yd += step;
     }
 }
 
