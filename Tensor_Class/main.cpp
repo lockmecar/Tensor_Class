@@ -5,10 +5,91 @@
 using namespace std;
 
 
+//это переделать и внедрить
+/*#include <iostream>
+#include <fstream>
+#include <vector>
+
+using namespace std;
+
+// Функция для чтения 4 байтов как числа
+int readInt(ifstream& file) {
+    unsigned char buffer[4];
+    file.read(reinterpret_cast<char*>(buffer), 4);
+    return (buffer[0] << 24) | (buffer[1] << 16) | (buffer[2] << 8) | buffer[3];
+}
+
+// Функция для отображения изображения в консоли
+void displayImage(const vector<unsigned char>& image, int rows, int cols) {
+    for (int i = 0; i < rows; ++i) {
+        for (int j = 0; j < cols; ++j) {
+            unsigned char pixel = image[i * cols + j];
+            // Отображаем пиксели как символы (чем темнее пиксель, тем более "плотный" символ)
+            if (pixel > 200)
+                cout << " ";
+            else if (pixel > 150)
+                cout << ".";
+            else if (pixel > 100)
+                cout << "*";
+            else if (pixel > 50)
+                cout << "#";
+            else
+                cout << "@";
+        }
+        cout << endl;
+    }
+}
+
+int main() {
+    setlocale(LC_ALL, "Russian");
+
+    ifstream file("t10k-images.idx3-ubyte", ios::binary);
+    
+    if (!file) {
+        cerr << "Не удалось открыть файл!" << endl;
+        return 1;
+    }
+
+    // Чтение заголовка файла
+    int magicNumber = readInt(file);
+    int numberOfImages = readInt(file);
+    int rows = readInt(file);
+    int cols = readInt(file);
+
+    cout << "Магическое число: " << magicNumber << endl;
+    cout << "Количество изображений: " << numberOfImages << endl;
+    cout << "Размер изображений: " << rows << "x" << cols << endl;
+
+    // Чтение изображений и их отображение
+    for (int i = 0; i < numberOfImages; ++i) {
+        vector<unsigned char> image(rows * cols);
+        file.read(reinterpret_cast<char*>(image.data()), rows * cols);
+
+        cout << "\nИзображение #" << i + 1 << ":" << endl;
+        displayImage(image, rows, cols);
+
+        // Ожидание нажатия клавиши для продолжения
+        cout << "Нажмите Enter для отображения следующего изображения..." << endl;
+        cin.get();
+    }
+
+    return 0;
+}
+*/
+
+//void test() 
+//{
+//	ifstream testoviy("t10k-images.idx3-ubyte");
+//	char buff[200];
+//	testoviy.getline(buff, 200);
+//	cout << buff<<endl;
+//}
+
 void filldata(Ten3D &a, Ten3D &filter)
 {
 	//для нормальной работы необходима возможность узнавать размер файла заранее
 	//так же из файла узнавать размер тензера
+
 	ifstream data1("data.txt");//условия для файла числа в одну строку без пробелов и переносов
 
 	if (data1) //добавить к файла заголовок и возможность читать его в коде
@@ -61,7 +142,8 @@ int main()
 	setlocale(LC_ALL, "RUS");
 	try
 	{
-		Ten3D data(7, 7, 3, "a", '0');
+		test();
+		/*Ten3D data(7, 7, 3, "a", '0');
 		Ten3D filter(3, 3, 3, "filter", '0');
 		Ten3D result(3, 3, 1, "result", '0');
 		filldata(data, filter);
@@ -71,7 +153,7 @@ int main()
 
 		data.convolution(filter, result, 2);
 
-		result.print();
+		result.print();*/
 	}
 	catch(length_error& ex) 
 	{
