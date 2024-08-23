@@ -292,8 +292,6 @@ Ten2D::~Ten2D()
 
 
 
-
-
 Ten3D::Ten3D(int size_x, int size_y, int size_z, std::string name)
 {
     Ten3D::name = name;
@@ -313,7 +311,7 @@ Ten3D::Ten3D(int size_x, int size_y, int size_z, std::string name)
 
 Ten3D::Ten3D(const Ten3D& copied_obj)
 {
-    Ten3D::name = copied_obj.name + "_copy";
+    Ten3D::name = copied_obj.name;
     Ten3D::size_x = copied_obj.size_x;
     Ten3D::size_y = copied_obj.size_y;
     Ten3D::size_z = copied_obj.size_z;
@@ -694,50 +692,50 @@ int readIntLabel(std::ifstream& fileLabel) {
     return z;
 }
 
-std::vector<Ten3D> Ten3D::importMNIST(std::string imageFile, std::string labelFile)
-{
-    std::vector<Ten3D> result;
-    std::ifstream fileImage(imageFile, std::ios::binary);
-    if (!fileImage) {
-        std::cerr << "Не удалось открыть файл!" << std::endl;
-        throw(std::length_error("")); // доделать исключение
-    }
-    std::ifstream fileLabel(labelFile, std::ios::binary);
-    if (!fileLabel) {
-        std::cerr << "Не удалось открыть файл!" << std::endl;
-        throw(std::length_error("")); // доделать исключение
-    }
-
-    int magicNumberImage = readIntImage(fileImage);
-    int magicNumberLabel = readIntLabel(fileLabel);
-    int numberOfImages = readIntImage(fileImage);
-    int rows = readIntImage(fileImage);
-    int cols = readIntImage(fileImage);
-
-    int q = 0;
-
-    for (int indexObj = 0; indexObj < numberOfImages; indexObj++)
-    {
-
-        result.push_back(Ten3D(rows, cols, 1, "name"));
-
-        char bufL[1];
-        fileLabel.read(bufL, 1);
-        listOfObjects[indexObj]->label = int(bufL - '0');
-
-        char buff_ten[784];
-        fileImage.read(buff_ten, 784);
-        for (int y = 0; y < cols; y++)
-            for (int x = 0; x < rows; x++)
-            {
-                listOfObjects[indexObj]->set_object_of_matrix(x, y, 0, float(buff_ten[q] - '0'));
-                q++;
-            }
-
-        listOfObjects[indexObj]->print();
-        std::cin.get();
-    }
-    q = 0;
-
-    return result;
-}
+//std::vector<Ten3D> Ten3D::importMNIST(std::string imageFile, std::string labelFile)
+//{
+//    std::vector<Ten3D> result;
+//    std::ifstream fileImage(imageFile, std::ios::binary);
+//    if (!fileImage) {
+//        std::cerr << "Не удалось открыть файл!" << std::endl;
+//        throw(std::length_error("")); // доделать исключение
+//    }
+//    std::ifstream fileLabel(labelFile, std::ios::binary);
+//    if (!fileLabel) {
+//        std::cerr << "Не удалось открыть файл!" << std::endl;
+//        throw(std::length_error("")); // доделать исключение
+//    }
+//
+//    int magicNumberImage = readIntImage(fileImage);
+//    int magicNumberLabel = readIntLabel(fileLabel);
+//    int numberOfImages = readIntImage(fileImage);
+//    int rows = readIntImage(fileImage);
+//    int cols = readIntImage(fileImage);
+//
+//    int q = 0;
+//
+//    for (int indexObj = 0; indexObj < numberOfImages; indexObj++)
+//    {
+//
+//        result.push_back(Ten3D(rows, cols, 1, "name"));
+//
+//        char bufL[1];
+//        fileLabel.read(bufL, 1);
+//        listOfObjects[indexObj].label = int(bufL - '0');
+//
+//        char buff_ten[784];
+//        fileImage.read(buff_ten, 784);
+//        for (int y = 0; y < cols; y++)
+//            for (int x = 0; x < rows; x++)
+//            {
+//                listOfObjects[indexObj].set_object_of_matrix(x, y, 0, float(buff_ten[q] - '0'));
+//                q++;
+//            }
+//
+//        listOfObjects[indexObj].print();
+//        std::cin.get();
+//    }
+//    q = 0;
+//
+//    return result;
+//}

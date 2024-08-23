@@ -93,7 +93,6 @@ private:
 	float*** matrix;  // Трехмерный динамический массив
 	int rand_seed = 1;
 	int label;
-	static std::vector<Ten3D*> listOfObjects;
 
 public:
 	Ten3D(int size_x, int size_y, int size_z, std::string name);            // Конструктор с указанием размера
@@ -130,6 +129,5 @@ public:
 	void fileout10(std::string NameOfFile);
 	void fileout16(std::string NameOfFile);
 
-	static std::vector<Ten3D> importMNIST(std::string ImageFile, std::string LabelFile);
 
 };

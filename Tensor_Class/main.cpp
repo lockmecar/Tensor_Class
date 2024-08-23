@@ -1,6 +1,7 @@
 #include <iostream>
 #include "tensor.h"
-#include "fstream"
+#include "dataset.h"
+#include <fstream>
 
 using namespace std;
 
@@ -142,7 +143,14 @@ int main()
 	setlocale(LC_ALL, "RUS");
 	try
 	{
-		test();
+		Dataset a("a");
+		Ten3D b(28, 28, 1, "name", '0');
+		a.addData(b);
+		a.addData(b);
+		a.addData(b);
+		a.printData();
+
+
 		/*Ten3D data(7, 7, 3, "a", '0');
 		Ten3D filter(3, 3, 3, "filter", '0');
 		Ten3D result(3, 3, 1, "result", '0');
