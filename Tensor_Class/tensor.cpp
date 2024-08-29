@@ -311,7 +311,7 @@ Ten3D::Ten3D(int size_x, int size_y, int size_z, std::string name)
 
 Ten3D::Ten3D(const Ten3D& copied_obj)
 {
-    Ten3D::name = copied_obj.name;
+    Ten3D::name = copied_obj.name + "_copy";
     Ten3D::size_x = copied_obj.size_x;
     Ten3D::size_y = copied_obj.size_y;
     Ten3D::size_z = copied_obj.size_z;
@@ -384,7 +384,18 @@ void Ten3D::print()
         {
             std::cout << "\t";
             for (int x = 0; x < size_x; x++)
-                std::cout << " " << matrix[z][y][x];
+            {
+                if (this->matrix[z][y][x] > 200)
+                    std::cout << " ";
+                else if (this->matrix[z][y][x] > 150)
+                    std::cout << ".";
+                else if (this->matrix[z][y][x] > 100)
+                    std::cout << "*";
+                else if (this->matrix[z][y][x] > 50)
+                    std::cout << "#";
+                else
+                    std::cout << "@";
+            }
             std::cout << std::endl;
         }
     }
@@ -403,6 +414,21 @@ void Ten3D::clear()
         for (int y = 0; y < size_y; y++)
             for (int x = 0; x < size_x; x++)
                 matrix[z][y][x] = 0;
+}
+
+void Ten3D::imgToMatrix(std::ifstream& file)
+{
+    unsigned char buffer[1];
+    for (int y = 0; y < this->size_y; y++)
+        for (int x = 0; x < this->size_x; x++)
+        {
+            file.read(reinterpret_cast<char*>(buffer), 1);
+            this->matrix[0][y][x] = float(buffer[0]);// ??????????????????
+        }
+
+
+
+
 }
 
 float Ten3D::operator()(int x, int y, int z)

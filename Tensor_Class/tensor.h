@@ -103,6 +103,7 @@ public:
 	void print();
 	void set_object_of_matrix(int x, int y, int z, float value);
 	void clear();
+	void imgToMatrix(std::ifstream& file);
 
 	std::vector<float> matrix_to_vector();
 
