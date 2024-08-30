@@ -9,6 +9,7 @@ public:
 	void printData();
 	void addData(Ten3D& value);
 	void importMnist(std::string img,std::string label);
+	
 
 
 private:
