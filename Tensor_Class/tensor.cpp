@@ -328,7 +328,7 @@ Ten3D::Ten3D(const Ten3D& copied_obj)
                 if (&copied_obj != this)
                     this->matrix[z][y][x] = copied_obj.matrix[z][y][x];
 
-    std::cout << "Ten3D \"" << Ten3D::name << "\" created. Ten3D count: " << counter<Ten3D>::objects_alive << std::endl;
+    //std::cout << "Ten3D \"" << Ten3D::name << "\" created. Ten3D count: " << counter<Ten3D>::objects_alive << std::endl;
 }
 
 Ten3D::Ten3D(int size_x, int size_y, int size_z, std::string name, char mode)
@@ -446,7 +446,7 @@ Ten3D::~Ten3D()
 
     }
     delete[](Ten3D::matrix);
-    std::cout << "Ten3D \"" << Ten3D::name << "\" destroyed. Ten3D alive: " << counter<Ten3D>::objects_alive - 1 << std::endl;
+    //std::cout << "Ten3D \"" << Ten3D::name << "\" destroyed. Ten3D alive: " << counter<Ten3D>::objects_alive - 1 << std::endl;
 }
 
 Ten3D Ten3D::operator+(const Ten3D& b) const

@@ -92,7 +92,6 @@ private:
 	int size_z;
 	float*** matrix;  // Трехмерный динамический массив
 	int rand_seed = 1;
-	int label;
 
 public:
 	Ten3D(int size_x, int size_y, int size_z, std::string name);            // Конструктор с указанием размера

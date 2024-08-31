@@ -63,10 +63,6 @@ int main()
 	{
 		Dataset A("name");
 		A.importMnist("t10k-images.idx3-ubyte", "t10k-labels.idx1-ubyte");
-		//A.printData(); 
-		
-
-
 
 	}
 	catch(length_error& ex) 

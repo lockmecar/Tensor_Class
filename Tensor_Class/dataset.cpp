@@ -48,23 +48,17 @@ void Dataset::importMnist(std::string img, std::string label)
 
     this->img.reserve(numberOfImagesImg);
     this->label.reserve(numberOfImagesLabel);
-    Ten3D buf(rows, cols, 1, "aboba");
 
-    
+    Ten3D buf(rows, cols, 1, "aboba");
 
     for (int i = 0; i < numberOfImagesImg; i++)
     {
         buf.imgToMatrix(imgF);
         this->img.push_back(buf);
-        this->img[i].print();
 
         unsigned char buffer[1];
         labelF.read(reinterpret_cast<char*>(buffer), 1);
         this->label.push_back(int(buffer[0]));
-        std::cout << this->label[i] << std::endl;
     }
-
-    
-
-
+    std::cout << "Импорт MNIST завершен успешно." << std::endl;
 }

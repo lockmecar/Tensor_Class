@@ -10,8 +10,6 @@ public:
 	void addData(Ten3D& value);
 	void importMnist(std::string img,std::string label);
 	
-
-
 private:
 	std::vector<Ten3D> img;
 	std::vector<int> label;
