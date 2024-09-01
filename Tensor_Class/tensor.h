@@ -99,7 +99,7 @@ public:
 	Ten3D(int size_x, int size_y, int size_z, std::string name, char mode); // Конструктор с двумя режимами ('0' - заполнит нулями, 'r' - заполнит рандомами)
 	~Ten3D();
 
-	void print();
+	void print(char mode);
 	void set_object_of_matrix(int x, int y, int z, float value);
 	void clear();
 	void imgToMatrix(std::ifstream& file);

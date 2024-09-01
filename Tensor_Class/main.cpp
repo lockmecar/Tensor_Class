@@ -3,6 +3,11 @@
 #include "dataset.h"
 #include <fstream>
 
+/*Полезные ссылки
+https://habr.com/ru/articles/514372/
+
+
+*/
 using namespace std;
 
 void filldata(Ten3D &a, Ten3D &filter)
@@ -63,6 +68,7 @@ int main()
 	{
 		Dataset A("name");
 		A.importMnist("t10k-images.idx3-ubyte", "t10k-labels.idx1-ubyte");
+		A.printData('z');
 
 	}
 	catch(length_error& ex) 

@@ -5,12 +5,18 @@ Dataset::Dataset(std::string name)
 	this->name = name;
 }
 
-void Dataset::printData()
+void Dataset::printData(char mode)
 {
-	for (int i = 0; i < img.size(); i++)
-	{
-		this->img[i].print();
-	}
+    if (mode=='n')
+    {
+        for (int i = 0; i < img.size(); i++)
+            this->img[i].print('n');
+    }
+    else if (mode=='z') 
+    {
+        for (int i = 0; i < img.size(); i++)
+            this->img[i].print('z');
+    }
 }
 
 void Dataset::addData(Ten3D& value)

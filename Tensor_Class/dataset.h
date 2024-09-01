@@ -6,7 +6,7 @@ class Dataset
 public:
 	Dataset(std::string name);
 
-	void printData();
+	void printData(char mode);
 	void addData(Ten3D& value);
 	void importMnist(std::string img,std::string label);
 	

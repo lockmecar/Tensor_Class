@@ -366,41 +366,69 @@ Ten3D::Ten3D(int size_x, int size_y, int size_z, std::string name, char mode)
     }
 }
 
-void Ten3D::print()
+void Ten3D::print(char mode)
 {
-    std::cout << "\n\t--------";
-    for (int index = 0; index <= size(Ten3D::name) + 1; index++)
-        std::cout << "-";
-    std::cout << std::endl << "\t Ten3D " << "\"" << Ten3D::name << "\"" << std::endl;
-    std::cout << "\t--------";
-    for (int index = 0; index <= size(Ten3D::name) + 1; index++)
-        std::cout << "-";
-    std::cout << std::endl;
-
-    for (int z = 0; z < size_z; z++)
+    if (mode == 'n') 
     {
-        std::cout << "z: " << z << std::endl;
-        for (int y = 0; y < size_y; y++)
-        {
-            std::cout << "\t";
-            for (int x = 0; x < size_x; x++)
-            {
-                if (this->matrix[z][y][x] > 200)
-                    std::cout << " ";
-                else if (this->matrix[z][y][x] > 150)
-                    std::cout << ".";
-                else if (this->matrix[z][y][x] > 100)
-                    std::cout << "*";
-                else if (this->matrix[z][y][x] > 50)
-                    std::cout << "#";
-                else
-                    std::cout << "@";
-            }
-            std::cout << std::endl;
-        }
-    }
+        std::cout << "\n\t--------";
+        for (int index = 0; index <= size(Ten3D::name) + 1; index++)
+            std::cout << "-";
+        std::cout << std::endl << "\t Ten3D " << "\"" << Ten3D::name << "\"" << std::endl;
+        std::cout << "\t--------";
+        for (int index = 0; index <= size(Ten3D::name) + 1; index++)
+            std::cout << "-";
+        std::cout << std::endl;
 
-    std::cout << std::endl;
+        for (int z = 0; z < size_z; z++)
+        {
+            std::cout << "z: " << z << std::endl;
+            for (int y = 0; y < size_y; y++)
+            {
+                std::cout << "\t";
+                for (int x = 0; x < size_x; x++)
+                    std::cout << this->matrix[z][y][x] << " ";
+                std::cout << std::endl;
+            }
+        }
+
+        std::cout << std::endl;
+    }
+    else if(mode=='z')
+    {
+        std::cout << "\n\t{--------";
+        for (int index = 0; index <= size(Ten3D::name) + 1; index++)
+            std::cout << "-";
+        std::cout << std::endl << "\t Ten3D " << "\"" << Ten3D::name << "\"" << std::endl;
+        std::cout << "\t--------";
+        for (int index = 0; index <= size(Ten3D::name) + 1; index++)
+            std::cout << "-";
+        std::cout << std::endl;
+
+        for (int z = 0; z < size_z; z++)
+        {
+            std::cout << "z: " << z << std::endl;
+            for (int y = 0; y < size_y; y++)
+            {
+                std::cout << "\t";
+                for (int x = 0; x < size_x; x++)
+                {
+                    if (this->matrix[z][y][x] > 200)
+                        std::cout << " ";
+                    else if (this->matrix[z][y][x] > 150)
+                        std::cout << ".";
+                    else if (this->matrix[z][y][x] > 100)
+                        std::cout << "*";
+                    else if (this->matrix[z][y][x] > 50)
+                        std::cout << "#";
+                    else
+                        std::cout << "@";
+                }
+                std::cout << std::endl;
+            }
+        }
+
+        std::cout << std::endl;
+    }
 }
 
 void Ten3D::set_object_of_matrix(int x, int y, int z, float value)
