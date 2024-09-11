@@ -24,12 +24,18 @@
     <ClCompile Include="dataset.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="Layer.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tensor.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="dataset.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Layer.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

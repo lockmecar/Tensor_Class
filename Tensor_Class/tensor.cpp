@@ -444,6 +444,21 @@ void Ten3D::clear()
                 matrix[z][y][x] = 0;
 }
 
+int Ten3D::getSizeX()
+{
+    return this->size_x;
+}
+
+int Ten3D::getSizeY()
+{
+    return this->size_y;
+}
+
+int Ten3D::getSizeZ()
+{
+    return this->size_z;
+}
+
 void Ten3D::imgToMatrix(std::ifstream& file)
 {
     unsigned char buffer[1];

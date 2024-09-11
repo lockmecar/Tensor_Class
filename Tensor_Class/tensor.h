@@ -102,6 +102,9 @@ public:
 	void print(char mode);
 	void set_object_of_matrix(int x, int y, int z, float value);
 	void clear();
+	int getSizeX();
+	int getSizeY();
+	int getSizeZ();
 	void imgToMatrix(std::ifstream& file);
 
 	std::vector<float> matrix_to_vector();
