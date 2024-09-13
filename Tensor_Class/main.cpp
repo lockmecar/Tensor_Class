@@ -1,6 +1,7 @@
 #include <iostream>
 #include "tensor.h"
 #include "dataset.h"
+#include "Layer.h"
 #include <fstream>
 
 /*Полезные ссылки
@@ -66,10 +67,16 @@ int main()
 	setlocale(LC_ALL, "RUS");
 	try
 	{
-		Dataset A("name");
-		A.importMnist("t10k-images.idx3-ubyte", "t10k-labels.idx1-ubyte");
-		A.printData('z');
+		//Dataset A("name");
+		//A.importMnist("t10k-images.idx3-ubyte", "t10k-labels.idx1-ubyte");
+		//printData('z');
 
+		Ten3D B(5, 5, 1, "b", 'r');//z не может быть 0(ошибки)
+
+		InLayer C(B, 'n');
+
+		C.printNeurones();
+		
 	}
 	catch(length_error& ex) 
 	{

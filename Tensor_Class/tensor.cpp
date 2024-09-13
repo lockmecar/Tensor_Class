@@ -294,6 +294,7 @@ Ten2D::~Ten2D()
 
 Ten3D::Ten3D(int size_x, int size_y, int size_z, std::string name)
 {
+    if (size_x < 1 || size_y < 1 || size_z < 1) { throw std::invalid_argument("Dimension values can't be less 1"); }
     Ten3D::name = name;
     Ten3D::size_x = size_x;
     Ten3D::size_y = size_y;
@@ -469,9 +470,6 @@ void Ten3D::imgToMatrix(std::ifstream& file)
             this->matrix[0][y][x] = float(buffer[0]);// ??????????????????
         }
 
-
-
-
 }
 
 float Ten3D::operator()(int x, int y, int z)
@@ -594,10 +592,11 @@ Ten3D Ten3D::operator^(const float& b) const
 std::vector<float> Ten3D::matrix_to_vector()
 {
     std::vector<float> result;
-    for (int z = 0; z < size_z; z++)
+    
+    for (int z = 0; z < size_z; z++)//если что исправить (ноль в размере матрицы бессмысленный)
         for (int y = 0; y < size_y; y++)
             for (int x = 0; x < size_x; x++)
-            result.push_back(Ten3D::matrix[z][y][x]);
+                result.push_back(Ten3D::matrix[z][y][x]);
 
     return result;
 }
