@@ -74,9 +74,9 @@ int main()
 		Ten3D B(5, 5, 1, "b", 'r');//z не может быть 0(ошибки)
 
 		InLayer C(B, 'n');
-
-		C.printNeurones();
-		
+		C.genWeights(0,1);
+		C.printWei();
+		//C.printNeurones();
 	}
 	catch(length_error& ex) 
 	{

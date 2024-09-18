@@ -5,6 +5,7 @@
 #include <cstdlib>
 #include <fstream>
 #include <vector>
+#include <random>
 
 union ftoul
 {

@@ -22,12 +22,11 @@ class Layer
 {
 public:
 	virtual void printNeurones() = 0;
-	//virtual std::vector<float> getNeurones() = 0;
-	virtual void setNeurones(std::vector<float>) = 0;//?
+	virtual std::vector<float> getNeurones() = 0;
+	//virtual void setNeurones(std::vector<float>) = 0;//?
 
 private:
 	std::vector<float> listNeurones;
-	
 };
 
 
@@ -36,37 +35,43 @@ class InLayer : Layer
 public:
 	InLayer(Ten3D A,char mode);
 	void printNeurones() override;
-	//std::vector<float> getNeurones() override;
+	void printWei();
+	std::vector<float> getNeurones() override;
 	int getSize();
-	void setNeurones(std::vector<float>) override;
-
+	void genWeights(float matO,float md);
 
 private:
 	int size;
 	std::vector<float> listNeurones;
-	void conv();
+	std::vector<float> weights;//z
+	//void conv()//??????????
 };
 
 
-class OutLayer : Layer
-{
-public:
-	void printNeurones() override;
-	//std::vector<float> getNeurones() override;
-	void setNeurones(std::vector<float>) override;
-
-private:
-	std::vector<float> listNeurones;
-};
-
-
-class HideLayer : Layer
-{
-public:
-	void printNeurones() override;
-	//std::vector<float> getNeurones() override;
-	void setNeurones(std::vector<float>) override;
-
-private:
-	std::vector<float> listNeurones;
-};
+//class OutLayer : Layer
+//{
+//public:
+//	void printNeurones() override;
+//	std::vector<float> getNeurones() override;
+//		std::vector<float> weights;
+//	
+//
+//private:
+//	std::vector<float> listNeurones;
+//	std::vector<float> weights;
+//	int size;
+//};
+//
+//
+//class HideLayer : Layer
+//{
+//public:
+//	void printNeurones() override;
+//	std::vector<float> getNeurones() override;
+//
+//
+//private:
+//	std::vector<float> listNeurones;
+//	std::vector<float> weights;
+//	int size;
+//};
