@@ -20,26 +20,16 @@
 */
 class Layer
 {
+
 public:
-	virtual void printNeurones() = 0;
-	virtual std::vector<float> getNeurones() = 0;
-	//virtual void setNeurones(std::vector<float>) = 0;//?
-
-private:
-	std::vector<float> listNeurones;
-};
-
-
-class InLayer : Layer
-{
-public:
-	InLayer(Ten3D A,char mode);
-	void printNeurones() override;
+	Layer(Ten3D A,char mode);
+	void printNeurones() ;
 	void printWei();
-	std::vector<float> getNeurones() override;
+	std::vector<float> getNeurones();
 	int getSize();
 	void genWeights(float matO,float md);
-
+	void setSize(unsigned num);
+	
 private:
 	int size;
 	std::vector<float> listNeurones;
@@ -48,30 +38,58 @@ private:
 };
 
 
+//class InLayer : Layer
+//{
+//public:
+//	InLayer(Ten3D A,char mode);
+//	void printNeurones() override;
+//	void printWei();
+//	std::vector<float> getNeurones() override;
+//	int getSize();
+//	void genWeights(float matO,float md);
+//	void setSize(unsigned num) override;
+//
+//private:
+//	int size;
+//	std::vector<float> listNeurones;
+//	std::vector<float> weights;//z
+//	//void conv()//??????????
+//};
+//
+
 //class OutLayer : Layer
 //{
 //public:
+//	OutLayer(Ten3D A, char mode);
 //	void printNeurones() override;
+//	void printWei();
 //	std::vector<float> getNeurones() override;
-//		std::vector<float> weights;
-//	
+//	int getSize();
+//	void genWeights(float matO, float md);
+//	void setSize(unsigned num) override;
 //
 //private:
+//	int size;
 //	std::vector<float> listNeurones;
 //	std::vector<float> weights;
-//	int size;
+//	//conv
 //};
 //
 //
-//class HideLayer : Layer
+//class hideLayer : Layer
 //{
 //public:
+//	hideLayer(Ten3D A, char mode);
 //	void printNeurones() override;
+//	void printWei();
 //	std::vector<float> getNeurones() override;
-//
+//	int getSize();
+//	void genWeights(float matO, float md);
+//	void setSize(unsigned num) override;
 //
 //private:
+//	int size;
 //	std::vector<float> listNeurones;
 //	std::vector<float> weights;
-//	int size;
+//	//conv
 //};

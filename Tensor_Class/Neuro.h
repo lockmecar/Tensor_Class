@@ -1,10 +1,15 @@
 #pragma once
 #include "tensor.h"
+#include "Layer.h"
 
 class Neuro
 {
-	Neuro(std::vector <float> Layers);
+public:
+	Neuro(unsigned numLayers, std::vector<unsigned> numNeurones);
 
+
+private:
+	std::vector<Layer> A;
 
 
 };

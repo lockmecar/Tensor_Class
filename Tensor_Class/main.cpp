@@ -2,6 +2,7 @@
 #include "tensor.h"
 #include "dataset.h"
 #include "Layer.h"
+#include "Neuro.h"
 #include <fstream>
 
 /*Полезные ссылки
