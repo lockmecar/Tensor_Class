@@ -396,7 +396,7 @@ void Ten3D::print(char mode)
     }
     else if(mode=='z')
     {
-        std::cout << "\n\t{--------";
+        std::cout << "\n\t---------";
         for (int index = 0; index <= size(Ten3D::name) + 1; index++)
             std::cout << "-";
         std::cout << std::endl << "\t Ten3D " << "\"" << Ten3D::name << "\"" << std::endl;
