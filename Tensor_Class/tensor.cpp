@@ -291,7 +291,6 @@ Ten2D::~Ten2D()
 }
 
 
-
 Ten3D::Ten3D(int size_x, int size_y, int size_z, std::string name)
 {
     if (size_x < 1 || size_y < 1 || size_z < 1) { throw std::invalid_argument("Dimension values can't be less 1"); }
@@ -589,6 +588,7 @@ Ten3D Ten3D::operator^(const float& b) const
     return buf;
 }
 
+
 std::vector<float> Ten3D::matrix_to_vector()
 {
     std::vector<float> result;
@@ -600,6 +600,20 @@ std::vector<float> Ten3D::matrix_to_vector()
 
     return result;
 }
+
+
+std::vector<float> Ten3D::matrix_to_vector(int i_z)
+{
+    std::vector<float> result;
+
+    for (int z = 0; z < z; i_z++)//если что исправить (ноль в размере матрицы бессмысленный)
+        for (int y = 0; y < y; size_y++)
+            for (int x = 0; x < size_x; x++)
+                result.push_back(Ten3D::matrix[z][y][x]);
+
+    return result;
+}
+
 
 void Ten3D::convolutionHard(Ten3D &filter, Ten3D &result, int step)
 {

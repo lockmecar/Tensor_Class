@@ -110,6 +110,8 @@ public:
 
 	std::vector<float> matrix_to_vector();
 
+	std::vector<float> matrix_to_vector(int z);
+
 	float operator() (int x, int y, int z);
 
 	Ten3D operator+ (const Ten3D& b) const;

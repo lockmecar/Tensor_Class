@@ -10,30 +10,28 @@
 	6) функция потерь (узнать подробнее)
 	7) придумать как в колбасе использовать конвалюшн
 	8) обратный ход  
-*/
-/*
+
 Нужно
 	реализовать слои 
 	при перемещении между слоями нужно реализовать функции 
 	результат функции в новый входной слой и тд до тех пор пока не будет последний слой 
-
 */
 class Layer
 {
 
 public:
-	Layer(Ten3D A,char mode);
-	void printNeurones() ;
-	void printWei();
+	Layer(Ten3D A,int z);
+	void printNeurones();
+	//void printWei();
 	std::vector<float> getNeurones();
 	int getSize();
-	void genWeights(float matO,float md);
+	//void genWeights(float matO,float md);
 	void setSize(unsigned num);
 	
 private:
 	int size;
 	std::vector<float> listNeurones;
-	std::vector<float> weights;//z
+	//std::vector<float> weights;//z
 	//void conv()//??????????
 };
 
