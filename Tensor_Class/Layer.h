@@ -21,6 +21,7 @@ class Layer
 
 public:
 	Layer(Ten3D A,int z);
+	Layer(int num);
 	void printNeurones();
 	//void printWei();
 	std::vector<float> getNeurones();

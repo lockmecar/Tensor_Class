@@ -9,6 +9,11 @@ Layer::Layer(Ten3D A, int z)
 
 }
 
+Layer::Layer(int numLayers)
+{
+	listNeurones.resize(numLayers);
+}
+
 
 void Layer::printNeurones()
 {
