@@ -103,7 +103,7 @@ int main()
 
 		//Layer C(B, 'n');
 		//C.printA();
-		C.step(weights);
+		C.step(weights);//исправить ошибку в лаере спп 35 стр
 		
 	}
 	catch(length_error& ex) 

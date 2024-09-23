@@ -47,7 +47,7 @@ void Neuro::straight(int index_1, int index_2, std::vector<Layer> A, std::vector
 	for (int i = 0; i < A[index_2].getSize(); i++) {
 		float sum = 0;
 		for (int j = 0; j < A[index_1].getSize(); j++)
-			sum += A[index_1].getNeurones(1) * weights[i * A[index_1].getSize() + j];
+			sum += A[index_1].getNeurones(j) * weights[i * A[index_1].getSize() + j];
 		A[index_2].setNeurones(i, func(sum));
 	}
 }
