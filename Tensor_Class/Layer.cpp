@@ -1,7 +1,7 @@
 #include "Layer.h"
 
 
-Layer::Layer(Ten3D A, int z)
+Layer::Layer(Ten3D A, int z)//исправить имена
 {
 	Layer::size = A.getSizeX() * A.getSizeY();
 	listNeurones.resize(size);
@@ -11,6 +11,7 @@ Layer::Layer(Ten3D A, int z)
 
 Layer::Layer(int numLayers)
 {
+	Layer::size = numLayers;
 	listNeurones.resize(numLayers);
 }
 
@@ -26,7 +27,17 @@ void Layer::printNeurones()
 
 std::vector<float> Layer::getNeurones()
 {
-	return this->listNeurones;
+	return listNeurones;
+}
+
+float Layer::getNeurones(int index)
+{
+	return listNeurones[index];
+}
+
+void Layer::setNeurones(int index,float b)//исправить имена
+{
+	listNeurones[index] = b;
 }
 
 

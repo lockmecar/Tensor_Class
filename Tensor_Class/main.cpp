@@ -73,9 +73,10 @@ int main()
 		//printData('z');
 
 		Ten3D B(5, 5, 1, "b", 'r');//z не может быть 0(ошибки)
-		Neuro C(4, { 3,3,3,3 },B);
+		Neuro C({ 25,25,25 },B);
 		//Layer C(B, 'n');
 		C.printA();
+		//C.step(,func)
 	}
 	catch(length_error& ex) 
 	{

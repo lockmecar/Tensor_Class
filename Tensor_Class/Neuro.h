@@ -5,14 +5,19 @@
 class Neuro
 {
 public:
-	Neuro(unsigned numLayers, std::vector<unsigned> numNeurones, Ten3D ten);
-	void step(std::vector<float> weights, float func);
+	Neuro(std::vector<unsigned> numNeurones, Ten3D ten);
 	float func(float e);
-	//void printA();
+	void step(std::vector<float> weights, float func(float e));//шаг от слоя к слою
+	void printA();
 
 private:
-	std::vector<Layer*> A;
+	std::vector<Layer> A;
 	std::vector<float> weights;
-	Layer* straight1;	//прямой ход
+	void straight( int index_1, int index_2, std::vector<Layer> A, std::vector<float> weights, float func(float e));
+
+
+
+
+
 };
 
