@@ -32,7 +32,7 @@ std::vector<float> Layer::getNeurones()
 
 float Layer::getNeurones(int index)
 {
-	return listNeurones[index];
+	return listNeurones[index];// здесь вылетает ошибка 
 }
 
 void Layer::setNeurones(int index,float b)//исправить имена
