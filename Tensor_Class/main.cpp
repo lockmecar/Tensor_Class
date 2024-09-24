@@ -7,7 +7,7 @@
 
 /*Полезные ссылки
 https://habr.com/ru/articles/514372/
-
+https://www.youtube.com/playlist?list=PL3BR09unfgciJ1_K_E914nohpiOiHnpsK //ютуб на чувака
 
 */
 using namespace std;
@@ -80,7 +80,6 @@ void printWei(std::vector<float>& weights)
 }
 
 
- 
 int main()
 {
 	setlocale(LC_ALL, "RUS");
@@ -99,12 +98,12 @@ int main()
 
 		genWeights(weights,27,0, 1);
 
-		printWei(weights);
+		//printWei(weights);
 
 		//Layer C(B, 'n');
-		//C.printA();
+		C.printA();
 		C.step(weights);//исправить ошибку в лаере спп 35 стр
-		
+		C.printA();
 	}
 	catch(length_error& ex) 
 	{

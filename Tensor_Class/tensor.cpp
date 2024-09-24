@@ -606,8 +606,8 @@ std::vector<float> Ten3D::matrix_to_vector(int i_z)
 {
     std::vector<float> result;
 
-    for (int z = 0; z < z; i_z++)//если что исправить (ноль в размере матрицы бессмысленный)
-        for (int y = 0; y < y; size_y++)
+    for (int z = 0; z < i_z; z++)//если что исправить (ноль в размере матрицы бессмысленный)
+        for (int y = 0; y < size_y; y++)
             for (int x = 0; x < size_x; x++)
                 result.push_back(Ten3D::matrix[z][y][x]);
 

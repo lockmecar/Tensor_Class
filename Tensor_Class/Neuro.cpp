@@ -38,7 +38,8 @@ void Neuro::printA()
 {
 	for(int i=0;i<A.size();i++)
 	{
-		std::cout << A[i].getSize() << std::endl;
+		for(int j=0;j<A[i].getSize();j++)
+			std::cout << A[i].getNeurones(j) << std::endl;
 	}
 }
 
