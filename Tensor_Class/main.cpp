@@ -10,6 +10,20 @@ https://habr.com/ru/articles/514372/
 https://www.youtube.com/playlist?list=PL3BR09unfgciJ1_K_E914nohpiOiHnpsK //ютуб на чувака
 
 */
+
+/*
+Идеи
+	1) возможно использовать ссылки в функции вместо векторов и классов (будет быстрее)
+	2) размерность вх данных и вых д.??
+	5) Flat ?
+	6) функция потерь (узнать подробнее)
+	7) придумать как в колбасе использовать конвалюшн
+	8) обратный ход
+Нужно
+	при перемещении между слоями нужно реализовать функции
+	результат функции в новый входной слой и тд до тех пор пока не будет последний слой
+*/
+
 using namespace std;
 
 void filldata(Ten3D &a, Ten3D &filter)
@@ -63,23 +77,6 @@ void filldata(Ten3D &a, Ten3D &filter)
 }
 
 
-void genWeights(std::vector<float>& weights,int size,float matO, float md)
-{
-
-	std::default_random_engine generator;
-	std::normal_distribution<double> distribution(matO, md);
-	for (int i = 0; i < size; i++) //iter????
-		weights.push_back(distribution(generator));
-}
-
-
-void printWei(std::vector<float>& weights)
-{
-	for (int i = 0; i < weights.size(); i++)
-		std::cout << weights[i] << std::endl;
-}
-
-
 int main()
 {
 	setlocale(LC_ALL, "RUS");
@@ -91,18 +88,16 @@ int main()
 
 		Ten3D B(3, 3, 1, "b", 'r');//z не может быть 0(ошибки)
 		Neuro C({ 9,9,9 }, B);
-		
-		std::vector<float> weights;
 
-		weights.reserve(27);
+		//C.weights.reserve(27);
 
-		genWeights(weights,27,0, 1);
+		C.generWeights(729, 0, 1);
 
 		//printWei(weights);
 
-		//Layer C(B, 'n');
 		C.printA();
-		C.step(weights);//исправить ошибку в лаере спп 35 стр
+		C.step();//исправить ошибку в лаере спп 35 стр
+		std::cout << std::endl << std::endl;
 		C.printA();
 	}
 	catch(length_error& ex) 
