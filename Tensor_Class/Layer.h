@@ -3,21 +3,16 @@
 
 class Layer
 {
-
 public:
-	Layer(Ten3D A,int z);//исправить имена
-	Layer(int num);
+	Layer(int in, int out); //конструктор принимает на вход кол-во входных и выходных нейронов
 
-	void printNeurones();
-	std::vector<float> getNeurones();
-	float getNeurones(int index);
-	void setNeurones(int index, float b);//исправить имена
-	int getSize();
-	void setSize(unsigned num);
+	void init();		//функция запускает прямой ход
+	void printInNeu();	//вывод входных нейронов
+	void printOutNeu();	//вывод выходных нейронов
 	
 private:
-	int size;
-	std::vector<float> listNeurones;
+	std::vector<float> inNeu;				//вектор входных нейронов
+	std::vector<float> outNeu;				//вектор выходных нейронов
+	std::vector < std::vector<float >> w;	//матрица весов
 
-	//void conv()//??????????
 };

@@ -106,23 +106,9 @@ int main()
 	setlocale(LC_ALL, "RUS");
 	try
 	{
-		//Dataset A("name");
-		//A.importMnist("t10k-images.idx3-ubyte", "t10k-labels.idx1-ubyte");
-		//printData('z');
-
-		Ten3D B(3, 3, 1, "b", 'r');//z не может быть 0(ошибки)
-		Neuro C({ 9,9,9 }, B);
-
-		//C.weights.reserve(27);
-
-		C.generWeights(729, 0, 1);
-
-		//printWei(weights);
-
-		C.printA();
-		C.step();//исправить ошибку в лаере спп 35 стр
-		std::cout << std::endl << std::endl;
-		C.printA();
+		
+		Layer a(2, 3);
+		a.printInNeu();
 	}
 	catch(length_error& ex) 
 	{

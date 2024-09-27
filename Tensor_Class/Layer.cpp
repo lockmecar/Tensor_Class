@@ -1,52 +1,29 @@
 #include "Layer.h"
 
+Layer::Layer(int in, int out) :inNeu(in), outNeu(out), w(in, std::vector<float>(out)) {} //инициализируем вектора
 
-Layer::Layer(Ten3D A, int z)//исправить имена
+void Layer::init()
 {
-	Layer::size = A.getSizeX() * A.getSizeY();
-	listNeurones.resize(size);
-	Layer::listNeurones = A.matrix_to_vector(z);
+	for (int row = 0; row < outNeu.size(); row++) //считаем по формуле: outNeu1 = inNeu1 * w11 + inNeu2 * w21 + ..   Объяснение: https://youtu.be/xMz7XSaqdRA?si=ju7vq6IEkttCDg6K&t=164
+		for (int col = 0; col < inNeu.size(); col++)
+			outNeu[row] += inNeu[row] * w[col][row];
 
+	//тут надо добавить нелинейность (функцию активации)
 }
 
-Layer::Layer(int numLayers)
+void Layer::printInNeu()
 {
-	Layer::size = numLayers;
-	listNeurones.resize(numLayers);
+	std::cout << "Входные нейроны: ";
+	for (int i = 0; i < inNeu.size(); i++)
+		std::cout << inNeu[i] << ", ";
+	std::cout << std::endl;
 }
 
-
-void Layer::printNeurones()
+void Layer::printOutNeu()
 {
-	for (int i = 0; i < this->size; i++)
-	{
-		std::cout << this->listNeurones[i] << std::endl;
-	}
+	std::cout << "Выходные нейроны: ";
+	for (int i = 0; i < outNeu.size(); i++)
+		std::cout << outNeu[i] << ", ";
+	std::cout << std::endl;
 }
 
-
-std::vector<float> Layer::getNeurones()
-{
-	return listNeurones;
-}
-
-float Layer::getNeurones(int index)
-{
-	return listNeurones[index];
-}
-
-void Layer::setNeurones(int index,float b)//исправить имена
-{
-	listNeurones[index] = b;
-}
-
-
-int Layer::getSize()
-{
-	return this->size;
-}
-
-void Layer::setSize(unsigned num)
-{
-	size = num;
-}
