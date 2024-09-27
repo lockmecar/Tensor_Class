@@ -29,7 +29,7 @@ https://www.youtube.com/playlist?list=PL3BR09unfgciJ1_K_E914nohpiOiHnpsK //ютуб 
 /*
 „то нужно:
 	класс нейронки: ~
-	класс сло€: -
+	класс сло€: ~
 	пр€мой ход: -
 	обратный ход: -
 	свертка: -
