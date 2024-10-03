@@ -1,13 +1,17 @@
 #include <iostream>
 #include "tensor.h"
 #include "dataset.h"
-#include "Layer.h"
-#include "Neuro.h"
+//#include "Layer.h"
+#include "Neuro2.h"
 #include <fstream>
 
 /*Полезные ссылки
 https://habr.com/ru/articles/514372/
+
 https://www.youtube.com/playlist?list=PL3BR09unfgciJ1_K_E914nohpiOiHnpsK //ютуб на чувака
+
+https://habr.com/ru/articles/846088/
+
 
 */
 
@@ -23,7 +27,6 @@ https://www.youtube.com/playlist?list=PL3BR09unfgciJ1_K_E914nohpiOiHnpsK //ютуб 
 	при перемещении между слоями нужно реализовать функции
 	результат функции в новый входной слой и тд до тех пор пока не будет последний слой
 */
-
 
 
 /*
@@ -106,9 +109,13 @@ int main()
 	setlocale(LC_ALL, "RUS");
 	try
 	{
+		Ten3D A(3, 3, 1, "A",'r');
+
+		Neuro2 B({ 9,4,3 }, A);
+		B.print_w();
+
+		B.printLayers();
 		
-		Layer a(2, 3);
-		a.printInNeu();
 	}
 	catch(length_error& ex) 
 	{
