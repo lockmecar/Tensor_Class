@@ -31,7 +31,7 @@ void Neuro2::printLayers()
 {
 	for (size_t i = 0; i < vector_Layers.size(); i++)
 	{
-		std::cout << "Слой " << i << ": ";
+		std::cout << std::endl<< "Слой " << i << ": ";
 		for (size_t j = 0; j < vector_Layers[i].size(); j++)
 			std::cout << vector_Layers[i][j]<<" ";
 		std::cout << std::endl;
@@ -39,16 +39,16 @@ void Neuro2::printLayers()
 }
 
 
-void Neuro2::Layer() {
-	for (size_t i = 1; i < vector_Layers.size(); i++) {
-		for (size_t j = 0; j < vector_Layers[i].size(); j++) {
-			float sum = 0; // Проходим по предыдущему слою и вычисляем взвешенную сумму
-			for (size_t k = 0; k < vector_Layers[i - 1].size(); k++) {
-				sum += vector_Layers[i - 1][k] * w[i - 1][j];  // Вес для связи k-го нейрона предыдущего слоя с j-ым текущего
-			}
-			vector_Layers[i][j] = func(sum);  // Записываем результат для нейрона j в слое i
+void Neuro2::Layer() 
+{
+	for (size_t i = 1; i < vector_Layers.size(); i++) 
+		for (size_t j = 0; j < vector_Layers[i].size(); j++) 
+		{
+			float sum = 0; 
+			for (size_t k = 0; k < vector_Layers[i - 1].size(); k++)
+				sum += vector_Layers[i - 1][k] * w[i - 1][j];
+			vector_Layers[i][j] = func(sum);
 		}
-	}
 }
 
 
@@ -69,7 +69,7 @@ void Neuro2::gener_w(float matO, float md)
 
 void Neuro2::print_w()
 {
-	std::cout << "Веса" << std::endl;
+	std::cout << std::endl << "Веса" << std::endl;
 	for (size_t i = 0; i < w.size(); i++)
 	{
 		for (size_t j = 0; j < w[i].size(); j++)
