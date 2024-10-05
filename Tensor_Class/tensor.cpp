@@ -366,6 +366,30 @@ Ten3D::Ten3D(int size_x, int size_y, int size_z, std::string name, char mode)
     }
 }
 
+Ten3D::Ten3D(int size_x, int size_y, int size_z, std::string name, std::vector<std::vector<float>> D)
+{
+    int start = 0;
+    int end = 3;
+    Ten3D::name = name;
+    Ten3D::size_x = size_x;
+    Ten3D::size_y = size_y;
+    Ten3D::size_z = size_z;
+    Ten3D::matrix = new float** [size_z];
+    for (int z = 0; z < size_z; z++)
+    {
+        matrix[z] = new float* [size_y];
+        for (int y = 0; y < size_y; y++)
+            matrix[z][y] = new float[size_x];
+    }
+
+        for (int z = 0; z < size_z; z++)
+            for (int y = 0; y < size_y; y++)
+                for (int x = 0; x < size_x; x++)
+                    matrix[z][y][x] = D[x][y];  
+        std::cout << "Ten3D \"" << Ten3D::name << "\" [NULL] created. Ten3D count: " << counter<Ten3D>::objects_alive << std::endl;
+
+}
+
 void Ten3D::print(char mode)
 {
     if (mode == 'n') 

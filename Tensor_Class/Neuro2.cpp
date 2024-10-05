@@ -29,7 +29,7 @@ Neuro2::Neuro2(std::vector<unsigned> numNeurones, Ten3D ten)
 
 	Layer();
 
-	//softMax();
+	softMax();
 }
 
 void Neuro2::printLayers()
