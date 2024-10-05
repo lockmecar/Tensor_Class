@@ -128,16 +128,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="dataset.cpp" />
-    <ClCompile Include="Layer.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Neuro.cpp" />
     <ClCompile Include="Neuro2.cpp" />
     <ClCompile Include="tensor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dataset.h" />
-    <ClInclude Include="Layer.h" />
-    <ClInclude Include="Neuro.h" />
     <ClInclude Include="Neuro2.h" />
     <ClInclude Include="tensor.h" />
   </ItemGroup>

@@ -111,11 +111,13 @@ int main()
 	{
 		Ten3D A(3, 3, 1, "A",'r');
 
-		Neuro2 B({ 9,4,3 }, A);
+
+		Neuro2 B({ 9,4,3,6}, A);
 		B.print_w();
 
 		B.printLayers();
 		
+		//B.printSoftMax();
 	}
 	catch(length_error& ex) 
 	{
