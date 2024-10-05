@@ -113,7 +113,7 @@ int main()
 		D.importMnist("t10k-images.idx3-ubyte", "t10k-labels.idx1-ubyte");
 		D.printData('n');*/
 
-		std::vector<std::vector<float>> D = 
+		std::vector<std::vector<float>> A = 
 		{
 			{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 			{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -145,17 +145,20 @@ int main()
 			{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 		};
 
+		std::vector<int> lable{ 0,0,0,0,0,0,0,1,0,0 };
 
-		Ten3D A(28, 28, 1, "A", D);
+		Ten3D B(28, 28, 1, "B", A);
 
 
-		Neuro2 B({ 784,500,300,10}, A);
+		Neuro2 C({ 784,50,30,10}, B, lable);
 
 		//B.print_w();
 
 		//B.printLayers();
 		
-		B.printSoftMax();
+		C.printSoftMax();
+
+		C.printLoss();
 	}
 	catch(length_error& ex) 
 	{

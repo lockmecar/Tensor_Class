@@ -1,7 +1,13 @@
 #include "Neuro2.h"
 
-Neuro2::Neuro2(std::vector<unsigned> numNeurones, Ten3D ten)
+Neuro2::Neuro2(std::vector<unsigned> numNeurones, Ten3D ten, std::vector<int> lable)
 {
+
+	layerSoftMax.resize(numNeurones[numNeurones.size() - 1]);//????????????
+	loss.resize(ten.getSizeZ());//????????????
+	w.resize(numNeurones.size() - 1);
+	size_in_layer = numNeurones[0];//???????????
+
 
 	for (size_t i = 1; i <= /*ten.getSizeZ()*/1; i++)
 	{
@@ -14,22 +20,18 @@ Neuro2::Neuro2(std::vector<unsigned> numNeurones, Ten3D ten)
 			vector_Layers[j].resize(numNeurones[j]);
 
 		vector_Layers[i-1] = ten.matrix_to_vector(i);
+
+		for (size_t i = 1; i < vector_Layers.size(); i++)
+			w[i - 1].resize(vector_Layers[i - 1].size() * vector_Layers[i].size());
+
+		gener_w(0, 1);
+
+		Layer();
+
+		softMax();
+
+		crossEntropy(lable,i-1);//????
 	}
-	size_in_layer = numNeurones[0];//???????????
-
-
-	layerSoftMax.resize(numNeurones[numNeurones.size() - 1]);//????????????
-
-	w.resize(vector_Layers.size()-1);
-
-	for (size_t i = 1; i < vector_Layers.size(); i++)
-		w[i-1].resize(vector_Layers[i-1].size() * vector_Layers[i].size());
-
-	gener_w(0,1);
-
-	Layer();
-
-	softMax();
 }
 
 void Neuro2::printLayers()
@@ -54,18 +56,11 @@ void Neuro2::Layer()
 				sum += vector_Layers[i - 1][k] * w[i - 1][j];
 			
 			if (i == vector_Layers.size() - 1) //на последнем слое обычно ф-ция активации не применяется
-			{
 				vector_Layers[i][j] =sum;
-			}
 			else
-			{
 				vector_Layers[i][j] = func(sum); 
-			}
-			
 		}
 }
-
-
 
 float Neuro2::func(float x)
 {
@@ -91,7 +86,18 @@ void Neuro2::softMax() {
 
 	// Нормализуем каждый элемент слоя
 	for (size_t i = 0; i < layerSoftMax.size(); i++)
-		layerSoftMax[i] = (std::exp(vector_Layers.back()[i]) / sumExp)*100;//можно без 100 будет точнее
+		layerSoftMax[i] = (std::exp(vector_Layers.back()[i]) / sumExp) /**100*/;//можно без 100 будет точнее
+}
+
+void Neuro2::crossEntropy(std::vector<int> lable,int i_z)
+{
+	float error=0;
+	for (size_t i = 0; i < layerSoftMax.size(); i++)
+		if(layerSoftMax[i]!=0)// Избегаем log(0), так как это неопределенность
+			error += lable[i] * std::log(layerSoftMax[i]);
+	
+	loss[i_z] = -error;
+
 }
 
 void Neuro2::print_w()
@@ -110,6 +116,16 @@ void Neuro2::printSoftMax()
 	std::cout << std::endl << "softMax: ";
 	for (size_t i = 0; i < layerSoftMax.size(); i++)
 		std::cout << layerSoftMax[i] << " ";
+	std::cout << std::endl;
+}
+
+void Neuro2::printLoss()
+{
+	std::cout << std::endl << "Error: ";
+	for (size_t i = 0; i < loss.size(); i++)
+	{
+		std::cout << loss[i] << " ";
+	}
 	std::cout << std::endl;
 }
 
