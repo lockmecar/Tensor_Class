@@ -7,7 +7,7 @@ Neuro2::Neuro2(std::vector<unsigned> numNeurones, Ten3D ten, std::vector<int> la
 	loss.resize(ten.getSizeZ());//????????????
 	w.resize(numNeurones.size() - 1);
 	size_in_layer = numNeurones[0];//???????????
-
+	dEdH.resize(numNeurones[numNeurones.size() - 1]);
 
 	for (size_t i = 1; i <= /*ten.getSizeZ()*/1; i++)
 	{
@@ -26,11 +26,14 @@ Neuro2::Neuro2(std::vector<unsigned> numNeurones, Ten3D ten, std::vector<int> la
 
 		gener_w(0, 1);
 
-		Layer();
+		/*Layer();
 
-		softMax();
+		softMax();*/
+		Layer_softMax();//обьединил layer и softMax
 
 		crossEntropy(lable,i-1);//????
+
+		backprop(lable);
 	}
 }
 
@@ -56,7 +59,7 @@ void Neuro2::Layer()
 				sum += vector_Layers[i - 1][k] * w[i - 1][j];
 			
 			if (i == vector_Layers.size() - 1) //на последнем слое обычно ф-ция активации не применяется
-				vector_Layers[i][j] =sum;
+				vector_Layers[i][j] =sum;      //сюда запихнуть софтмакс
 			else
 				vector_Layers[i][j] = func(sum); 
 		}
@@ -100,6 +103,44 @@ void Neuro2::crossEntropy(std::vector<int> lable,int i_z)
 
 }
 
+void Neuro2::backprop(std::vector<int> lable)
+{
+	for (size_t i = 0; i < dEdH.size(); i++)
+		dEdH[i] = -(lable[i] / vector_Layers[vector_Layers.size() - 1][i]);
+
+
+
+}
+
+void Neuro2::Layer_softMax()
+{
+		for (size_t i = 1; i < vector_Layers.size(); i++)
+		{
+			for (size_t j = 0; j < vector_Layers[i].size(); j++)
+			{
+				float sum = 0;
+				for (size_t k = 0; k < vector_Layers[i - 1].size(); k++)
+					sum += vector_Layers[i - 1][k] * w[i - 1][j];
+
+				if (i == vector_Layers.size() - 1)
+					vector_Layers[i][j] = sum;
+				else
+					vector_Layers[i][j] = func(sum);
+			}
+		}
+
+		// Применяем softmax к последнему слою
+		float sumExp = 0;
+		for (size_t i = 0; i < vector_Layers.back().size(); i++)
+			sumExp += std::exp(vector_Layers.back()[i]);
+
+		for (size_t i = 0; i < layerSoftMax.size(); i++)
+			layerSoftMax[i] = std::exp(vector_Layers.back()[i]) / sumExp;
+
+		// Перезаписываем значения последнего слоя с нормализованными значениями softmax
+		vector_Layers.back() = layerSoftMax;
+}
+
 void Neuro2::print_w()
 {
 	std::cout << std::endl << "Веса" << std::endl;
@@ -126,6 +167,14 @@ void Neuro2::printLoss()
 	{
 		std::cout << loss[i] << " ";
 	}
+	std::cout << std::endl;
+}
+
+void Neuro2::print_dEdH()
+{
+	std::cout << std::endl;
+	for (size_t i = 0; i < dEdH.size(); i++)
+		std::cout << dEdH[i] << " ";
 	std::cout << std::endl;
 }
 

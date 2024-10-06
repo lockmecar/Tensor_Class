@@ -154,11 +154,13 @@ int main()
 
 		//B.print_w();
 
-		//B.printLayers();
+		//C.printLayers();
 		
-		C.printSoftMax();
+		//C.printSoftMax();
 
 		C.printLoss();
+
+		C.print_dEdH();
 	}
 	catch(length_error& ex) 
 	{
