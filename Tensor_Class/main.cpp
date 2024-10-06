@@ -109,9 +109,6 @@ int main()
 	setlocale(LC_ALL, "RUS");
 	try
 	{
-		/*Dataset D("name");
-		D.importMnist("t10k-images.idx3-ubyte", "t10k-labels.idx1-ubyte");
-		D.printData('n');*/
 
 		std::vector<std::vector<float>> A = 
 		{
