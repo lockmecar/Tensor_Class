@@ -95,6 +95,7 @@ private:
 	int rand_seed = 1;
 
 public:
+	Ten3D();
 	Ten3D(int size_x, int size_y, int size_z, std::string name);            //  онструктор с указанием размера
 	Ten3D(const Ten3D& copied_obj);                                         //  онструктор копировани€
 	Ten3D(int size_x, int size_y, int size_z, std::string name, char mode); //  онструктор с двум€ режимами ('0' - заполнит нул€ми, 'r' - заполнит рандомами)

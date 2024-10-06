@@ -291,6 +291,11 @@ Ten2D::~Ten2D()
 }
 
 
+Ten3D::Ten3D()
+{
+    this->name = "standart";
+}
+
 Ten3D::Ten3D(int size_x, int size_y, int size_z, std::string name)
 {
     if (size_x < 1 || size_y < 1 || size_z < 1) { throw std::invalid_argument("Dimension values can't be less 1"); }
