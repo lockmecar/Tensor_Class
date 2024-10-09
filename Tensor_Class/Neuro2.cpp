@@ -1,17 +1,17 @@
 #include "Neuro2.h"
 
-Neuro2::Neuro2(std::vector<unsigned> numNeurones, Ten3D ten, std::vector<int> lable)
+Neuro2::Neuro2(std::vector<unsigned> numNeurones, Dataset &inData)
 {
 
 	layerSoftMax.resize(numNeurones[numNeurones.size() - 1]);//????????????
-	loss.resize(ten.getSizeZ());//????????????
+	loss.resize(inData.img[0][0].getSizeZ());//????????????
 	w.resize(numNeurones.size() - 1);
 	size_in_layer = numNeurones[0];//???????????
 	dEdH.resize(numNeurones[numNeurones.size() - 1]);
 
 	for (size_t i = 1; i <= /*ten.getSizeZ()*/1; i++)
 	{
-		if (numNeurones[0] != (ten.getSizeX()* ten.getSizeY()))
+		if (numNeurones[0] != (inData.img[0][0].getSizeX()* inData.img[0][0].getSizeY()))
 			std::cout << "¿Àﬂ–Ã, ¬€ ƒŒœ”—“»À»  ¿—ﬂ’!!!!" << std::endl;//ÔÓ‰Ô‡‚ËÚ¸ Ì‡ error
 		  
 		vector_Layers.resize(numNeurones.size());
@@ -19,7 +19,7 @@ Neuro2::Neuro2(std::vector<unsigned> numNeurones, Ten3D ten, std::vector<int> la
 		for (size_t j = 0; j < numNeurones.size(); j++)
 			vector_Layers[j].resize(numNeurones[j]);
 
-		vector_Layers[i-1] = ten.matrix_to_vector(i);
+		vector_Layers[i-1] = inData.img[0][0].matrix_to_vector(i);
 
 		for (size_t i = 1; i < vector_Layers.size(); i++)
 			w[i - 1].resize(vector_Layers[i - 1].size() * vector_Layers[i].size());
@@ -31,9 +31,9 @@ Neuro2::Neuro2(std::vector<unsigned> numNeurones, Ten3D ten, std::vector<int> la
 		softMax();*/
 		Layer_softMax();//Ó·¸Â‰ËÌËÎ layer Ë softMax
 
-		crossEntropy(lable,i-1);//????
+		crossEntropy(inData.label[0], i - 1);//????
 
-		backprop(lable);
+		backprop(inData.label[0]);
 	}
 }
 

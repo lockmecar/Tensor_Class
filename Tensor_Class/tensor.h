@@ -86,6 +86,7 @@ public:
 
 class Ten3D : counter<Ten3D>
 {
+	friend class Dataset;
 private:
 	std::string name; // Имя объекта класса
 	int size_x;

@@ -1,7 +1,6 @@
 #include <iostream>
 #include "tensor.h"
 #include "dataset.h"
-//#include "Layer.h"
 #include "Neuro2.h"
 #include <fstream>
 
@@ -143,11 +142,12 @@ int main()
 		};// Эту хрень не удалять !!!!!
 
 		std::vector<int> lable{ 0,0,0,0,0,0,0,1,0,0 }; //Эту тоже
+		Dataset a("a", 100, "t10k-images.idx3-ubyte", "t10k-labels.idx1-ubyte");
 
-		Ten3D B(28, 28, 1, "B", A);
+		//Ten3D B(28, 28, 1, "B", A);
 
 
-		Neuro2 C({ 784,50,30,10}, B, lable);
+		Neuro2 C({ 784,50,30,10}, a);
 
 		//B.print_w();
 
@@ -155,9 +155,9 @@ int main()
 		
 		//C.printSoftMax();
 
-		C.printLoss();
+		//C.printLoss();
 
-		C.print_dEdH();
+		//C.print_dEdH();
 	}
 	catch(length_error& ex) 
 	{

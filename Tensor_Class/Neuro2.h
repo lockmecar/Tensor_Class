@@ -1,10 +1,11 @@
 #pragma once
 #include "tensor.h"
+#include "dataset.h"
 
 class Neuro2
 {
 public:
-	Neuro2(std::vector<unsigned> numNeurones, Ten3D ten, std::vector<int> lable);
+	Neuro2(std::vector<unsigned> numNeurones, Dataset &inData);
 	void printLayers();
 	void print_w();
 	void printSoftMax();
