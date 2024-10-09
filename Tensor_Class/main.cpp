@@ -151,13 +151,15 @@ int main()
 
 		//B.print_w();
 
-		//C.printLayers();
+		C.printLayers();
 		
 		//C.printSoftMax();
 
-		//C.printLoss();
+		C.printLoss();
 
 		//C.print_dEdH();
+
+		C.print_vector_backprop();
 	}
 	catch(length_error& ex) 
 	{
