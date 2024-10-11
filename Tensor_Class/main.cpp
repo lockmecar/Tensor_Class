@@ -99,7 +99,7 @@ int main()
 
 		Neuro2 C({ 784,10,5,10}, a);
 
-		//B.print_w();
+		//C.print_w();
 
 		//C.printLayers();
 		
@@ -107,7 +107,7 @@ int main()
 
 		//C.printError();
 
-		C.print_vector_backprop();
+		//C.print_vector_backprop();
 	}
 	catch(length_error& ex) 
 	{

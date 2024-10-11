@@ -29,6 +29,7 @@ Neuro2::Neuro2(std::vector<unsigned> numNeurones, Dataset &inData)
 		crossEntropy(inData.label[0][0]);//????
 
 		backprop(inData.label[0][0]);
+		apdate(0.001);
 	}
 }
 
@@ -60,7 +61,7 @@ void Neuro2::gener_w(float matO, float md)
 	std::default_random_engine generator;
 	std::normal_distribution<double> distribution(matO, md);
 	for (int i = 0; i < w.size(); i++) //iter????
-		for(int j=0;j<w[i].size();j++)
+		for(int j = 0; j < w[i].size(); j++)
 			w[i][j]=(distribution(generator));
 }
 
@@ -70,35 +71,37 @@ void Neuro2::crossEntropy(int indx_lable)
 		error = -(std::log(layerSoftMax[indx_lable]));
 }
 
-void Neuro2::backprop(int indx_lable) {
-	// Прямое распространение ошибки для выходного слоя
-
-	for (int i = vector_Layers.size() - 1; i > 0; i--) {
-		for (size_t j = 0; j < vector_Layers[i].size(); j++) {
-			if (i == vector_Layers.size() - 1) {
+void Neuro2::backprop(int indx_lable) // Прямое распространение ошибки для выходного слоя
+{
+	for (int i = vector_Layers.size() - 1; i > 0; i--)
+		for (size_t j = 0; j < vector_Layers[i].size(); j++)
+			if (i == vector_Layers.size() - 1)
 				vector_backprop[i][j] = (j == indx_lable) ? (vector_Layers[i][j] - 1) : vector_Layers[i][j];
-			}
-			else {
+			else
+			{
 				// Для скрытых слоев
 				float delta = 0.0;
-				for (size_t k = 0; k < vector_Layers[i + 1].size(); k++) {
+				for (size_t k = 0; k < vector_Layers[i + 1].size(); k++) 
 					delta += vector_backprop[i + 1][k] * w[i][j * vector_Layers[i + 1].size() + k];
-				}
-				// Производная функции активации
 
+				// Производная функции активации
 				vector_backprop[i][j] = delta * relu_derivative(vector_Layers[i][j]);
-				//std::cout << "vector_backprop[" << i << "][" << j << "] = " << delta << " * " << vector_Layers[i][j] << " * ( 1 - " << vector_Layers[i][j] << ") = "<< vector_backprop[i][j] << std::endl;
 			}
-		}
-	}
 }
 
-
+void Neuro2::apdate(float alpha)
+{
+	
+	for (size_t i = 1; i < vector_Layers.size(); i++) // Проходим по всем слоям, кроме входного
+		for (size_t j = 0; j < vector_Layers[i].size(); j++) // Проходим по всем нейронам текущего слоя
+			for (size_t k = 0; k < vector_Layers[i - 1].size(); k++) // Для каждого нейрона текущего слоя обновляем веса, которые его соединяют с предыдущим слоем
+				w[i - 1][j * vector_Layers[i - 1].size() + k] -= alpha * vector_backprop[i][j] * vector_Layers[i - 1][k];// Обновляем вес с учетом градиента и скорости обучения
+}
 
 
 void Neuro2::print_w()
 {
-	std::cout << std::endl << "Веса" << std::endl;
+	std::cout << std::endl << "Веса " << std::endl;
 	for (size_t i = 0; i < w.size(); i++)
 	{
 		for (size_t j = 0; j < w[i].size(); j++)
@@ -149,7 +152,6 @@ void Neuro2::Layer()
 				vector_Layers[i][j] =sum;
 			else
 				vector_Layers[i][j] = func(sum);
-			//std::cout << "vector_Layers[" << i << "][" << j << "] = " << vector_Layers[i][j] << " = " << "func(" << sum << ")" << std::endl;
 		}
 
 	softMax();
@@ -168,37 +170,3 @@ void Neuro2::softMax() {
 	for (size_t i = 0; i < vector_Layers.size(); i++)
 		vector_backprop[i].resize(vector_Layers[i].size());
 }
-
-
-//void Neuro2::Layer_softMax()
-//{
-//		for (size_t i = 1; i < vector_Layers.size(); i++)
-//		{
-//			for (size_t j = 0; j < vector_Layers[i].size(); j++)
-//			{
-//				float sum = 0;
-//				for (size_t k = 0; k < vector_Layers[i - 1].size(); k++)
-//					sum += vector_Layers[i - 1][k] * w[i - 1][j];
-//
-//				if (i == vector_Layers.size() - 1)
-//					vector_Layers[i][j] = sum;
-//				else
-//					vector_Layers[i][j] = func(sum);
-//			}
-//		}
-//
-//		// Применяем softmax к последнему слою
-//		float sumExp = 0;
-//		for (size_t i = 0; i < vector_Layers.back().size(); i++)
-//			sumExp += std::exp(vector_Layers.back()[i]);
-//
-//		for (size_t i = 0; i < layerSoftMax.size(); i++)
-//			layerSoftMax[i] = std::exp(vector_Layers.back()[i]) / sumExp;
-//
-//		// Перезаписываем значения последнего слоя с нормализованными значениями softmax
-//		vector_Layers.emplace_back(layerSoftMax);
-//		vector_backprop.resize(vector_Layers.size());
-//
-//		for (size_t i = 0; i < vector_Layers.size(); i++)
-//			vector_backprop[i].resize(vector_Layers[i].size());
-//}
