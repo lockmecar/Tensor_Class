@@ -97,7 +97,7 @@ int main()
 		//Ten3D B(28, 28, 1, "B", A);
 
 
-		Neuro2 C({ 784,10,5,10}, a);
+		Neuro2 C({ 784,4,3,10}, a);
 
 		//C.print_w();
 
