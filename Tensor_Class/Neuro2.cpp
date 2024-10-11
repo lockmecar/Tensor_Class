@@ -24,16 +24,16 @@ Neuro2::Neuro2(std::vector<unsigned> numNeurones, Dataset& inData)
 
 		gener_w(0, 1);
 
-		for (size_t i = 0; i < 100; i++)// узнать до скольки
+		for (size_t i = 0; i < 2; i++)// узнать до скольки
 		{
 			Layer();
 			crossEntropy(inData.label[0][0]);//????
 			backprop(inData.label[0][0]);
-			apdate(0.001);
+			apdate(0.01);
 
-			//printLayers();
+			printLayers();
 
-			//print_softMax();
+			print_softMax();
 
 			printError();
 
@@ -56,12 +56,12 @@ void Neuro2::printLayers()
 
 float Neuro2::func(float x)
 {
-	return (x > 0) ? x : 0; //return 1 / (1 + std::exp(-x));
+	return (x >= 0) ? x : 0.01 * (std::exp(x) - 1); //return (x > 0) ? x : 0.01 * x; //return (x >= 0) ? x : 0; //return 1 / (1 + std::exp(-x));
 }
 
 float Neuro2::relu_derivative(float x)
 {
-	return (x > 0) ? 1 : 0;
+	return (x >= 0) ? 1 : 0.01 * std::exp(x); //return (x > 0) ? 1 : 0.01; //return (x >= 0) ? 1 : 0;
 }
 
 
