@@ -46,7 +46,12 @@ void Neuro2::printLayers()
 
 float Neuro2::func(float x)
 {
-	return 1/(1+std::exp(-x));
+	return (x > 0) ? x : 0;
+}
+
+float Neuro2::relu_derivative(float x)
+{
+	return (x > 0) ? 1 : 0;
 }
 
 
@@ -81,8 +86,8 @@ void Neuro2::backprop(int indx_lable) {
 				}
 				// Производная функции активации
 
-				vector_backprop[i][j] = delta * vector_Layers[i][j] * (1 - vector_Layers[i][j]);
-				std::cout << "vector_backprop[" << i << "][" << j << "] = " << delta << " * " << vector_Layers[i][j] << " * ( 1 - " << vector_Layers[i][j] << ") = "<< vector_backprop[i][j] << std::endl;
+				vector_backprop[i][j] = delta * relu_derivative(vector_Layers[i][j]);
+				//std::cout << "vector_backprop[" << i << "][" << j << "] = " << delta << " * " << vector_Layers[i][j] << " * ( 1 - " << vector_Layers[i][j] << ") = "<< vector_backprop[i][j] << std::endl;
 			}
 		}
 	}

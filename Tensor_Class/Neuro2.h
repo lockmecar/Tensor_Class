@@ -23,6 +23,8 @@ private:
 	float error;
 	void Layer();
 	float func(float x);// ф-ция активации
+	float relu_derivative(float x);// производная
+
 	void gener_w(float matO, float md);//генератор весов
 	void softMax();
 	void crossEntropy(int indx_lable);

@@ -107,7 +107,7 @@ int main()
 
 		//C.printError();
 
-		//C.print_vector_backprop();
+		C.print_vector_backprop();
 	}
 	catch(length_error& ex) 
 	{
