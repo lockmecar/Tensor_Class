@@ -155,7 +155,7 @@ int main()
 		
 		//C.printSoftMax();
 
-		C.printLoss();
+		C.printError();
 
 		//C.print_dEdH();
 

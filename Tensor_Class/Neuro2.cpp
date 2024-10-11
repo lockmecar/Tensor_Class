@@ -4,7 +4,6 @@ Neuro2::Neuro2(std::vector<unsigned> numNeurones, Dataset &inData)
 {
 
 	layerSoftMax.resize(numNeurones[numNeurones.size() - 1]);//????????????
-	loss.resize(inData.img[0][0].getSizeZ());//????????????
 	w.resize(numNeurones.size() - 1);
 
 
@@ -25,12 +24,9 @@ Neuro2::Neuro2(std::vector<unsigned> numNeurones, Dataset &inData)
 
 		gener_w(0, 1);
 
-		/*Layer();
-
-		softMax();*/
 		Layer_softMax();//обьединил layer и softMax
 
-		crossEntropy(inData.label[0], i - 1);//????
+		crossEntropy(inData.label[0]);//????
 
 		backprop(inData.label[0]);
 	}
@@ -52,22 +48,6 @@ void Neuro2::printLayers()
 }
 
 
-//void Neuro2::Layer() 
-//{
-//	for (size_t i = 1; i < vector_Layers.size(); i++) 
-//		for (size_t j = 0; j < vector_Layers[i].size(); j++) 
-//		{
-//			float sum = 0; 
-//			for (size_t k = 0; k < vector_Layers[i - 1].size(); k++)
-//				sum += vector_Layers[i - 1][k] * w[i - 1][j];
-//			
-//			if (i == vector_Layers.size() - 1) //на последнем слое обычно ф-ция активации не применяется
-//				vector_Layers[i][j] =sum;      //сюда запихнуть софтмакс
-//			else
-//				vector_Layers[i][j] = func(sum); 
-//		}
-//}
-
 float Neuro2::func(float x)
 {
 	return 1/(1+std::exp(-x));
@@ -88,28 +68,12 @@ void Neuro2::gener_w(float matO, float md)
 			w[i][j]=(distribution(generator));
 }
 
-//void Neuro2::softMax() {
-//
-//	float sumExp = 0;
-//
-//	// Вычисляем экспоненту для каждого нейрона в последнем слое и находим их сумму
-//	for (size_t i = 0; i < vector_Layers.back().size(); i++)
-//		sumExp += std::exp(vector_Layers.back()[i]);
-//
-//	// Нормализуем каждый элемент слоя
-//	for (size_t i = 0; i < layerSoftMax.size(); i++)
-//		layerSoftMax[i] = (std::exp(vector_Layers.back()[i]) / sumExp) /**100*/;//можно без 100 будет точнее
-//}
 
-void Neuro2::crossEntropy(std::vector<int> lable,int i_z)
+void Neuro2::crossEntropy(std::vector<int> lable)
 {
-	float error=0;
 	for (size_t i = 0; i < layerSoftMax.size(); i++)
 		if(lable[i]!=0)// Избегаем log(0), так как это неопределенность
-			error = lable[i] * std::log(layerSoftMax[i]);
-	
-	loss[i_z] = -error;
-
+			error = -(lable[i] * std::log(layerSoftMax[i]));
 }
 
 void Neuro2::backprop(const std::vector<int> label)// Обратное распространение ошибки для выходного слоя
@@ -186,22 +150,10 @@ void Neuro2::print_w()
 	}
 }
 
-//void Neuro2::printSoftMax()
-//{
-//	std::cout << std::endl << "softMax: ";
-//	for (size_t i = 0; i < layerSoftMax.size(); i++)
-//		std::cout << layerSoftMax[i] << " ";
-//	std::cout << std::endl;
-//}
 
-void Neuro2::printLoss()
+void Neuro2::printError()
 {
-	std::cout << std::endl << "Error: ";
-	for (size_t i = 0; i < loss.size(); i++)
-	{
-		std::cout << loss[i] << " ";
-	}
-	std::cout << std::endl;
+	std::cout << std::endl << "Error: " << error << std::endl;
 }
 
 
@@ -220,4 +172,33 @@ void Neuro2::print_vector_backprop()
 	}
 }
 
+
+//void Neuro2::Layer() 
+//{
+//	for (size_t i = 1; i < vector_Layers.size(); i++) 
+//		for (size_t j = 0; j < vector_Layers[i].size(); j++) 
+//		{
+//			float sum = 0; 
+//			for (size_t k = 0; k < vector_Layers[i - 1].size(); k++)
+//				sum += vector_Layers[i - 1][k] * w[i - 1][j];
+//			
+//			if (i == vector_Layers.size() - 1) //на последнем слое обычно ф-ция активации не применяется
+//				vector_Layers[i][j] =sum;      //сюда запихнуть софтмакс
+//			else
+//				vector_Layers[i][j] = func(sum); 
+//		}
+//}
+
+//void Neuro2::softMax() {
+//
+//	float sumExp = 0;
+//
+//	// Вычисляем экспоненту для каждого нейрона в последнем слое и находим их сумму
+//	for (size_t i = 0; i < vector_Layers.back().size(); i++)
+//		sumExp += std::exp(vector_Layers.back()[i]);
+//
+//	// Нормализуем каждый элемент слоя
+//	for (size_t i = 0; i < layerSoftMax.size(); i++)
+//		layerSoftMax[i] = (std::exp(vector_Layers.back()[i]) / sumExp) /**100*/;//можно без 100 будет точнее
+//}
 
