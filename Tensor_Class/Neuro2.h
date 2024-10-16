@@ -6,6 +6,7 @@ class Neuro2
 {
 public:
 	Neuro2(std::vector<unsigned> numNeurones, Dataset &inData);
+	Neuro2(std::vector<unsigned> numNeurones, std::vector<float> debug);
 	void printLayers();
 	void print_w();
 	void printError();
@@ -31,6 +32,3 @@ private:
 	void apdate(float alpha);//alpha это скорость обучения
 
 };
-
-
-
