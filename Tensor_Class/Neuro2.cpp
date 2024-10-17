@@ -98,7 +98,11 @@ void Neuro2::printLayers()
 
 float Neuro2::func(float x)
 {
-	return 1 / (1 + std::exp(-x)); // // // //return (x >= 0) ? x : 0.01 * (std::exp(x) - 1); //return (x > 0) ? x : 0.01 * x; //
+	boost::multiprecision::cpp_dec_float_50 e = 2.71828182845904523536028747135;
+	boost::multiprecision::cpp_dec_float_50 one = 1;
+	boost::multiprecision::cpp_dec_float_50 buf = one / (1 + boost::multiprecision::pow(e, -x));
+	float result = buf.convert_to<float>();
+	return result; // // // //return (x >= 0) ? x : 0.01 * (std::exp(x) - 1); //return (x > 0) ? x : 0.01 * x; //
 }
 
 float Neuro2::relu_derivative(float x)

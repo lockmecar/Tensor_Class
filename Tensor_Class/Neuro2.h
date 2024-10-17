@@ -1,6 +1,7 @@
 #pragma once
 #include "tensor.h"
 #include "dataset.h"
+#include <boost/multiprecision/cpp_dec_float.hpp>
 
 class Neuro2
 {

@@ -91,14 +91,15 @@ int main()
 	setlocale(LC_ALL, "RUS");
 	try
 	{
+		
 
 		Dataset a("a", 100, "t10k-images.idx3-ubyte", "t10k-labels.idx1-ubyte");
 
 		//Ten3D B(28, 28, 1, "B", A);
 		vector<float> bup{ 2.38,1.45,3.1 };
 
-		//Neuro2 C({ 784,4,3,10}, a);
-		Neuro2 C({ 3,2,4 }, bup);
+		Neuro2 C({ 784,4,3,10}, a);
+		//Neuro2 C({ 3,2,4 }, bup);
 		//C.print_w();
 
 		//C.printLayers();
