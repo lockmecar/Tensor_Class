@@ -100,7 +100,7 @@ float Neuro2::func(float x)
 {
 	boost::multiprecision::cpp_dec_float_50 e = 2.71828182845904523536028747135;
 	boost::multiprecision::cpp_dec_float_50 one = 1;
-	boost::multiprecision::cpp_dec_float_50 buf = one / (1 + boost::multiprecision::pow(e, -x));
+	boost::multiprecision::cpp_dec_float_50 buf = one / (one + boost::multiprecision::pow(e, -x));
 	float result = buf.convert_to<float>();
 	return result; // // // //return (x >= 0) ? x : 0.01 * (std::exp(x) - 1); //return (x > 0) ? x : 0.01 * x; //
 }
