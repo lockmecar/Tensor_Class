@@ -1,7 +1,6 @@
 #pragma once
 #include "tensor.h"
 #include "dataset.h"
-#include <boost/multiprecision/cpp_dec_float.hpp>
 
 class Neuro2
 {
@@ -24,7 +23,7 @@ private:
 
 	float error;
 	void Layer();
-	float func(float x);// ф-ция активации
+	double func(float x);// ф-ция активации
 	float relu_derivative(float x);// производная
 	void gener_w(float matO, float md);//генератор весов
 	void softMax();
