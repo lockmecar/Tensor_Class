@@ -17,8 +17,8 @@ public:
 private:
 	std::vector < std::vector<float >> vector_Layers; //вектор слоев
 	std::vector < std::vector<float >> w;	          //матрица весов
-	std::vector <float> layerSoftMax;
-	std::vector < std::vector<float >> vector_backprop;
+	std::vector <double> layerSoftMax;
+	std::vector < std::vector<double >> vector_backprop;
 
 
 	float error;

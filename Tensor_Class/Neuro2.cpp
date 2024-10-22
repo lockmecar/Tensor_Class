@@ -24,26 +24,15 @@ Neuro2::Neuro2(std::vector<unsigned> numNeurones, Dataset& inData)
 
 		gener_w(0, 1);
 
-		for (size_t i = 0; i < 1; i++)// узнать до скольки
+		for (size_t i = 0; i < 15; i++)// узнать до скольки
 		{
 			Layer();
-			printLayers();
-			std::cout << "------------------------------------------------------------------------------------------------------------" << std::endl;
-			crossEntropy(inData.label[0][0]);//????
+			crossEntropy(inData.label[0][0]);
 			backprop(inData.label[0][0]);
 			apdate(0.01);
 
-
-
-			
-			print_softMax();
-			//std::cout << "------------------------------------------------------------------------------------------------------------" << std::endl;
 			printError();
-			std::cout << "------------------------------------------------------------------------------------------------------------" << std::endl;
-			//print_vector_backprop();//изменить так чтобы небыло слоя 0 он лишний
-			//std::cout << "------------------------------------------------------------------------------------------------------------" << std::endl;
-			//printLayers();
-			//std::cout << "------------------------------------------------------------------------------------------------------------" << std::endl;
+			std::cout << "----------------------------------------------------------" << std::endl;
 		}
 	}
 }
@@ -98,9 +87,7 @@ void Neuro2::printLayers()
 
 double Neuro2::func(float x)
 {
-	
-	double buf = 1 + exp(-x);
-	return 1 / buf; // // // //return (x >= 0) ? x : 0.01 * (std::exp(x) - 1); //return (x > 0) ? x : 0.01 * x; //
+	return 1 / (1 + exp(-x)); //return (x >= 0) ? x : 0.01 * (std::exp(x) - 1); //return (x > 0) ? x : 0.01 * x; //
 }
 
 float Neuro2::relu_derivative(float x)
@@ -127,21 +114,26 @@ void Neuro2::crossEntropy(int indx_lable)
 
 void Neuro2::backprop(int indx_lable)
 {
-	for (int i = vector_backprop.size() - 1; i > 0; i--)
-	{
-		for (size_t j = 0; j < vector_backprop[i].size()-1; j++)
-		{
-			if (i == vector_Layers.size() - 1)
-				vector_backprop[i][j] = (j == indx_lable) ? (vector_Layers[i][j] - 1) : vector_Layers[i][j];
+	for (int i = vector_backprop.size() - 1; i >= 0; i--)
+		for (size_t j = 0; j < vector_backprop[i].size(); j++)
+			if (i == (vector_Layers.size() - 2))
+			{
+				if (j + 1 == indx_lable)
+					for (int k = vector_Layers[i + 1].size() - 1; k >= 0; k--)
+						vector_backprop[i][k] = 1 - vector_Layers[i + 1][k];
+			}
+
 			else
 			{
-				float delta = 0.0;
-				for (size_t k = 0; k < vector_Layers[i].size()-1; k++)				
-					delta += vector_Layers[i][k] * w[i][j * vector_Layers[i].size() + k];
+				double delta = 0.0;
+				for (size_t k = 0; k < vector_Layers[i].size() - 1; k++)
+				{
+					double b1 = vector_Layers[i][k];
+					double b2 = w[i][j * vector_Layers[i].size() + k];
+					delta += b1 * b2;
+				}
 				vector_backprop[i][j] = delta * relu_derivative(vector_Layers[i + 1][j]);
 			}
-		}
-	}
 }
 
 
