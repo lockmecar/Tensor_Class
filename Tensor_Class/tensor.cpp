@@ -371,7 +371,7 @@ Ten3D::Ten3D(int size_x, int size_y, int size_z, std::string name, char mode)
     }
 }
 
-Ten3D::Ten3D(int size_x, int size_y, int size_z, std::string name, std::vector<std::vector<float>> D)
+Ten3D::Ten3D(int size_x, int size_y, int size_z, std::string name, std::vector<std::vector<float>>& Data)
 {
     int start = 0;
     int end = 3;
@@ -390,7 +390,7 @@ Ten3D::Ten3D(int size_x, int size_y, int size_z, std::string name, std::vector<s
         for (int z = 0; z < size_z; z++)
             for (int y = 0; y < size_y; y++)
                 for (int x = 0; x < size_x; x++)
-                    matrix[z][y][x] = D[x][y];  
+                    matrix[z][y][x] = Data[x][y];  
         std::cout << "Ten3D \"" << Ten3D::name << "\" [NULL] created. Ten3D count: " << counter<Ten3D>::objects_alive << std::endl;
 
 }
@@ -460,7 +460,7 @@ void Ten3D::print(char mode)
     }
 }
 
-void Ten3D::set_object_of_matrix(int x, int y, int z, float value)
+void Ten3D::set_object_of_matrix(int x, int y, int z, float& value)
 {
     Ten3D::matrix[z][y][x] = value;
 }
@@ -613,14 +613,17 @@ Ten3D Ten3D::operator^(const float& b) const
     for (int z = 0; z < size_z; z++)
         for (int y = 0; y < size_y; y++)
             for (int x = 0; x < size_x; x++)
-                buf.set_object_of_matrix(x, y, z, pow(buf(x, y, z), b));
+            {
+                float z7 = pow(buf(x, y, z), b);
+                buf.set_object_of_matrix(x, y, z, z7);
+            }
     return buf;
 }
 
 
-std::vector<float> Ten3D::matrix_to_vector()
+std::vector<double> Ten3D::matrix_to_vector()
 {
-    std::vector<float> result;
+    std::vector<double> result;
     
     for (int z = 0; z < size_z; z++)//если что исправить (ноль в размере матрицы бессмысленный)
         for (int y = 0; y < size_y; y++)
@@ -631,9 +634,9 @@ std::vector<float> Ten3D::matrix_to_vector()
 }
 
 
-std::vector<float> Ten3D::matrix_to_vector(int i_z)
+std::vector<double> Ten3D::matrix_to_vector(int i_z)
 {
-    std::vector<float> result;
+    std::vector<double> result;
 
     for (int z = 0; z < i_z; z++)//если что исправить (ноль в размере матрицы бессмысленный)
         for (int y = 0; y < size_y; y++)
@@ -672,7 +675,8 @@ void Ten3D::convolutionHard(Ten3D &filter, Ten3D &result, int step)
 
                 test += testa + testb + testc;
             }
-            result.set_object_of_matrix(xr, yr, 0, (result(xr, yr, 0) + test));
+            float z7 = (result(xr, yr, 0) + test);
+            result.set_object_of_matrix(xr, yr, 0, z7);
             if (xr < 2)xr++;
         }
         xr = 0;

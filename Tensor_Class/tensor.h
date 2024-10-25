@@ -100,20 +100,20 @@ public:
 	Ten3D(int size_x, int size_y, int size_z, std::string name);            //  онструктор с указанием размера
 	Ten3D(const Ten3D& copied_obj);                                         //  онструктор копировани€
 	Ten3D(int size_x, int size_y, int size_z, std::string name, char mode); //  онструктор с двум€ режимами ('0' - заполнит нул€ми, 'r' - заполнит рандомами)
-	Ten3D(int size_x, int size_y, int size_z, std::string name, std::vector<std::vector<float>> D);
+	Ten3D(int size_x, int size_y, int size_z, std::string name, std::vector<std::vector<float>>& Data);
 	~Ten3D();
 
 	void print(char mode);
-	void set_object_of_matrix(int x, int y, int z, float value);
+	void set_object_of_matrix(int x, int y, int z, float& value);
 	void clear();
 	int getSizeX();
 	int getSizeY();
 	int getSizeZ();
 	void imgToMatrix(std::ifstream& file);
 
-	std::vector<float> matrix_to_vector();
+	std::vector<double> matrix_to_vector();
 
-	std::vector<float> matrix_to_vector(int z);
+	std::vector<double> matrix_to_vector(int z);
 
 	float operator() (int x, int y, int z);
 
