@@ -24,23 +24,33 @@ Neuro2::Neuro2(std::vector<unsigned> numNeurones, Dataset& inData): layers_t(num
 		}
 		
 		layers_h[i - 1] = inData.img[0][0].matrix_to_vector(i); // заливаем картинку в x
+		
+		for (int j=0;j<layers_h[0].size();j++)
+		{
+			layers_h[0][j] /= 255;
+		}
 
 		for (size_t j = 1; j < layers_t.size(); j++) // инициализация весов
-			weights[j - 1].resize(layers_t[j - 1].size() * layers_t[j].size());
+			weights[j - 1].resize(layers_h[j - 1].size() * layers_h[j].size());
 
 		gener_w(0, 1); // заполняем веса случайными значениями
 
 		for (size_t i = 0; i < 1; i++)// узнать до скольки
 		{
 			init();
+			softMax();
+			crossEntropy(inData.label[0][0]);
+			//std::cout << "+-+-+-+-+-+-+-" << std::endl;
+			
 			printLayersT();
-			std::cout << "+-+-+-+-+-+-+-" << std::endl;
+			std::cout << std::endl;
 			printLayersH();
-			//crossEntropy(inData.label[0][0]);
+			printError();
+
 			//backprop(inData.label[0][0]);
 			//apdate(0.01);
 
-			//printError();
+			
 			//std::cout << "----------------------------------------------------------" << std::endl;
 		}
 	}
@@ -85,23 +95,25 @@ Neuro2::Neuro2(std::vector<unsigned> numNeurones, Dataset& inData): layers_t(num
 
 void Neuro2::init()
 {
-	for (int i = 0; i < layers_h.size(); i++) 
+	for (int i = 1; i < layers_h.size(); i++) 
 	{
 
 		for (size_t j = 0; j < layers_h[i].size(); j++)
 		{
-			
-			for (int k = 0; k < layers_h[i].size(); k++)
+			double sum = 0;
+			for (int k = 0; k < layers_h[i-1].size(); k++)
 			{
-				
-				
-				
-				layers_t[i][j] = layers_h[i][k] * weights[i][k]
+				int indx2 = k + (j * layers_h[i - 1].size());
+				sum+=layers_h[i-1][k] * weights[i-1][indx2];
 			}
-			
-		
+			layers_t[i][j] = sum;
+			if (i != layers_h.size() - 1) 
+			{
+				layers_h[i][j] = func(sum);//func , leaky_Relu 
+			}
 		}
 	}
+	
 }
 
 /*for (size_t i = 1; i < layers_t.size(); i++)
@@ -137,7 +149,7 @@ void Neuro2::init()
 
 void Neuro2::softMax() {
 
-	float sumExp = 0;
+	double sumExp = 0;
 	for (size_t i = 0; i < layers_t[layers_t.size()-1].size(); i++)
 	{
 		float b1 = layers_t[layers_t.size() - 1][i];
@@ -203,10 +215,19 @@ double Neuro2::func(float x)
 	return 1 / (1 + exp(-x)); //return (x >= 0) ? x : 0.01 * (std::exp(x) - 1); //return (x > 0) ? x : 0.01 * x; //
 }
 
+
 float Neuro2::relu(float x)
 {
 	return (x > 0) ? x : 0;
 }
+
+
+double Neuro2::leaky_Relu(float x)
+{
+	return (x >= 0) ? x : x * 0.01;
+}
+
+
 //
 //float Neuro2::relu_derivative(float x)
 //{
@@ -225,10 +246,10 @@ void Neuro2::gener_w(float matO, float md)
 }
 
 
-//void Neuro2::crossEntropy(int indx_lable)
-//{
-//	error = -(std::log(layerSoftMax[indx_lable]));
-//}
+void Neuro2::crossEntropy(int indx_lable)
+{
+	error = -(std::log(layers_h[layers_h.size()-1][indx_lable]));
+}
 
 
 void Neuro2::print_w()
@@ -265,10 +286,10 @@ void Neuro2::printLayersH()
 }
 
 
-//void Neuro2::printError()
-//{
-//	std::cout << std::endl << "Error: " << error << std::endl;
-//}
+void Neuro2::printError()
+{
+	std::cout << std::endl << "Error: " << error << std::endl;
+}
 
 
 //void Neuro2::print_vector_backprop()

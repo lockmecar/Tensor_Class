@@ -26,10 +26,11 @@ private:
 	void init();
 	double func(float x);// ф-ция активации
 	float relu(float x);
+	double leaky_Relu(float x);
 	//float relu_derivative(float x);// производная
 	void gener_w(float matO, float md);//генератор весов
 	void softMax();
-	//void crossEntropy(int indx_lable);
+	void crossEntropy(int indx_lable);
 	//void backprop(int indx_lable);
 	//void apdate(float alpha);//alpha это скорость обучения
 
