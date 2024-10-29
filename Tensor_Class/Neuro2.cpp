@@ -40,6 +40,7 @@ Neuro2::Neuro2(std::vector<unsigned> numNeurones, Dataset& inData): layers_t(num
 			init();
 			softMax();
 			crossEntropy(inData.label[0][0]);
+
 			//std::cout << "+-+-+-+-+-+-+-" << std::endl;
 			
 			printLayersT();
@@ -228,7 +229,7 @@ double Neuro2::leaky_Relu(float x)
 }
 
 
-//
+
 //float Neuro2::relu_derivative(float x)
 //{
 //	float sig = func(x);
