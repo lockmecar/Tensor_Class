@@ -4,13 +4,10 @@ Neuro2::Neuro2(std::vector<unsigned> numNeurones, Dataset& inData): layers_t(num
 																	back_layers_t(numNeurones.size()), back_layers_h(numNeurones.size()),
 																	weights(numNeurones.size() - 1)
 {
-
-
 	for (size_t i = 1; i <= /*ten.getSizeZ()*/1; i++)
 	{
 		if (numNeurones[0] != (inData.img[0][0].getSizeX() * inData.img[0][0].getSizeY()))
 			std::cout << "АЛЯРМ, ВЫ ДОПУСТИЛИ КАСЯХ!!!!" << std::endl;//подправить на error
-
 
 		for (size_t j = 0; j < numNeurones.size(); j++) // инициализируем каждый слой
 		{
@@ -22,39 +19,8 @@ Neuro2::Neuro2(std::vector<unsigned> numNeurones, Dataset& inData): layers_t(num
 				back_layers_h[j].resize(numNeurones[j]);
 			}
 		}
-		
-		layers_h[i - 1] = inData.img[0][0].matrix_to_vector(i); // заливаем картинку в x
-		
-		for (int j=0;j<layers_h[0].size();j++)
-		{
-			layers_h[0][j] /= 255;
-		}
-
-		for (size_t j = 1; j < layers_t.size(); j++) // инициализация весов
-			weights[j - 1].resize(layers_h[j - 1].size() * layers_h[j].size());
-
-		gener_w(0, 1); // заполняем веса случайными значениями
-
-		for (size_t i = 0; i < 1; i++)// узнать до скольки
-		{
-			init();
-			softMax();
-			crossEntropy(inData.label[0][0]);
-
-			//std::cout << "+-+-+-+-+-+-+-" << std::endl;
-			
-			printLayersT();
-			std::cout << std::endl;
-			printLayersH();
-			printError();
-
-			//backprop(inData.label[0][0]);
-			//apdate(0.01);
-
-			
-			//std::cout << "----------------------------------------------------------" << std::endl;
-		}
 	}
+	error = 0;
 }
 
 //Neuro2::Neuro2(std::vector<unsigned> numNeurones, std::vector<float> debug)
@@ -94,8 +60,22 @@ Neuro2::Neuro2(std::vector<unsigned> numNeurones, Dataset& inData): layers_t(num
 //}
 
 
-void Neuro2::init()
+void Neuro2::init(Dataset& inData)
 {
+	layers_h[0] = inData.img[0][0].matrix_to_vector(1); // заливаем картинку в x
+
+	// нормализация входных значений
+	for (int j = 0; j < layers_h[0].size(); j++) 
+	{
+		layers_h[0][j] /= 255;
+	}
+
+	for (size_t j = 1; j < layers_t.size(); j++) // инициализация весов
+		weights[j - 1].resize(layers_h[j - 1].size() * layers_h[j].size());
+
+	gener_w(0, 1); // заполняем веса случайными значениями
+
+	// прямой ход
 	for (int i = 1; i < layers_h.size(); i++) 
 	{
 
@@ -114,7 +94,9 @@ void Neuro2::init()
 			}
 		}
 	}
-	
+
+	softMax();
+	crossEntropy(inData.label[0][0]);
 }
 
 /*for (size_t i = 1; i < layers_t.size(); i++)

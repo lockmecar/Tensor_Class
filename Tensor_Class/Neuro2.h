@@ -11,6 +11,8 @@ public:
 	void printLayersH();
 	void print_w();
 	void printError();
+	void init(Dataset& inData);
+
 	//void print_vector_backprop();
 	//void print_softMax();
 
@@ -23,7 +25,6 @@ private:
 	std::vector < std::vector<double >> back_layers_h;	// обратный ход h
 
 	float error;
-	void init();
 	double func(float x);// ф-ция активации
 	float relu(float x);
 	double leaky_Relu(float x);

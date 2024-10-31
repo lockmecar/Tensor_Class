@@ -49,6 +49,11 @@ int main()
 		vector<float> bup{ 2.38,1.45,3.1 };
 
 		Neuro2 C({ 784,4,3,10}, a);
+		C.init(a);
+		C.printLayersH();
+		C.printLayersT();
+		C.printError();
+
 		//Neuro2 C({ 3,2,4 }, bup);
 		//C.print_w();
 
