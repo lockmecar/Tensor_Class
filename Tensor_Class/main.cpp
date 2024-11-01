@@ -49,7 +49,7 @@ int main()
 		vector<float> bup{ 2.38,1.45,3.1 };
 
 
-		Neuro2 C({ 784,4,3,10}, a);
+		Neuro2 C({784,4,3,10}, a);
 
 		C.init(a);
 		C.printLayersH();

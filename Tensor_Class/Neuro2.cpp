@@ -149,8 +149,28 @@ void Neuro2::softMax() {
 		//vector_backprop[i].resize(vector_Layers[i + 1].size());
 }
 
+void Neuro2::backprop(int indx_lable)
+{
+	// dE/dt
+	for (int i = 0; i < layers_h.size(); i++)
+	{
+		if (i != indx_lable)
+		{
+			this->back_layers_t[3][indx_lable] = this->layers_h[3][indx_lable];
+		}
+		else
+		{
+			this->back_layers_t[3][indx_lable] = this->layers_h[3][indx_lable] -= 1;
+		}
+	}
+	
+	// dE/dW
+	std::vector<std::vector<float>> test;
+	std::vector<std::vector<float>> de_dw = transp(test);
 
-//void Neuro2::backprop(int indx_lable)
+}
+
+//void Neuro2::backprop1(int indx_lable)
 //{
 //	for (int i = vector_backprop.size() - 1; i >= 0; i--)
 //		for (size_t j = 0; j < vector_backprop[i].size(); j++)
@@ -173,8 +193,8 @@ void Neuro2::softMax() {
 //				vector_backprop[i][j] = delta * relu_derivative(vector_Layers[i + 1][j]);
 //			}
 //}
-//
-//
+
+
 //void Neuro2::apdate(float alpha)
 //{
 //
@@ -190,8 +210,8 @@ void Neuro2::softMax() {
 //				w[i][d3] -= d2 * d1;
 //			}
 //}
-//
-//
+
+
 
 double Neuro2::func(float x)
 {
@@ -234,7 +254,7 @@ void Neuro2::crossEntropy(int indx_lable)
 	error = -(std::log(layers_h[layers_h.size()-1][indx_lable]));
 }
 
-void Neuro2::transp(std::vector<std::vector<float>>& matrixA)
+std::vector<std::vector<float>> Neuro2::transp(std::vector<std::vector<float>>& matrixA)
 {
 	std::vector<std::vector<float>> matrixB(matrixA[0].size(), std::vector<float>(matrixA.size()));
 
@@ -247,7 +267,7 @@ void Neuro2::transp(std::vector<std::vector<float>>& matrixA)
 		}
 	}
 
-	matrixA = matrixB;
+	return matrixB;
 }
 
 std::vector<std::vector<float>> Neuro2::multi(const std::vector<std::vector<float>>& matrixA, const std::vector<std::vector<float>>& matrixB)
