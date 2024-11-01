@@ -32,6 +32,9 @@ private:
 	void gener_w(float matO, float md);//генератор весов
 	void softMax();
 	void crossEntropy(int indx_lable);
+
+	void transp(std::vector<std::vector<float>>&matrixA);
+
 	//void backprop(int indx_lable);
 	//void apdate(float alpha);//alpha это скорость обучения
 

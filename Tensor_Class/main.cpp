@@ -48,7 +48,9 @@ int main()
 		//Ten3D B(28, 28, 1, "B", A);
 		vector<float> bup{ 2.38,1.45,3.1 };
 
+
 		Neuro2 C({ 784,4,3,10}, a);
+
 		C.init(a);
 		C.printLayersH();
 		C.printLayersT();

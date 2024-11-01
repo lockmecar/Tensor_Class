@@ -234,6 +234,22 @@ void Neuro2::crossEntropy(int indx_lable)
 	error = -(std::log(layers_h[layers_h.size()-1][indx_lable]));
 }
 
+void Neuro2::transp(std::vector<std::vector<float>>& matrixA)
+{
+	std::vector<std::vector<float>> matrixB(matrixA[0].size(), std::vector<float>(matrixA.size()));
+
+	int n = matrixA.size();
+	int m = matrixA[0].size();
+
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < m; j++) {
+			matrixB[j][i] = matrixA[i][j];
+		}
+	}
+
+	matrixA = matrixB;
+}
+
 
 void Neuro2::print_w()
 {
