@@ -250,6 +250,30 @@ void Neuro2::transp(std::vector<std::vector<float>>& matrixA)
 	matrixA = matrixB;
 }
 
+std::vector<std::vector<float>> Neuro2::multi(const std::vector<std::vector<float>>& matrixA, const std::vector<std::vector<float>>& matrixB)
+{
+	int rowsA = matrixA.size();
+	int colsA = matrixA[0].size();
+	int rowsB = matrixB.size();
+	int colsB = matrixB[0].size();
+
+	if (colsA != rowsB) {
+		throw std::invalid_argument("Умножение невозможно: количество столбцов первой матрицы не равно количеству строк второй матрицы.");
+	}
+
+	std::vector< std::vector<float>> result(rowsA, std::vector<float>(colsB, 0));
+
+	for (int i = 0; i < rowsA; i++) {
+		for (int j = 0; j < colsB; j++) {
+			for (int k = 0; k < colsA; k++) {
+				result[i][j] += matrixA[i][k] * matrixB[k][j];
+			}
+		}
+	}
+
+	return result;
+}
+
 
 void Neuro2::print_w()
 {

@@ -34,6 +34,7 @@ private:
 	void crossEntropy(int indx_lable);
 
 	void transp(std::vector<std::vector<float>>&matrixA);
+	std::vector<std::vector<float>> multi(const std::vector<std::vector<float>>& matrixA, const std::vector<std::vector<float>>& matrixB);
 
 	//void backprop(int indx_lable);
 	//void apdate(float alpha);//alpha это скорость обучения
