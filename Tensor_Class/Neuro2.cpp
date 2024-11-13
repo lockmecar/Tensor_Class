@@ -90,7 +90,7 @@ void Neuro2::init(Dataset& inData)
 			layers_t[i][j] = sum;
 			if (i != layers_h.size() - 1) 
 			{
-				layers_h[i][j] = func(sum);//func , leaky_Relu 
+				layers_h[i][j] = leaky_Relu(sum);//func , leaky_Relu 
 			}
 		}
 	}
@@ -149,26 +149,72 @@ void Neuro2::softMax() {
 		//vector_backprop[i].resize(vector_Layers[i + 1].size());
 }
 
-void Neuro2::backprop(int indx_lable)
-{
-	// dE/dt
-	for (int i = 0; i < layers_h.size(); i++)
-	{
-		if (i != indx_lable)
-		{
-			this->back_layers_t[3][indx_lable] = this->layers_h[3][indx_lable];
-		}
-		else
-		{
-			this->back_layers_t[3][indx_lable] = this->layers_h[3][indx_lable] -= 1;
-		}
-	}
-	
-	// dE/dW
-	std::vector<std::vector<float>> test;
-	std::vector<std::vector<float>> de_dw = transp(test);
+//void Neuro2::backprop(int indx_lable)
+//{
+//	// dE/dt
+//	for (int i = 0; i < layers_h.size(); i++)
+//	{
+//		if (i != indx_lable)
+//		{
+//			this->back_layers_t[3][indx_lable] = this->layers_h[3][indx_lable];
+//		}
+//		else
+//		{
+//			this->back_layers_t[3][indx_lable] = this->layers_h[3][indx_lable] -= 1;
+//		}
+//	}
+//	
+//	// dE/dW
+//	std::vector<std::vector<float>> test;
+//	std::vector<std::vector<float>> de_dw = transp(test);
+//
+//}
 
-}
+//void Neuro2::backprop(int indx_label)
+//{
+//	// Шаг 1: Вычисляем градиент ошибки на выходном слое с использованием кросс-энтропийной функции
+//	int output_layer = layers_h.size() - 1;  // Индекс выходного слоя
+//
+//	// Инициализируем градиенты ошибки для выходного слоя
+//	back_layers_h[output_layer].resize(layers_h[output_layer].size());
+//
+//	// Вычисляем градиент ошибки для каждого нейрона выходного слоя
+//	for (size_t i = 0; i < layers_h[output_layer].size(); ++i) {
+//		back_layers_h[output_layer][i] = layers_h[output_layer][i] - (i == indx_label ? 1.0 : 0.0);
+//	}
+//
+//	// Шаг 2: Обратное распространение ошибки на скрытые слои
+//	for (int layer = output_layer - 1; layer >= 0; --layer) {
+//		back_layers_h[layer].resize(layers_h[layer].size());
+//
+//		for (size_t j = 0; j < layers_h[layer].size(); ++j) {
+//			double sum_error = 0.0;
+//
+//			// Используем веса между текущим слоем и следующим для вычисления суммы ошибок
+//			for (size_t k = 0; k < layers_h[layer + 1].size(); ++k) {
+//				sum_error += back_layers_h[layer + 1][k] * weights[layer][j];
+//			}
+//
+//			// Применяем производную функции активации для нейрона
+//			back_layers_h[layer][j] = sum_error * ((layers_h[layer][j] > 0) ? 1.0 : 0.01);  // для Leaky ReLU, где f'(x) = 0.01 при x < 0
+//		}
+//	}
+//
+//	// Шаг 3: Вычисление градиентов для весов
+//	for (size_t layer = 0; layer < weights.size(); ++layer) {
+//		back_layers_w[layer].resize(weights[layer].size());
+//
+//		for (size_t i = 0; i < weights[layer].size(); ++i) {
+//			back_layers_w[layer][i].resize(weights[layer][i].size());
+//
+//			for (size_t j = 0; j < weights[layer][i].size(); ++j) {
+//				// Градиент для веса равен градиенту ошибки нейрона, умноженному на значение активации предыдущего слоя
+//				back_layers_w[layer][i][j] = back_layers_h[layer + 1][j] * layers_h[layer][i];
+//			}
+//		}
+//	}
+//}
+
 
 //void Neuro2::backprop1(int indx_lable)
 //{
@@ -215,7 +261,9 @@ void Neuro2::backprop(int indx_lable)
 
 double Neuro2::func(float x)
 {
-	return 1 / (1 + exp(-x)); //return (x >= 0) ? x : 0.01 * (std::exp(x) - 1); //return (x > 0) ? x : 0.01 * x; //
+	return 1 / (1 + exp(-x)); 
+	//return (x >= 0) ? x : 0.01 * (std::exp(x) - 1);
+	//return (x > 0) ? x : 0.01 * x;
 }
 
 
@@ -232,11 +280,14 @@ double Neuro2::leaky_Relu(float x)
 
 
 
-//float Neuro2::relu_derivative(float x)
-//{
-//	float sig = func(x);
-//	return sig * (1.0f - sig);//return (x > 0) ? 1 : 0; // // //return (x >= 0) ? 1 : 0.01 * std::exp(x); //return (x > 0) ? 1 : 0.01; /
-//}
+float Neuro2::relu_derivative(float x)
+{
+	float sig = func(x);
+	return sig * (1.0f - sig);
+	//return (x > 0) ? 1 : 0; 
+	//return (x >= 0) ? 1 : 0.01 * std::exp(x);
+	//return (x > 0) ? 1 : 0.01;
+}
 
 
 void Neuro2::gener_w(float matO, float md)
