@@ -170,50 +170,37 @@ void Neuro2::softMax() {
 //
 //}
 
-//void Neuro2::backprop(int indx_label)
-//{
-//	// Шаг 1: Вычисляем градиент ошибки на выходном слое с использованием кросс-энтропийной функции
-//	int output_layer = layers_h.size() - 1;  // Индекс выходного слоя
-//
-//	// Инициализируем градиенты ошибки для выходного слоя
-//	back_layers_h[output_layer].resize(layers_h[output_layer].size());
-//
-//	// Вычисляем градиент ошибки для каждого нейрона выходного слоя
-//	for (size_t i = 0; i < layers_h[output_layer].size(); ++i) {
-//		back_layers_h[output_layer][i] = layers_h[output_layer][i] - (i == indx_label ? 1.0 : 0.0);
-//	}
-//
-//	// Шаг 2: Обратное распространение ошибки на скрытые слои
-//	for (int layer = output_layer - 1; layer >= 0; --layer) {
-//		back_layers_h[layer].resize(layers_h[layer].size());
-//
-//		for (size_t j = 0; j < layers_h[layer].size(); ++j) {
-//			double sum_error = 0.0;
-//
-//			// Используем веса между текущим слоем и следующим для вычисления суммы ошибок
-//			for (size_t k = 0; k < layers_h[layer + 1].size(); ++k) {
-//				sum_error += back_layers_h[layer + 1][k] * weights[layer][j];
-//			}
-//
-//			// Применяем производную функции активации для нейрона
-//			back_layers_h[layer][j] = sum_error * ((layers_h[layer][j] > 0) ? 1.0 : 0.01);  // для Leaky ReLU, где f'(x) = 0.01 при x < 0
-//		}
-//	}
-//
-//	// Шаг 3: Вычисление градиентов для весов
-//	for (size_t layer = 0; layer < weights.size(); ++layer) {
-//		back_layers_w[layer].resize(weights[layer].size());
-//
-//		for (size_t i = 0; i < weights[layer].size(); ++i) {
-//			back_layers_w[layer][i].resize(weights[layer][i].size());
-//
-//			for (size_t j = 0; j < weights[layer][i].size(); ++j) {
-//				// Градиент для веса равен градиенту ошибки нейрона, умноженному на значение активации предыдущего слоя
-//				back_layers_w[layer][i][j] = back_layers_h[layer + 1][j] * layers_h[layer][i];
-//			}
-//		}
-//	}
-//}
+void Neuro2::backprop(int indx_label) {
+	int output_layer = layers_h.size() - 1;  // Индекс выходного слоя
+
+	// 1. Вычисляем градиент ошибки на выходном слое с использованием кросс-энтропии
+	back_layers_h[output_layer].resize(layers_h[output_layer].size());
+	for (size_t i = 0; i < layers_h[output_layer].size(); ++i) {
+		back_layers_h[output_layer][i] = layers_h[output_layer][i] - (i == indx_label ? 1.0 : 0.0);
+	}
+
+	// 2. Обратное распространение ошибки для скрытых слоев
+	for (int layer = output_layer - 1; layer >= 0; --layer) {
+		back_layers_h[layer].resize(layers_h[layer].size());
+		for (size_t j = 0; j < layers_h[layer].size(); ++j) {
+			double sum_error = 0.0;
+			for (size_t k = 0; k < layers_h[layer + 1].size(); ++k) {
+				sum_error += back_layers_h[layer + 1][k] * weights[layer][k];
+			}
+			back_layers_h[layer][j] = sum_error * relu_derivative(layers_h[layer][j]);
+		}
+	}
+
+	// 3. Вычисление градиентов весов
+	back_layers_w.resize(weights.size());
+	for (size_t layer = 0; layer < weights.size(); ++layer) {
+		back_layers_w[layer].resize(weights[layer].size());
+		for (size_t i = 0; i < weights[layer].size(); ++i) {
+			back_layers_w[layer][i] = back_layers_h[layer + 1][i] * layers_h[layer][i];
+		}
+	}
+}
+
 
 
 //void Neuro2::backprop1(int indx_lable)

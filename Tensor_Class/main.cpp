@@ -56,6 +56,8 @@ int main()
 		C.printLayersT();
 		C.printError();
 
+
+
 		//Neuro2 C({ 3,2,4 }, bup);
 		//C.print_w();
 
