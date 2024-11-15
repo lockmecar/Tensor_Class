@@ -52,9 +52,7 @@ int main()
 		Neuro2 C({784,4,3,10}, a);
 
 		C.init(a);
-		C.printLayersH();
-		C.printLayersT();
-		C.printError();
+		
 
 
 

@@ -97,6 +97,7 @@ void Neuro2::init(Dataset& inData)
 
 	softMax();
 	crossEntropy(inData.label[0][0]);
+	backprop(inData.label[0][0]);
 }
 
 /*for (size_t i = 1; i < layers_t.size(); i++)
@@ -180,11 +181,14 @@ void Neuro2::backprop(int indx_label) {
 	}
 
 	// 2. Обратное распространение ошибки для скрытых слоев
-	for (int layer = output_layer - 1; layer >= 0; --layer) {
+	for (int layer = output_layer - 1; layer >= 0; --layer)
+	{
 		back_layers_h[layer].resize(layers_h[layer].size());
-		for (size_t j = 0; j < layers_h[layer].size(); ++j) {
+		for (size_t j = 0; j < layers_h[layer].size(); ++j)
+		{
 			double sum_error = 0.0;
-			for (size_t k = 0; k < layers_h[layer + 1].size(); ++k) {
+			for (size_t k = 0; k < layers_h[layer + 1].size(); ++k)
+			{
 				sum_error += back_layers_h[layer + 1][k] * weights[layer][k];
 			}
 			back_layers_h[layer][j] = sum_error * relu_derivative(layers_h[layer][j]);
@@ -193,10 +197,15 @@ void Neuro2::backprop(int indx_label) {
 
 	// 3. Вычисление градиентов весов
 	back_layers_w.resize(weights.size());
-	for (size_t layer = 0; layer < weights.size(); ++layer) {
+	for (size_t layer = 0; layer < weights.size(); ++layer)
+	{
 		back_layers_w[layer].resize(weights[layer].size());
-		for (size_t i = 0; i < weights[layer].size(); ++i) {
-			back_layers_w[layer][i] = back_layers_h[layer + 1][i] * layers_h[layer][i];
+		for (size_t i = 0; i < weights[layer].size(); ++i)
+		{
+			for (size_t k = 0; k < layers_h[layer].size(); k++)
+			{
+				back_layers_w[layer][i] = back_layers_h[layer + 1][k] * layers_h[layer][i];
+			}
 		}
 	}
 }
