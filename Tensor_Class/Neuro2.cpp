@@ -9,7 +9,7 @@ Neuro2::Neuro2(std::vector<unsigned> numNeurones, Dataset& inData)
       back_layers_t(numNeurones.size()), back_layers_h(numNeurones.size()),
       weights(numNeurones.size() - 1)
 {
-    // Проверка на совместимость входных данных
+
     if (numNeurones[0] != (inData.img[0][0].getSizeX() * inData.img[0][0].getSizeY())) {
         throw std::invalid_argument("Ошибка: входной слой не соответствует данным!");
     }
@@ -39,7 +39,7 @@ Neuro2::Neuro2(std::vector<unsigned> numNeurones, Dataset& inData)
             back_layers_w[w_layer][i].resize(weights[w_layer][i].size(), 0.0f);
         }
     }
-
+    // Генерация весов
     gener_w(0, 1);
     error = 0;
 }
@@ -53,7 +53,7 @@ void Neuro2::init(Dataset& inData)
         value /= 255.0f;
     }
 
-    // Генерация весов
+
     
 
     // Прямой ход
@@ -86,7 +86,6 @@ void Neuro2::printLayersT()
 
         std::cout << std::endl;
     }
-    
 }
 
 void Neuro2::printLayersH()
@@ -146,11 +145,10 @@ void Neuro2::backprop(int indx_label)
     // 1. Вычисление ошибки на выходном слое с использованием кросс-энтропии
 
     for (size_t i = 0; i < layers_h.back().size(); ++i) {
-        // Если i == indx_label, то y_i = 1, иначе y_i = 0
         float target = (i == indx_label ? 1.0f : 0.0f);
 
         // Кросс-энтропия: -y_i * log(p_i), где p_i - предсказанная вероятность
-        if (layers_h.back()[i] > 0) {  // проверка на допустимость логарифма
+        if (layers_h.back()[i] > 0) {
             error -= target * std::log(layers_h.back()[i]);
         }
 
