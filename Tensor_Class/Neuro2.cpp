@@ -1,365 +1,199 @@
 #include "Neuro2.h"
+#include <random>
+#include <iostream>
+#include <cmath>
+#include <stdexcept>
 
-Neuro2::Neuro2(std::vector<unsigned> numNeurones, Dataset& inData): layers_t(numNeurones.size()), layers_h(numNeurones.size()),
-																	back_layers_t(numNeurones.size()), back_layers_h(numNeurones.size()),
-																	weights(numNeurones.size() - 1)
+Neuro2::Neuro2(std::vector<unsigned> numNeurones, Dataset& inData)
+    : layers_t(numNeurones.size()), layers_h(numNeurones.size()),
+      back_layers_t(numNeurones.size()), back_layers_h(numNeurones.size()),
+      weights(numNeurones.size() - 1)
 {
-	for (size_t i = 1; i <= /*ten.getSizeZ()*/1; i++)
-	{
-		if (numNeurones[0] != (inData.img[0][0].getSizeX() * inData.img[0][0].getSizeY()))
-			std::cout << "АЛЯРМ, ВЫ ДОПУСТИЛИ КАСЯХ!!!!" << std::endl;//подправить на error
+    // Проверка на совместимость входных данных
+    if (numNeurones[0] != (inData.img[0][0].getSizeX() * inData.img[0][0].getSizeY())) {
+        throw std::invalid_argument("Ошибка: входной слой не соответствует данным!");
+    }
 
-		for (size_t j = 0; j < numNeurones.size(); j++) // инициализируем каждый слой
-		{
-			layers_h[j].resize(numNeurones[j]);
-			if(j>=1)
-			{
-				layers_t[j].resize(numNeurones[j]);
-				back_layers_t[j].resize(numNeurones[j]);
-				back_layers_h[j].resize(numNeurones[j]);
-			}
-		}
-	}
-	error = 0;
+    // Инициализация слоев
+    for (size_t j = 0; j < numNeurones.size(); ++j) {
+        layers_h[j].resize(numNeurones[j]);
+        if (j >= 1) {
+            layers_t[j].resize(numNeurones[j]);
+            back_layers_t[j].resize(numNeurones[j]);
+            back_layers_h[j].resize(numNeurones[j]);
+        }
+    }
+
+    // Инициализация весов
+    for (size_t i = 0; i < weights.size(); ++i) {
+        weights[i].resize(numNeurones[i + 1], std::vector<float>(numNeurones[i], 0.0f));
+    }
+
+    back_layers_w.resize(weights.size());
+    for (size_t w_layer = 0; w_layer < weights.size(); ++w_layer)
+    {
+        back_layers_w[w_layer].resize(weights[w_layer].size());
+        for (size_t i = 0; i < weights[w_layer].size(); ++i)
+        {
+            back_layers_w[w_layer][i].resize(weights[w_layer][i].size(), 0.0f);
+        }
+    }
+
+    error = 0;
 }
-
-//Neuro2::Neuro2(std::vector<unsigned> numNeurones, std::vector<float> debug)
-//{
-//	layerSoftMax.resize(numNeurones[numNeurones.size() - 1]);//????????????
-//	w.resize(numNeurones.size() - 1);
-//
-//
-//	for (size_t i = 1; i <= /*ten.getSizeZ()*/1; i++)
-//	{
-//
-//		vector_Layers.resize(numNeurones.size());
-//
-//		for (size_t j = 0; j < numNeurones.size(); j++)
-//			vector_Layers[j].resize(numNeurones[j]);
-//
-//		vector_Layers[i - 1] = debug;
-//
-//		for (size_t i = 1; i < vector_Layers.size(); i++)
-//			w[i - 1].resize(vector_Layers[i - 1].size() * vector_Layers[i].size());
-//
-//		gener_w(0, 1);
-//		//print_w();
-//		for (size_t i = 0; i < 1; i++)// узнать до скольки
-//		{
-//			Layer();
-//			print_w();
-//			printLayers();
-//			print_softMax();
-//			printError();
-//
-//			//crossEntropy(3);//????
-//			//backprop(3);
-//			//apdate(0.01);
-//		}
-//	}
-//}
-
 
 void Neuro2::init(Dataset& inData)
 {
-	layers_h[0] = inData.img[0][0].matrix_to_vector(1); // заливаем картинку в x
+    layers_h[0] = inData.img[0][0].matrix_to_vector(1); // Входные данные
 
-	// нормализация входных значений
-	for (int j = 0; j < layers_h[0].size(); j++) 
-	{
-		layers_h[0][j] /= 255;
-	}
+    // Нормализация входных значений
+    for (auto& value : layers_h[0]) {
+        value /= 255.0f;
+    }
 
-	for (size_t j = 1; j < layers_t.size(); j++) // инициализация весов
-		weights[j - 1].resize(layers_h[j - 1].size() * layers_h[j].size());
+    // Генерация весов
+    gener_w(0, 1);
 
-	gener_w(0, 1); // заполняем веса случайными значениями
+    // Прямой ход
+    for (size_t i = 1; i < layers_h.size(); ++i) {
+        for (size_t j = 0; j < layers_h[i].size(); ++j) {
+            double sum = 0.0;
+            for (size_t k = 0; k < layers_h[i - 1].size(); ++k) {
+                sum += layers_h[i - 1][k] * weights[i - 1][j][k];
+            }
+            layers_t[i][j] = sum;
+            layers_h[i][j] = (i != layers_h.size() - 1) ? leaky_Relu(sum) : 0.0; // Последний слой — softmax
+        }
+    }
 
-	// прямой ход
-	for (int i = 1; i < layers_h.size(); i++) 
-	{
-
-		for (size_t j = 0; j < layers_h[i].size(); j++)
-		{
-			double sum = 0;
-			for (int k = 0; k < layers_h[i-1].size(); k++)
-			{
-				int indx2 = k + (j * layers_h[i - 1].size());
-				sum+=layers_h[i-1][k] * weights[i-1][indx2];
-			}
-			layers_t[i][j] = sum;
-			if (i != layers_h.size() - 1) 
-			{
-				layers_h[i][j] = leaky_Relu(sum);//func , leaky_Relu 
-			}
-		}
-	}
-
-	softMax();
-	backprop(inData.label[0][0]);
-}
-
-
-void Neuro2::softMax() {
-
-	double sumExp = 0;
-	for (size_t i = 0; i < layers_t[layers_t.size()-1].size(); i++)
-	{
-		float b1 = layers_t[layers_t.size() - 1][i];
-		sumExp += std::exp(b1);
-	}
-
-	for (size_t i = 0; i < layers_h[layers_h.size() - 1].size(); i++)
-	{
-		layers_h[layers_h.size() - 1][i] = (std::exp(layers_t[layers_t.size() - 1][i]) / sumExp);
-	}
-
-}
-
-
-void Neuro2::backprop(int indx_label)
-{
-	// 1: Вычислить градиент ошибки по выходу (используем кросс-энтропию)
-	crossEntropy(indx_label);
-
-	// Производная функции активации на выходном слое (измените в зависимости от активации последнего слоя)
-	for (size_t i = 0; i < layers_h.back().size(); ++i)
-	{
-		back_layers_h.back()[i] = layers_h.back()[i] - (i == indx_label ? 1.0 : 0.0); // dE/dh
-	}
-	
-	back_layers_w.resize(weights.size()); // количество слоев
-	for (size_t w_layer = 0; w_layer < weights.size(); ++w_layer)
-	{
-		back_layers_w[w_layer].resize(weights[w_layer].size()); // количество нейронов текущего слоя
-		for (size_t i = 0; i < weights[w_layer].size(); ++i)
-		{
-			back_layers_w[w_layer][i].resize(weights[w_layer][i].size(), 0.0f); // количество нейронов следующего слоя
-		}
-	}
-
-	// Основной цикл обратного распространения
-	for (int layer = layers_h.size() - 1; layer > 0; --layer)
-	{
-		// Вычисляем dE/dt, используя производную функции активации
-		for (size_t i = 0; i < layers_t[layer].size(); ++i)
-		{
-			back_layers_t[layer][i] = back_layers_h[layer][i] * relu_derivative(layers_t[layer][i]);
-		}
-
-		// Обновляем dE/dh для предыдущего слоя, используя транспонированную матрицу весов
-		for (size_t i = 0; i < layers_h[layer - 1].size(); ++i)
-		{
-			double sum = 0.0;
-			for (size_t j = 0; j < back_layers_t[layer].size(); ++j)
-			{
-				sum += back_layers_t[layer][j] * weights[layer - 1][j][i]; // Используем правильный индекс для матрицы весов
-			}
-			back_layers_h[layer - 1][i] = sum;
-		}
-
-		// Рассчитываем градиенты весов для текущего слоя
-		for (size_t i = 0; i < weights[layer - 1].size(); ++i)
-		{
-			for (size_t j = 0; j < weights[layer - 1][i].size(); ++j)
-			{
-				// Обновляем градиент для веса между нейроном i на предыдущем слое и нейроном j на текущем слое
-				back_layers_w[layer - 1][i][j] += layers_h[layer - 1][i] * back_layers_t[layer][j];
-			}
-		}
-	}
-}
-
-
-
-
-//void Neuro2::backprop1(int indx_lable)
-//{
-//	for (int i = vector_backprop.size() - 1; i >= 0; i--)
-//		for (size_t j = 0; j < vector_backprop[i].size(); j++)
-//			if (i == (vector_Layers.size() - 2))
-//			{
-//				if (j + 1 == indx_lable)
-//					for (int k = vector_Layers[i + 1].size() - 1; k >= 0; k--)
-//						vector_backprop[i][k] = 1 - vector_Layers[i + 1][k];
-//			}
-//
-//			else
-//			{
-//				double delta = 0.0;
-//				for (size_t k = 0; k < vector_Layers[i].size() - 1; k++)
-//				{
-//					double b1 = vector_Layers[i][k];
-//					double b2 = w[i][j * vector_Layers[i].size() + k];
-//					delta += b1 * b2;
-//				}
-//				vector_backprop[i][j] = delta * relu_derivative(vector_Layers[i + 1][j]);
-//			}
-//}
-
-
-//void Neuro2::apdate(float alpha)
-//{
-//
-//	for (size_t i = 0; i < vector_Layers.size() - 1; i++) // Проходим по всем слоям, кроме входного
-//		for (size_t j = 0; j < vector_Layers[i + 1].size(); j++) // Проходим по всем нейронам текущего слоя
-//			for (size_t k = 0; k < vector_Layers[i].size(); k++) // Для каждого нейрона текущего слоя обновляем веса, которые его соединяют с предыдущим слоем
-//			{
-//
-//				float d1 = vector_Layers[i][k];
-//				int d3 = j * vector_Layers[i].size() + k;
-//				float d2 = alpha * vector_backprop[i][j];
-//
-//				w[i][d3] -= d2 * d1;
-//			}
-//}
-
-
-
-double Neuro2::func(float x)
-{
-	return 1 / (1 + exp(-x)); 
-	//return (x >= 0) ? x : 0.01 * (std::exp(x) - 1);
-	//return (x > 0) ? x : 0.01 * x;
-}
-
-
-float Neuro2::relu(float x)
-{
-	return (x > 0) ? x : 0;
-}
-
-
-double Neuro2::leaky_Relu(float x)
-{
-	return (x >= 0) ? x : x * 0.01;
-}
-
-
-
-float Neuro2::relu_derivative(float x)
-{
-	float sig = func(x);
-	return sig * (1.0f - sig);
-	//return (x > 0) ? 1 : 0; 
-	//return (x >= 0) ? 1 : 0.01 * std::exp(x);
-	//return (x > 0) ? 1 : 0.01;
-}
-
-
-void Neuro2::gener_w(float matO, float md)
-{
-	std::default_random_engine generator;
-	std::normal_distribution<double> distribution(matO, md);
-	for (int i = 0; i < weights.size(); i++) //iter????
-		for (int j = 0; j < weights[i].size(); j++)
-			weights[i][j] = (distribution(generator));
-}
-
-
-void Neuro2::crossEntropy(int indx_lable)
-{
-	error = -(std::log(layers_h[layers_h.size()-1][indx_lable]));
-}
-
-std::vector<std::vector<float>> Neuro2::transp(std::vector<std::vector<float>>& matrixA)
-{
-	std::vector<std::vector<float>> matrixB(matrixA[0].size(), std::vector<float>(matrixA.size()));
-
-	int n = matrixA.size();
-	int m = matrixA[0].size();
-
-	for (int i = 0; i < n; i++) {
-		for (int j = 0; j < m; j++) {
-			matrixB[j][i] = matrixA[i][j];
-		}
-	}
-
-	return matrixB;
-}
-
-std::vector<std::vector<float>> Neuro2::multi(const std::vector<std::vector<float>>& matrixA, const std::vector<std::vector<float>>& matrixB)
-{
-	int rowsA = matrixA.size();
-	int colsA = matrixA[0].size();
-	int rowsB = matrixB.size();
-	int colsB = matrixB[0].size();
-
-	if (colsA != rowsB) {
-		throw std::invalid_argument("Умножение невозможно: количество столбцов первой матрицы не равно количеству строк второй матрицы.");
-	}
-
-	std::vector< std::vector<float>> result(rowsA, std::vector<float>(colsB, 0));
-
-	for (int i = 0; i < rowsA; i++) {
-		for (int j = 0; j < colsB; j++) {
-			for (int k = 0; k < colsA; k++) {
-				result[i][j] += matrixA[i][k] * matrixB[k][j];
-			}
-		}
-	}
-
-	return result;
-}
-
-
-void Neuro2::print_w()
-{
-	std::cout << std::endl << "Веса " << std::endl;
-	for (size_t i = 0; i < weights.size(); i++)
-	{
-		for (size_t j = 0; j < weights[i].size(); j++)
-			std::cout << weights[i][j] << " ";
-		std::cout << std::endl;
-	}
+    softMax();
+    backprop(inData.label[0][0]);
 }
 
 void Neuro2::printLayersT()
 {
-	for (size_t i = 0; i < layers_t.size(); i++)
-	{
-		std::cout << std::endl << "Слой t " << i << ": ";
-		for (size_t j = 0; j < layers_t[i].size(); j++)
-			std::cout << layers_t[i][j] << " ";
-		std::cout << std::endl;
-	}
+    std::cout << "Значения слоёв (до активации):" << std::endl;
+
+    for (size_t layer = 0; layer < layers_t.size(); ++layer) {
+        std::cout << "Слой " << layer + 1 << ": ";
+
+        for (size_t neuron = 0; neuron < layers_t[layer].size(); ++neuron) {
+            std::cout << layers_t[layer][neuron] << " ";
+        }
+
+        std::cout << std::endl;
+    }
+    
 }
 
 void Neuro2::printLayersH()
 {
-	for (size_t i = 0; i < layers_h.size(); i++)
-	{
-		std::cout << std::endl << "Слой h " << i << ": ";
-		for (size_t j = 0; j < layers_h[i].size(); j++)
-			std::cout << layers_h[i][j] << " ";
-		std::cout << std::endl;
-	}
+    std::cout << "Значения слоёв (после активации):" << std::endl;
+
+    for (size_t layer = 0; layer < layers_h.size(); ++layer) {
+        std::cout << "Слой " << layer + 1 << ": ";
+
+        for (size_t neuron = 0; neuron < layers_h[layer].size(); ++neuron) {
+            std::cout << layers_h[layer][neuron] << " ";
+        }
+
+        std::cout << std::endl;
+    }
 }
 
+void Neuro2::print_w()
+{
+    std::cout << "Веса нейросети:" << std::endl;
+
+    // Проходим по каждому слою весов
+    for (size_t layer = 0; layer < weights.size(); ++layer) {
+        std::cout << "Слой " << layer + 1 << ":" << std::endl;
+
+        // Проходим по каждому нейрону текущего слоя
+        for (size_t neuron = 0; neuron < weights[layer].size(); ++neuron) {
+            std::cout << "  Нейрон " << neuron + 1 << ": ";
+
+            // Выводим веса для текущего нейрона
+            for (size_t prev_neuron = 0; prev_neuron < weights[layer][neuron].size(); ++prev_neuron) {
+                std::cout << weights[layer][neuron][prev_neuron] << " ";
+            }
+            std::cout << std::endl;
+        }
+    }
+}
 
 void Neuro2::printError()
 {
-	std::cout << std::endl << "Error: " << error << std::endl;
+    std::cout << "Текущее значение ошибки: " << error << std::endl;
 }
 
+void Neuro2::softMax()
+{
+    double sumExp = 0.0;
+    for (float value : layers_t.back()) {
+        sumExp += std::exp(value);
+    }
+    for (size_t i = 0; i < layers_h.back().size(); ++i) {
+        layers_h.back()[i] = std::exp(layers_t.back()[i]) / sumExp;
+    }
+}
 
-//void Neuro2::print_vector_backprop()
-//{
-//	for (size_t i = 0; i < vector_backprop.size(); i++)
-//	{
-//		std::cout << std::endl << "Слой " << i << ": ";
-//		for (size_t j = 0; j < vector_backprop[i].size(); j++)
-//			std::cout << vector_backprop[i][j] << " ";
-//		std::cout << std::endl;
-//	}
-//}
-//
-//void Neuro2::print_softMax()
-//{
-//	std::cout << std::endl << "softMax: ";
-//	for (size_t i = 0; i < layers_h[layers_h.size()-1].size(); i++)
-//	{
-//		std::cout <<" ["<<i<<"] " << layers_h[layers_h.size() - 1][i] << " ";
-//	}
-//	std::cout << std::endl;
-//}
+void Neuro2::backprop(int indx_label)
+{
+    // 1. Вычисление ошибки на выходном слое
+    for (size_t i = 0; i < layers_h.back().size(); ++i) {
+        back_layers_h.back()[i] = layers_h.back()[i] - (i == indx_label ? 1.0 : 0.0);
+    }
+
+    // 2. Цикл обратного распространения
+    for (int layer = layers_h.size() - 1; layer > 0; --layer) {
+        // Градиент dE/dt
+        for (size_t i = 0; i < layers_t[layer].size(); ++i) {
+            back_layers_t[layer][i] = back_layers_h[layer][i] * relu_derivative(layers_t[layer][i]);
+        }
+
+        // Градиент весов dE/dW
+        for (size_t i = 0; i < layers_h[layer - 1].size(); ++i) {
+            for (size_t j = 0; j < layers_t[layer].size(); ++j) {
+                back_layers_w[layer - 1][j][i] += layers_h[layer - 1][i] * back_layers_t[layer][j];
+            }
+        }
+
+        // Градиент dE/dh для предыдущего слоя
+        for (size_t i = 0; i < layers_h[layer - 1].size(); ++i) {
+            double sum = 0.0;
+            for (size_t j = 0; j < layers_t[layer].size(); ++j) {
+                sum += back_layers_t[layer][j] * weights[layer - 1][j][i];
+            }
+            back_layers_h[layer - 1][i] = sum;
+        }
+    }
+}
+
+void Neuro2::gener_w(float mean, float stddev)
+{
+    std::default_random_engine generator;
+    std::normal_distribution<float> distribution(mean, stddev);
+    for (auto& layer : weights) {
+        for (auto& neuron : layer) {
+            for (float& weight : neuron) {
+                weight = distribution(generator);
+            }
+        }
+    }
+}
+
+float Neuro2::relu(float x)
+{
+    return (x > 0) ? x : 0.0f;
+}
+
+float Neuro2::relu_derivative(float x)
+{
+    return (x > 0) ? 1.0f : 0.0f;
+}
+
+double Neuro2::leaky_Relu(float x)
+{
+    return (x >= 0) ? x : 0.01 * x;
+}

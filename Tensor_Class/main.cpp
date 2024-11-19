@@ -52,8 +52,10 @@ int main()
 		Neuro2 C({784,4,3,10}, a);
 
 		C.init(a);
-		
-
+		C.print_w();
+		C.printLayersT();
+		C.printLayersH();
+		C.printError();
 
 
 		//Neuro2 C({ 3,2,4 }, bup);
