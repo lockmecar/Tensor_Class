@@ -6,13 +6,13 @@
 class Neuro2
 {
 public:
-    // Конструктор
+
     Neuro2(std::vector<unsigned> numNeurones, Dataset& inData);
 
     // Инициализация сети
     void init(Dataset& inData);
 
-    // Функции для отладки
+
     void printLayersT();
     void printLayersH();
     void print_w();
@@ -35,14 +35,12 @@ private:
     // Вспомогательные функции
     float relu(float x);                       // Функция активации ReLU
     float relu_derivative(float x);            // Производная ReLU
-    double leaky_Relu(float x);                // Leaky ReLU (если потребуется)
-    //double func(float x);                      // Общая функция активации (если потребуется)
+    double leaky_Relu(float x);                // Leaky ReLU 
     void gener_w(float minVal, float maxVal);  // Генератор случайных весов
 
     void softMax();                            // Softmax на выходном слое
-    //void crossEntropy(int indx_label);         // Кросс-энтропийная ошибка
 
-    // Вспомогательные функции для работы с матрицами
+    // для работы с матрицами
     std::vector<std::vector<float>> transp(const std::vector<std::vector<float>>& matrixA); // Транспонирование
     std::vector<std::vector<float>> multi(const std::vector<std::vector<float>>& matrixA,
         const std::vector<std::vector<float>>& matrixB); // Умножение матриц
@@ -51,5 +49,5 @@ private:
     void backprop(int indx_label);
 
     // Обновление весов 
-    //void updateWeights(float alpha);          // Скорость обучения alpha
+    void updateWeights(float alpha);          // Скорость обучения alpha
 };

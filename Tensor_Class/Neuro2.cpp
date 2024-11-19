@@ -40,6 +40,7 @@ Neuro2::Neuro2(std::vector<unsigned> numNeurones, Dataset& inData)
         }
     }
 
+    gener_w(0, 1);
     error = 0;
 }
 
@@ -53,7 +54,7 @@ void Neuro2::init(Dataset& inData)
     }
 
     // Генерация весов
-    gener_w(0, 1);
+    
 
     // Прямой ход
     for (size_t i = 1; i < layers_h.size(); ++i) {
@@ -69,6 +70,7 @@ void Neuro2::init(Dataset& inData)
 
     softMax();
     backprop(inData.label[0][0]);
+    updateWeights(0.01);
 }
 
 void Neuro2::printLayersT()
@@ -177,6 +179,20 @@ void Neuro2::backprop(int indx_label)
                     sum += back_layers_t[layer][j] * weights[layer - 1][j][i];
                 }
                 back_layers_h[layer - 1][i] = sum;
+            }
+        }
+    }
+}
+
+void Neuro2::updateWeights(float alpha)
+{
+    // Обновление весов для каждого слоя, начиная с 0-го
+    for (size_t layer = 0; layer < layers_h.size() - 1; ++layer) {
+        // Обновление весов между слоем и следующим слоем
+        for (size_t i = 0; i < layers_h[layer].size(); ++i) {
+            for (size_t j = 0; j < layers_h[layer + 1].size(); ++j) {
+                // Обновление веса по формуле: W = W - alpha * dE/dW
+                weights[layer][j][i] -= alpha * back_layers_w[layer][j][i];
             }
         }
     }

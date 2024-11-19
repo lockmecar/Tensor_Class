@@ -54,10 +54,17 @@ int main()
 		C.init(a);
 		//C.print_w();
 		//C.printLayersT();
+
 		C.printLayersH();
 		C.printError();
-
-
+		cout << endl;
+		C.init(a);
+		C.printLayersH();
+		C.printError();
+		cout << endl;
+		C.init(a);
+		C.printLayersH();
+		C.printError();
 		//Neuro2 C({ 3,2,4 }, bup);
 		//C.print_w();
 
