@@ -30,7 +30,7 @@ private:
     std::vector<std::vector<std::vector<float>>> back_layers_w; // Градиенты dE/dW
 
     // Для хранения ошибки
-    float error;
+    float error=0.0f;
 
     // Вспомогательные функции
     float relu(float x);                       // Функция активации ReLU

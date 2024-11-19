@@ -52,8 +52,8 @@ int main()
 		Neuro2 C({784,4,3,10}, a);
 
 		C.init(a);
-		C.print_w();
-		C.printLayersT();
+		//C.print_w();
+		//C.printLayersT();
 		C.printLayersH();
 		C.printError();
 

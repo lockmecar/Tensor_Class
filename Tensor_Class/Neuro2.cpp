@@ -17,6 +17,7 @@ Neuro2::Neuro2(std::vector<unsigned> numNeurones, Dataset& inData)
     // Инициализация слоев
     for (size_t j = 0; j < numNeurones.size(); ++j) {
         layers_h[j].resize(numNeurones[j]);
+        
         if (j >= 1) {
             layers_t[j].resize(numNeurones[j]);
             back_layers_t[j].resize(numNeurones[j]);
@@ -62,7 +63,7 @@ void Neuro2::init(Dataset& inData)
                 sum += layers_h[i - 1][k] * weights[i - 1][j][k];
             }
             layers_t[i][j] = sum;
-            layers_h[i][j] = (i != layers_h.size() - 1) ? leaky_Relu(sum) : 0.0; // Последний слой — softmax
+            layers_h[i][j] = (i != layers_h.size() - 1) ? relu(sum) : 0.0; // Последний слой — softmax
         }
     }
 
@@ -72,7 +73,7 @@ void Neuro2::init(Dataset& inData)
 
 void Neuro2::printLayersT()
 {
-    std::cout << "Значения слоёв (до активации):" << std::endl;
+    std::cout << std::endl << "Значения слоёв (до активации):" << std::endl;
 
     for (size_t layer = 0; layer < layers_t.size(); ++layer) {
         std::cout << "Слой " << layer + 1 << ": ";
@@ -88,7 +89,7 @@ void Neuro2::printLayersT()
 
 void Neuro2::printLayersH()
 {
-    std::cout << "Значения слоёв (после активации):" << std::endl;
+    std::cout << std::endl << "Значения слоёв (после активации):" << std::endl;
 
     for (size_t layer = 0; layer < layers_h.size(); ++layer) {
         std::cout << "Слой " << layer + 1 << ": ";
@@ -107,7 +108,7 @@ void Neuro2::print_w()
 
     // Проходим по каждому слою весов
     for (size_t layer = 0; layer < weights.size(); ++layer) {
-        std::cout << "Слой " << layer + 1 << ":" << std::endl;
+        std::cout << "Слой " << layer + 1 << ":" << std::endl << std::endl;
 
         // Проходим по каждому нейрону текущего слоя
         for (size_t neuron = 0; neuron < weights[layer].size(); ++neuron) {
@@ -117,7 +118,7 @@ void Neuro2::print_w()
             for (size_t prev_neuron = 0; prev_neuron < weights[layer][neuron].size(); ++prev_neuron) {
                 std::cout << weights[layer][neuron][prev_neuron] << " ";
             }
-            std::cout << std::endl;
+            std::cout << std::endl << std::endl;
         }
     }
 }
@@ -140,9 +141,19 @@ void Neuro2::softMax()
 
 void Neuro2::backprop(int indx_label)
 {
-    // 1. Вычисление ошибки на выходном слое
+    // 1. Вычисление ошибки на выходном слое с использованием кросс-энтропии
+
     for (size_t i = 0; i < layers_h.back().size(); ++i) {
-        back_layers_h.back()[i] = layers_h.back()[i] - (i == indx_label ? 1.0 : 0.0);
+        // Если i == indx_label, то y_i = 1, иначе y_i = 0
+        float target = (i == indx_label ? 1.0f : 0.0f);
+
+        // Кросс-энтропия: -y_i * log(p_i), где p_i - предсказанная вероятность
+        if (layers_h.back()[i] > 0) {  // проверка на допустимость логарифма
+            error -= target * std::log(layers_h.back()[i]);
+        }
+
+        // Ошибка на выходном слое (dE/dh)
+        back_layers_h.back()[i] = layers_h.back()[i] - target;
     }
 
     // 2. Цикл обратного распространения
@@ -159,13 +170,14 @@ void Neuro2::backprop(int indx_label)
             }
         }
 
-        // Градиент dE/dh для предыдущего слоя
-        for (size_t i = 0; i < layers_h[layer - 1].size(); ++i) {
-            double sum = 0.0;
-            for (size_t j = 0; j < layers_t[layer].size(); ++j) {
-                sum += back_layers_t[layer][j] * weights[layer - 1][j][i];
+        if (layer != 1) { // Градиент dE/dh для предыдущего слоя
+            for (size_t i = 0; i < layers_h[layer - 1].size(); ++i) {
+                double sum = 0.0;
+                for (size_t j = 0; j < layers_t[layer].size(); ++j) {
+                    sum += back_layers_t[layer][j] * weights[layer - 1][j][i];
+                }
+                back_layers_h[layer - 1][i] = sum;
             }
-            back_layers_h[layer - 1][i] = sum;
         }
     }
 }
