@@ -23,7 +23,7 @@ private:
 	std::vector < std::vector<float >> weights;			        // матрица весов
 	std::vector < std::vector<double >> back_layers_t;	        // хранит dE/dt
 	std::vector < std::vector<double >> back_layers_h;	        // хранит dE/dh
-	std::vector<std::vector<float>> back_layers_w;              // хранит dE/dW
+	std::vector < std::vector<float >> back_layers_w;              // хранит dE/dW
 
 	float error;
 	double func(float x);// ф-ция активации

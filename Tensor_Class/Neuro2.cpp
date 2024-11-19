@@ -96,39 +96,8 @@ void Neuro2::init(Dataset& inData)
 	}
 
 	softMax();
-	crossEntropy(inData.label[0][0]);
 	backprop(inData.label[0][0]);
 }
-
-/*for (size_t i = 1; i < layers_t.size(); i++)
-	{
-
-		int j = 0;
-		while (j < layers_t[i].size())
-		{
-			//float sum = 0;
-			int k = 0;
-			while (k < layers_t[i - 1].size())
-			{
-				int indx2 = k + (j * layers_t[i - 1].size());
-				float b1 = weights[i - 1][indx2];
-				
-				float b2 = layers_h[i][k];
-
-				layers_t[i][j] += b2 * b1;
-				
-				k++;
-			}
-
-			if (i != layers_t.size() - 1)
-				layers_h[i][j] = func(layers_t[i][j]);
-			j++;
-		}
-
-
-	}
-
-	softMax();*/
 
 
 void Neuro2::softMax() {
@@ -145,70 +114,62 @@ void Neuro2::softMax() {
 		layers_h[layers_h.size() - 1][i] = (std::exp(layers_t[layers_t.size() - 1][i]) / sumExp);
 	}
 
-	//vector_backprop.resize(layers_h.size() - 1);
-	//for (int i = vector_backprop.size() - 1; i >= 0; i--)
-		//vector_backprop[i].resize(vector_Layers[i + 1].size());
 }
 
-//void Neuro2::backprop(int indx_lable)
-//{
-//	// dE/dt
-//	for (int i = 0; i < layers_h.size(); i++)
-//	{
-//		if (i != indx_lable)
-//		{
-//			this->back_layers_t[3][indx_lable] = this->layers_h[3][indx_lable];
-//		}
-//		else
-//		{
-//			this->back_layers_t[3][indx_lable] = this->layers_h[3][indx_lable] -= 1;
-//		}
-//	}
-//	
-//	// dE/dW
-//	std::vector<std::vector<float>> test;
-//	std::vector<std::vector<float>> de_dw = transp(test);
-//
-//}
 
-void Neuro2::backprop(int indx_label) {
-	int output_layer = layers_h.size() - 1;  // Индекс выходного слоя
+void Neuro2::backprop(int indx_label)
+{
+	// 1: Вычислить градиент ошибки по выходу (используем кросс-энтропию)
+	crossEntropy(indx_label);
 
-	// 1. Вычисляем градиент ошибки на выходном слое с использованием кросс-энтропии
-	back_layers_h[output_layer].resize(layers_h[output_layer].size());
-	for (size_t i = 0; i < layers_h[output_layer].size(); ++i) {
-		back_layers_h[output_layer][i] = layers_h[output_layer][i] - (i == indx_label ? 1.0 : 0.0);
-	}
-
-	// 2. Обратное распространение ошибки для скрытых слоев
-	for (int layer = output_layer - 1; layer >= 0; --layer)
+	// Производная функции активации на выходном слое (измените в зависимости от активации последнего слоя)
+	for (size_t i = 0; i < layers_h.back().size(); ++i)
 	{
-		back_layers_h[layer].resize(layers_h[layer].size());
-		for (size_t j = 0; j < layers_h[layer].size(); ++j)
+		back_layers_h.back()[i] = layers_h.back()[i] - (i == indx_label ? 1.0 : 0.0); // dE/dh
+	}
+	
+	back_layers_w.resize(weights.size()); // количество слоев
+	for (size_t w_layer = 0; w_layer < weights.size(); ++w_layer)
+	{
+		back_layers_w[w_layer].resize(weights[w_layer].size()); // количество нейронов текущего слоя
+		for (size_t i = 0; i < weights[w_layer].size(); ++i)
 		{
-			double sum_error = 0.0;
-			for (size_t k = 0; k < layers_h[layer + 1].size(); ++k)
-			{
-				sum_error += back_layers_h[layer + 1][k] * weights[layer][k];
-			}
-			back_layers_h[layer][j] = sum_error * relu_derivative(layers_h[layer][j]);
+			back_layers_w[w_layer][i].resize(weights[w_layer][i].size(), 0.0f); // количество нейронов следующего слоя
 		}
 	}
 
-	// 3. Вычисление градиентов весов
-	back_layers_w.resize(weights.size());
-	for (size_t layer = 0; layer < weights.size(); ++layer)
+	// Основной цикл обратного распространения
+	for (int layer = layers_h.size() - 1; layer > 0; --layer)
 	{
-		back_layers_w[layer].resize(weights[layer].size());
-		for (size_t i = 0; i < weights[layer].size(); ++i)
+		// Вычисляем dE/dt, используя производную функции активации
+		for (size_t i = 0; i < layers_t[layer].size(); ++i)
 		{
-			for (size_t k = 0; k < layers_h[layer].size(); k++)
+			back_layers_t[layer][i] = back_layers_h[layer][i] * relu_derivative(layers_t[layer][i]);
+		}
+
+		// Обновляем dE/dh для предыдущего слоя, используя транспонированную матрицу весов
+		for (size_t i = 0; i < layers_h[layer - 1].size(); ++i)
+		{
+			double sum = 0.0;
+			for (size_t j = 0; j < back_layers_t[layer].size(); ++j)
 			{
-				back_layers_w[layer][i] = back_layers_h[layer + 1][k] * layers_h[layer][i];
+				sum += back_layers_t[layer][j] * weights[layer - 1][j][i]; // Используем правильный индекс для матрицы весов
+			}
+			back_layers_h[layer - 1][i] = sum;
+		}
+
+		// Рассчитываем градиенты весов для текущего слоя
+		for (size_t i = 0; i < weights[layer - 1].size(); ++i)
+		{
+			for (size_t j = 0; j < weights[layer - 1][i].size(); ++j)
+			{
+				// Обновляем градиент для веса между нейроном i на предыдущем слое и нейроном j на текущем слое
+				back_layers_w[layer - 1][i][j] += layers_h[layer - 1][i] * back_layers_t[layer][j];
 			}
 		}
 	}
 }
+
 
 
 
