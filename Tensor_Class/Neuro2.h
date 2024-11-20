@@ -10,7 +10,7 @@ public:
     Neuro2(std::vector<unsigned> numNeurones, Dataset& inData);
 
     // Инициализация сети
-    void init(Dataset& inData);
+    void init(Dataset& inData, float alpha);
 
 
     void printLayersT();
@@ -36,6 +36,7 @@ private:
     float relu(float x);                       // Функция активации ReLU
     float relu_derivative(float x);            // Производная ReLU
     double leaky_Relu(float x);                // Leaky ReLU 
+    double leaky_Relu_der(float x);
     void gener_w(float minVal, float maxVal);  // Генератор случайных весов
 
     void softMax();                            // Softmax на выходном слое

@@ -41,40 +41,23 @@ int main()
 	setlocale(LC_ALL, "RUS");
 	try
 	{
-		
-
 		Dataset a("a", 100, "t10k-images.idx3-ubyte", "t10k-labels.idx1-ubyte");
-
-		//Ten3D B(28, 28, 1, "B", A);
-		//vector<float> bup{ 2.38,1.45,3.1 };
+		//гипер параметры 
+		float alpha = 0.01;
 
 
 		Neuro2 C({784,4,3,10}, a);
-
-		C.init(a);
-		//C.print_w();
-		//C.printLayersT();
-
+		for (size_t i = 0; i < 36; i++)
+		{
+			cout << i << " ";
+			C.init(a, alpha);
+			//C.print_w();
+			//C.printLayersT();
+			//C.printLayersH();
+			C.printError();
+		}
+		C.printLayersT();
 		C.printLayersH();
-		C.printError();
-		cout << endl;
-		C.init(a);
-		C.printLayersH();
-		C.printError();
-		cout << endl;
-		C.init(a);
-		C.printLayersH();
-		C.printError();
-		//Neuro2 C({ 3,2,4 }, bup);
-		//C.print_w();
-
-		//C.printLayers();
-		
-		//C.print_softMax();
-
-		//C.printError();
-
-		//C.print_vector_backprop();
 	}
 	catch(length_error& ex) 
 	{
