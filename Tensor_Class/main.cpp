@@ -49,17 +49,16 @@ int main()
 
 		Neuro2 C({784,4,3,10}, a);
 
-		for (current_step; current_step < 100; current_step++)
+		for (current_step; current_step < 10; current_step++)
 		{
 			std::cout << current_step << ") " << std::endl;
 			for (size_t i = 0; i < 100; i++)
 			{
 				C.init(a, alpha, current_step);
 
-				Ñ.softMax();
-
-				Ñ.backprop(a.label[0][current_step]);
-				Ñ.updateWeights(alpha);
+				C.softMax();
+				C.backprop(a.label[0][current_step]);
+				C.updateWeights(alpha);
 			}
 			good+=C.result();
 		}
