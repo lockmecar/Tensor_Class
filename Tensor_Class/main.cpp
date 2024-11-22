@@ -42,22 +42,22 @@ int main()
 	try
 	{
 		Dataset a("a", 100, "t10k-images.idx3-ubyte", "t10k-labels.idx1-ubyte");
-		//гипер параметры 
-		float alpha = 0.01;
-
-
+		//гиперпараметры 
+		const float alpha = 0.001;
+		int current_step = 0;
+		int good = 0;
 		Neuro2 C({784,4,3,10}, a);
-		for (size_t i = 0; i < 36; i++)
+		for (current_step; current_step < 100; current_step++)
 		{
-			cout << i << " ";
-			C.init(a, alpha);
-			//C.print_w();
-			//C.printLayersT();
-			//C.printLayersH();
-			C.printError();
+			std::cout << current_step << ") " << std::endl;
+			for (size_t i = 0; i < 100; i++)
+			{
+				C.init(a, alpha, current_step);
+				//C.result();
+			}
+			good+=C.result();
 		}
-		C.printLayersT();
-		C.printLayersH();
+		cout << endl<< good << endl;
 	}
 	catch(length_error& ex) 
 	{

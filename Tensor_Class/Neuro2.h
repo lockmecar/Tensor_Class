@@ -10,15 +10,20 @@ public:
     Neuro2(std::vector<unsigned> numNeurones, Dataset& inData);
 
     // Инициализация сети
-    void init(Dataset& inData, float alpha);
+    void init(Dataset& inData, float alpha, int current_step);
 
 
     void printLayersT();
     void printLayersH();
     void print_w();
     void printError();
+    int result();
 
 private:
+
+    Dataset& inData; // Сохраняем ссылку на датасет
+    int current_step;   // Текущий шаг обработки
+
     // Структура сети
     std::vector<std::vector<float>> layers_t;       // Значения до функции активации t = W * x
     std::vector<std::vector<double>> layers_h;      // Значения после функции активации h = F(t)

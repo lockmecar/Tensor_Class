@@ -4,13 +4,16 @@
 #include <cmath>
 #include <stdexcept>
 
-Neuro2::Neuro2(std::vector<unsigned> numNeurones, Dataset& inData)
-    : layers_t(numNeurones.size()), layers_h(numNeurones.size()),
-      back_layers_t(numNeurones.size()), back_layers_h(numNeurones.size()),
-      weights(numNeurones.size() - 1)
+Neuro2::Neuro2(std::vector<unsigned> numNeurones, Dataset& inData) 
+   :layers_t(numNeurones.size()),
+    layers_h(numNeurones.size()),
+    back_layers_t(numNeurones.size()),
+    back_layers_h(numNeurones.size()),
+    weights(numNeurones.size() - 1),
+    inData(inData), 
+    current_step(0)
 {
-
-    if (numNeurones[0] != (inData.img[0][0].getSizeX() * inData.img[0][0].getSizeY())) {
+    if (numNeurones[0] != (inData.img[0][1].getSizeX() * inData.img[0][1].getSizeY())) {
         throw std::invalid_argument("Ошибка: входной слой не соответствует данным!");
     }
 
@@ -43,11 +46,19 @@ Neuro2::Neuro2(std::vector<unsigned> numNeurones, Dataset& inData)
     gener_w(0, 1);
 }
 
-void Neuro2::init(Dataset& inData, float alpha)
+void Neuro2::init(Dataset& inData, float alpha, int current_step)
 {
-    error = 0.0f;//сборос ошибки
-    //сброс градиента нейронов и весов
+    if (alpha <= 0.0f || alpha > 1.0f) {
+        throw std::invalid_argument("Ошибка: alpha должна быть в диапазоне (0, 1].");
+    }
+    if (current_step < 0 || current_step >= inData.img[0].size()) {
+        throw std::out_of_range("Ошибка: current_step выходит за пределы датасета.");
+    }
 
+    error = 0.0f;//сборос ошибки
+    this->current_step = current_step;
+
+    //сброс градиента нейронов и весов
     //for (auto& layer : back_layers_w) {
     //    for (auto& neuron : layer) {
     //        std::fill(neuron.begin(), neuron.end(), 0.0f);
@@ -61,7 +72,7 @@ void Neuro2::init(Dataset& inData, float alpha)
     //    std::fill(layer.begin(), layer.end(), 0.0);
     //}
 
-    layers_h[0] = inData.img[0][0].matrix_to_vector(1); // Входные данные
+    layers_h[0] = inData.img[0][current_step].matrix_to_vector(1); // Входные данные
 
     // Нормализация входных значений
     for (auto& value : layers_h[0]) {
@@ -81,7 +92,7 @@ void Neuro2::init(Dataset& inData, float alpha)
     }
 
     softMax();
-    backprop(inData.label[0][0]);
+    backprop(inData.label[0][current_step]);
     updateWeights(alpha);
 
 }
@@ -142,6 +153,33 @@ void Neuro2::printError()
     std::cout << "Текущее значение ошибки: " << error << std::endl;
 }
 
+int Neuro2::result()
+{
+    if (layers_h.back().empty()) {
+        std::cerr << "Ошибка: последний слой пуст!" << std::endl;
+        return 0;
+    }
+
+    // Инициализация переменных для нахождения максимального значения и его индекса
+    double max_value = layers_h.back()[0];
+    size_t max_index = 0;
+
+    // Поиск максимального значения и его индекса
+    for (size_t i = 1; i < layers_h.back().size(); ++i) {
+        if (layers_h.back()[i] > max_value) {
+            max_value = layers_h.back()[i];
+            max_index = i;
+        }
+    }
+
+    // Вывод результата
+    std::cout << "label:  = " << inData.label[0][current_step]<<"|" << std::endl;
+    std::cout << "нейро:  = " << max_index << "|" << std::endl;
+    std::cout << "макс    = " << max_value << std::endl << std::endl;
+
+    return (inData.label[0][current_step] == max_index) ? 1 : 0;
+}
+
 void Neuro2::softMax() {
     double maxVal = *std::max_element(layers_t.back().begin(), layers_t.back().end());
     double sumExp = 0.0;
@@ -155,6 +193,10 @@ void Neuro2::softMax() {
 
 void Neuro2::backprop(int indx_label)
 {
+    if (indx_label < 0 || indx_label >= inData.label[0].size()) {
+        throw std::out_of_range("Ошибка: indx_label выходит за пределы меток.");
+    }
+
     // 1. Вычисление ошибки на выходном слое с использованием кросс-энтропии
 
     for (size_t i = 0; i < layers_h.back().size(); ++i) {
