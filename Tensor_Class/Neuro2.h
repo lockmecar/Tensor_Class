@@ -10,7 +10,7 @@ public:
     Neuro2(std::vector<unsigned> numNeurones, Dataset& inData);
 
     // Инициализация сети
-    void init(Dataset& inData, float alpha, int current_step);
+    void init(Dataset& inData,const int& current_step);
 
 
     void printLayersT();
@@ -43,6 +43,7 @@ public:
     double leaky_Relu(float x);                // Leaky ReLU 
     double leaky_Relu_der(float x);
     void gener_w(float minVal, float maxVal);  // Генератор случайных весов
+    //void softMaxDerivatives(std::vector<double>& output);
 
     void softMax();                            // Softmax на выходном слое
 
@@ -52,8 +53,8 @@ public:
         const std::vector<std::vector<float>>& matrixB); // Умножение матриц
 
     // Обратное распространение ошибки
-    void backprop(int indx_label);
+    void backprop(int& indx_label);
 
     // Обновление весов 
-    void updateWeights(float alpha);          // Скорость обучения alpha
+    void updateWeights(const float& alpha);          // Скорость обучения alpha
 };

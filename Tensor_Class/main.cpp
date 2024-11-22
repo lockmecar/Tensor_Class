@@ -41,28 +41,29 @@ int main()
 	setlocale(LC_ALL, "RUS");
 	try
 	{
-		Dataset a("a", 100, "t10k-images.idx3-ubyte", "t10k-labels.idx1-ubyte");
+		Dataset a("a", 1, "t10k-images.idx3-ubyte", "t10k-labels.idx1-ubyte");
 		//гиперпараметры 
-		const float alpha = 0.001;
+		const float alpha = 1;
 		int current_step = 0;
 		int good = 0;
 
 		Neuro2 C({784,4,3,10}, a);
-
-		for (current_step; current_step < 10; current_step++)
-		{
-			std::cout << current_step << ") " << std::endl;
-			for (size_t i = 0; i < 100; i++)
+		//for (int i = 0; i < 100; i++)
+		//{
+			for (current_step; current_step < 10000; current_step++)
 			{
-				C.init(a, alpha, current_step);
+				//std::cout << current_step << ") " << std::endl;
 
+				C.init(a, current_step);
 				C.softMax();
 				C.backprop(a.label[0][current_step]);
 				C.updateWeights(alpha);
+				good += C.result();
 			}
-			good+=C.result();
-		}
-		cout << endl<< good << endl;
+			
+			
+		//}
+		cout << endl << good << endl;
 	}
 	catch(length_error& ex) 
 	{

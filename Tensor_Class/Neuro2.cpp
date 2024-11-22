@@ -46,32 +46,27 @@ Neuro2::Neuro2(std::vector<unsigned> numNeurones, Dataset& inData)
     gener_w(0, 1);
 }
 
-void Neuro2::init(Dataset& inData, float alpha, int current_step)
+void Neuro2::init(Dataset& inData,const int& current_step)
 {
-    if (alpha <= 0.0f || alpha > 1.0f) {
-        throw std::invalid_argument("Ошибка: alpha должна быть в диапазоне (0, 1].");
-    }
     if (current_step < 0 || current_step >= inData.img[0].size()) {
         throw std::out_of_range("Ошибка: current_step выходит за пределы датасета.");
+    }
+    //сброс градиента нейронов и весов
+    for (auto& layer : back_layers_w) {
+        for (auto& neuron : layer) {
+            std::fill(neuron.begin(), neuron.end(), 0.0f);
+        }
+    }
+
+    for (auto& layer : back_layers_t) {
+        std::fill(layer.begin(), layer.end(), 0.0);
+    }
+    for (auto& layer : back_layers_h) {
+        std::fill(layer.begin(), layer.end(), 0.0);
     }
 
     error = 0.0f;//сборос ошибки
     this->current_step = current_step;
-
-    //сброс градиента нейронов и весов
-    //for (auto& layer : back_layers_w) {
-    //    for (auto& neuron : layer) {
-    //        std::fill(neuron.begin(), neuron.end(), 0.0f);
-    //    }
-    //}
-
-    //for (auto& layer : back_layers_t) {
-    //    std::fill(layer.begin(), layer.end(), 0.0);
-    //}
-    //for (auto& layer : back_layers_h) {
-    //    std::fill(layer.begin(), layer.end(), 0.0);
-    //}
-
     layers_h[0] = inData.img[0][current_step].matrix_to_vector(1); // Входные данные
 
     // Нормализация входных значений
@@ -80,19 +75,18 @@ void Neuro2::init(Dataset& inData, float alpha, int current_step)
     }
 
     // Прямой ход
-    for (size_t i = 1; i < layers_h.size(); ++i) {
-        for (size_t j = 0; j < layers_h[i].size(); ++j) {
+    for (size_t i = 1; i < layers_h.size(); ++i) 
+    {
+        for (size_t j = 0; j < layers_h[i].size(); ++j) 
+        {
             double sum = 0.0;
-            for (size_t k = 0; k < layers_h[i - 1].size(); ++k) {
+            for (size_t k = 0; k < layers_h[i - 1].size(); ++k)
                 sum += layers_h[i - 1][k] * weights[i - 1][j][k];
-            }
+
             layers_t[i][j] = sum;
             layers_h[i][j] = (i != layers_h.size() - 1) ? leaky_Relu(sum) : 0.0; // Последний слой — softmax
         }
     }
-
-    
-
 }
 
 void Neuro2::printLayersT()
@@ -189,7 +183,7 @@ void Neuro2::softMax() {
     }
 }
 
-void Neuro2::backprop(int indx_label)
+void Neuro2::backprop(int& indx_label)
 {
     if (indx_label < 0 || indx_label >= inData.label[0].size()) {
         throw std::out_of_range("Ошибка: indx_label выходит за пределы меток.");
@@ -219,7 +213,7 @@ void Neuro2::backprop(int indx_label)
     for (int layer = layers_h.size() - 1; layer > 0; --layer) {
         // Градиент dE/dt
         for (size_t i = 0; i < layers_t[layer].size(); ++i) {
-            back_layers_t[layer][i] = back_layers_h[layer][i] * leaky_Relu_der(layers_t[layer][i]);
+            back_layers_t[layer][i] = back_layers_h[layer][i] * leaky_Relu_der(layers_t[layer][i]); // ошибка, вместо производной по релу должна быть производная по софт-макс для первой итерации
         }
 
         // Градиент весов dE/dW
@@ -241,7 +235,7 @@ void Neuro2::backprop(int indx_label)
     }
 }
 
-void Neuro2::updateWeights(float alpha)
+void Neuro2::updateWeights(const float& alpha)
 {
     // Обновление весов для каждого слоя, начиная с 0-го
     for (size_t layer = 0; layer < layers_h.size() - 1; ++layer) {
@@ -283,6 +277,28 @@ void Neuro2::gener_w(float mean, float stddev)
         }
     }
 }
+
+//void Neuro2::softMaxDerivatives(std::vector<double>& output)
+//{
+//    size_t numOutputs = output.size();
+//
+//    // Создаем матрицу производных размером numOutputs x numOutputs
+//    std::vector<std::vector<double>> jacobian(numOutputs, std::vector<double>(numOutputs, 0.0));
+//
+//    // Заполняем матрицу Якоби производными
+//    for (size_t i = 0; i < numOutputs; ++i) {
+//        for (size_t k = 0; k < numOutputs; ++k) {
+//            if (i == k) {
+//                // Если i == k, то производная: s_i * (1 - s_i)
+//                jacobian[i][k] = output[i] * (1.0 - output[i]);
+//            }
+//            else {
+//                // Если i != k, то производная: -s_i * s_k
+//                jacobian[i][k] = -output[i] * output[k];
+//            }
+//        }
+//    }
+//}
 
 float Neuro2::relu(float x)
 {
