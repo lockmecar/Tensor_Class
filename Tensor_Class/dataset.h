@@ -9,7 +9,7 @@ public:
 
 	void printData(char mode);
 
-private:
+//private:
 	int numButches;
 	std::vector<std::vector<Ten3D>> img;
 	std::vector<std::vector<int>> label;

@@ -91,9 +91,7 @@ void Neuro2::init(Dataset& inData, float alpha, int current_step)
         }
     }
 
-    softMax();
-    backprop(inData.label[0][current_step]);
-    updateWeights(alpha);
+    
 
 }
 

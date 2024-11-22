@@ -19,7 +19,7 @@ public:
     void printError();
     int result();
 
-private:
+//private:
 
     Dataset& inData; // Сохраняем ссылку на датасет
     int current_step;   // Текущий шаг обработки

@@ -46,14 +46,20 @@ int main()
 		const float alpha = 0.001;
 		int current_step = 0;
 		int good = 0;
+
 		Neuro2 C({784,4,3,10}, a);
+
 		for (current_step; current_step < 100; current_step++)
 		{
 			std::cout << current_step << ") " << std::endl;
 			for (size_t i = 0; i < 100; i++)
 			{
 				C.init(a, alpha, current_step);
-				//C.result();
+
+				Ñ.softMax();
+
+				Ñ.backprop(a.label[0][current_step]);
+				Ñ.updateWeights(alpha);
 			}
 			good+=C.result();
 		}
