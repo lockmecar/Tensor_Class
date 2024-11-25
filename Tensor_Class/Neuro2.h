@@ -35,7 +35,7 @@ public:
     std::vector<std::vector<std::vector<float>>> back_layers_w; // Градиенты dE/dW
 
     // Для хранения ошибки
-    float cross_entropy =0.0f;
+    float error=0.0f;
 
     // Вспомогательные функции
     float relu(float x);                       // Функция активации ReLU
@@ -43,8 +43,8 @@ public:
     double leaky_Relu(float x);                // Leaky ReLU 
     double leaky_Relu_der(float x);
     void gener_w(float minVal, float maxVal);  // Генератор случайных весов
-    float softmax_derivative(float value);
-  
+    //void softMaxDerivatives(std::vector<double>& output);
+
     void softMax();                            // Softmax на выходном слое
 
     // для работы с матрицами
