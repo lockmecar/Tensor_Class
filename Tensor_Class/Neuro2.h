@@ -10,7 +10,7 @@ public:
     Neuro2(std::vector<unsigned> numNeurones, Dataset& inData);
 
     // Инициализация сети
-    void init(Dataset& inData,const int& current_step);
+    void init(Dataset& inData, const int& current_step);
 
 
     void printLayersT();
@@ -19,7 +19,7 @@ public:
     void printError();
     int result();
 
-//private:
+    //private:
 
     Dataset& inData; // Сохраняем ссылку на датасет
     int current_step;   // Текущий шаг обработки
@@ -35,7 +35,7 @@ public:
     std::vector<std::vector<std::vector<float>>> back_layers_w; // Градиенты dE/dW
 
     // Для хранения ошибки
-    float error=0.0f;
+    float cross_entropy = 0.0f;
 
     // Вспомогательные функции
     float relu(float x);                       // Функция активации ReLU
@@ -43,7 +43,7 @@ public:
     double leaky_Relu(float x);                // Leaky ReLU 
     double leaky_Relu_der(float x);
     void gener_w(float minVal, float maxVal);  // Генератор случайных весов
-    //void softMaxDerivatives(std::vector<double>& output);
+    float softmax_derivative(float value);
 
     void softMax();                            // Softmax на выходном слое
 
