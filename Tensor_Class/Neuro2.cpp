@@ -43,7 +43,7 @@ Neuro2::Neuro2(std::vector<unsigned> numNeurones, Dataset& inData)
         }
     }
     // Генерация весов
-    gener_w(0, 1);
+    gener_w(0, 0.5);
 }
 
 void Neuro2::init(Dataset& inData, const int& current_step)
@@ -165,9 +165,9 @@ int Neuro2::result()
     }
 
     // Вывод результата
-    std::cout << "label:  = " << inData.label[0][current_step] << "|" << std::endl;
-    std::cout << "нейро:  = " << max_index << "|" << std::endl;
-    std::cout << "макс    = " << max_value << std::endl << std::endl;
+    //std::cout << "label:  = " << inData.label[0][current_step] << "|" << std::endl;
+    //std::cout << "нейро:  = " << max_index << "|" << std::endl;
+    //std::cout << "макс    = " << max_value << std::endl << std::endl;
 
     return (inData.label[0][current_step] == max_index) ? 1 : 0;
 }
@@ -199,10 +199,29 @@ void Neuro2::backprop(int& indx_label)
     }
 
     // 2. Цикл обратного распространения
-    for (int layer = layers_h.size() - 1; layer > 0; --layer) {
+    int iterl = layers_h.size() - 1;
+    for (size_t i = 0; i < layers_t[iterl].size(); ++i) {
+        back_layers_t[iterl][i] = back_layers_h[iterl][i] * softmax_derivative(layers_t[iterl][i]);//сделать softmax_derivative
+    }
+    for (size_t i = 0; i < layers_h[iterl - 1].size(); ++i) {
+        for (size_t j = 0; j < layers_t[iterl].size(); ++j) {
+            back_layers_w[iterl - 1][j][i] += layers_h[iterl - 1][i] * back_layers_t[iterl][j];
+        }
+    }
+    if (iterl != 1) { // Градиент dE/dh для предыдущего слоя
+        for (size_t i = 0; i < layers_h[iterl - 1].size(); ++i) {
+            double sum = 0.0;
+            for (size_t j = 0; j < layers_t[iterl].size(); ++j) {
+                sum += back_layers_t[iterl][j] * weights[iterl - 1][j][i];
+            }
+            back_layers_h[iterl - 1][i] = sum;
+        }
+    }
+
+    for (int layer = layers_h.size() - 2; layer > 0; --layer) {
         // Градиент dE/dt
         for (size_t i = 0; i < layers_t[layer].size(); ++i) {
-            back_layers_t[layer][i] = back_layers_h[layer][i] * softmax_derivative(layers_t[layer][i]);//сделать softmax_derivative
+            back_layers_t[layer][i] = back_layers_h[layer][i] * relu_derivative(layers_t[layer][i]);//сделать softmax_derivative
         }
 
         // Градиент весов dE/dW
